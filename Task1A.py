@@ -1,9 +1,6 @@
 # Copyright (C) 2018 Garth N. Wells
 #
 # SPDX-License-Identifier: MIT
-import sys
-sys.path.append("./floodsystem")
-
 from floodsystem.stationdata import build_station_list
 
 
