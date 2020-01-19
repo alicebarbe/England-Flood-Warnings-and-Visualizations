@@ -17,5 +17,3 @@ def test_stations_by_river():
     # make a station list
     station_list = stationdata.build_station_list()
     stations_by_river = geo.stations_by_river(station_list)
-
-    # check for known stations by certain rivers
