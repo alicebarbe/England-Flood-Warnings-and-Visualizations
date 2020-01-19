@@ -74,3 +74,31 @@ def rivers_with_stations(stations):
             output.add(station.river)
 
     return output
+
+
+def stations_by_river(stations):
+    """Maps stations by the rivers which they are associated with. Return a dict
+    containing MonitoringStations with key values for each river
+
+    Arguments:
+        stations (list of MonitoringStation):
+            generated using build_station_list.
+
+    Returns:
+        {river_name : [MonitoringStations]} {string : [MonitoringStation]}
+            dict containing lists of MonitoringStations for each river. The dict
+            keys are the river names
+    """
+    output = {}
+    rivers = rivers_with_stations(stations)
+
+    for river in rivers:
+        stations_with_river = []
+
+        for station in stations:
+            if river == station.river:
+                stations_with_river.append(station)
+
+        output[river] = stations_with_river
+
+    return output
