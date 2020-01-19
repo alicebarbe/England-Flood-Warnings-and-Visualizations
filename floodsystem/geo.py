@@ -10,6 +10,7 @@ from haversine import haversine
 from floodsystem.utils import sorted_by_key  # noqa
 from floodsystem.stationdata import build_station_list
 
+
 def stations_by_distance(stations, p):
     """Calculate distances from a coordinate p to each station. Return the station
     distance pairs in an ordered list, by distance.
@@ -51,4 +52,25 @@ def stations_within_radius(stations, centre, r):
         # check if distance is within r of centre
         if pair[1] <= r:
             output.append(pair)
+    return output
+
+
+def rivers_with_stations(stations):
+    """Return a set containing names of rivers with an associated monitoring station
+
+    Arguments:
+        stations (list of MonitoringStation):
+            generated using build_station_list.
+
+    Returns:
+        {river_name} {string}
+            A set containing the names of all the rivers with a monitoring station
+    """
+
+    output = set()
+    for station in stations:
+        # if the station has a river, add to the set
+        if station.river:
+            output.add(station.river)
+
     return output
