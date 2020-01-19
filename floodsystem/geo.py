@@ -102,3 +102,38 @@ def stations_by_river(stations):
         output[river] = stations_with_river
 
     return output
+
+
+def rivers_by_station_number(stations, N):
+    """Finds the N rivers with the greatest number of stations. the rivers are
+    returned in order of decreasing number of stations. If there is a tie between
+     multiple rivers at the Nth entry, all rivers with equal number of stations
+     are returned
+
+    Arguments:
+        stations (list of MonitoringStation):
+            generated using build_station_list.
+
+        N (int)
+            The number of rivers to return, in descending order of number of
+            stations
+
+    Returns:
+        (river_name, number_of_stations) (string, int)
+            list of tuples containing the river names and number of stations
+            of rivers with the N highest number of monitoring stations
+    """
+    river_station_nums = []
+    river_stations = stations_by_river(stations)
+
+    # find the number of stations next to each river, then sort rivers by this number
+    for river, stations in river_stations.items():
+        river_station_nums.append((river, len(stations)))
+    output = sorted_by_key(river_station_nums, 1, reverse=True)
+
+    # check for a tie condition at the end
+    num_ties = 0
+    while output[N - 1][1] == output[N + num_ties][1]:
+        num_ties += 1
+
+    return output[:(N + num_ties)]
