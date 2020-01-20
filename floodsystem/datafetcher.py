@@ -85,9 +85,7 @@ def fetch_test_station_data():
         data json_object
             A json object containing data from station_data_test.json
     """
-
-    sub_dir = 'cache'
-    test_data_file = os.path.join(sub_dir, 'station_data_test.json')
+    test_data_file = 'station_data_test.json'
 
     try:
         data = load(test_data_file)
