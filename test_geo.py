@@ -40,10 +40,3 @@ def test_rivers_by_station_number():
             # check that all tied rivers were returned
             rivers_one_more = geo.rivers_by_station_number(station_list, len(rivers) + 1)
             assert (rivers_one_more[-1][1] < tie_val)
-
-
-if __name__ == "__main__":
-    # runs all the tests locally to check for syntax errors
-    test_rivers_with_stations()
-    test_stations_by_river()
-    test_rivers_by_station_number()
