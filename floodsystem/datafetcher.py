@@ -77,6 +77,24 @@ def fetch_station_data(use_cache=True):
 
     return data
 
+def fetch_test_station_data():
+    """Returns data from a test json file which is not updated and
+    therefore can be used to check functions against known results
+
+    Returns:
+        data json_object
+            A json object containing data from station_data_test.json
+    """
+
+    sub_dir = 'cache'
+    test_data_file = os.path.join(sub_dir, 'station_data_test.json')
+
+    try:
+        data = load(test_data_file)
+    except FileNotFoundError as e:
+        raise e
+
+    return data
 
 def fetch_latest_water_level_data(use_cache=False):
     """Fetch latest levels from all 'measures'. Returns JSON object"""

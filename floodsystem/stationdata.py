@@ -10,7 +10,7 @@ from floodsystem import datafetcher
 from floodsystem.station import MonitoringStation
 
 
-def build_station_list(use_cache=True):
+def build_station_list(use_cache=True, test=False):
     """Build and return a list of all river level monitoring stations
     based on data fetched from the Environment agency. Each station is
     represented as a MonitoringStation object.
@@ -18,10 +18,15 @@ def build_station_list(use_cache=True):
     The available data for some station is incomplete or not
     available.
 
+    If the flag test is set to true then fixed test data is used so
+    results may be compared to known values for the data
     """
 
-    # Fetch station data
-    data = datafetcher.fetch_station_data(use_cache)
+    # Fetch station data - if testing use the fixed test data
+    if test:
+        data = datafetcher.fetch_test_station_data()
+    else:
+        data = datafetcher.fetch_station_data(use_cache)
 
     # Build list of MonitoringStation objects
     stations = []
