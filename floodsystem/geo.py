@@ -77,7 +77,7 @@ def rivers_with_stations(stations):
 
 
 def stations_by_river(stations):
-    """Maps stations by the rivers which they are associated with. Return a dict
+    """Maps stations to the rivers which they are associated with. Return a dict
     containing MonitoringStations with key values for each river
 
     Arguments:
@@ -128,6 +128,7 @@ def rivers_by_station_number(stations, N):
 
     # find the number of stations next to each river, then sort rivers by this number
     for river, stations in river_stations.items():
+        # Append to the list tuples of the form (river_name, number_of_stations)
         river_station_nums.append((river, len(stations)))
     output = sorted_by_key(river_station_nums, 1, reverse=True)
 

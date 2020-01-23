@@ -15,6 +15,7 @@ def run():
     station_list = build_station_list()
     river_set = rivers_with_stations(station_list)
 
+    print("Number of rivets with at least one monitoring station: {}".format(river_set))
     print("First 10 rivers with monitoring stations, in alphabetical order: \n {}".format(sorted(river_set)[:10]))
 
     # print the stations which are near specific rivers, in alphabetical order

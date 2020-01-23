@@ -14,7 +14,7 @@ def test_rivers_with_stations():
 
 
 def test_stations_by_river():
-    # make a station list
+    # make a station list - since we are comparing to a known output, use the test data
     station_list = stationdata.build_station_list(use_cache=False, test=True)
     stations_by_river = geo.stations_by_river(station_list)
 
