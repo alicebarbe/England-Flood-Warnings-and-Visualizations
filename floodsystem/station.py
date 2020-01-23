@@ -40,6 +40,16 @@ class MonitoringStation:
         return d
     
     def typical_range_consistent(self):
+        """Returns true if the typical range is inconsistent, i.e. lowest value
+        is greater than largest value.
+        
+        Arguments:
+            
+        Returns:
+            bool: 
+                if typical range is consistent
+        
+        """
         #return false if None or inconsistent
         #return not (self.typical_range is None or self.typical_range[0] > self.typical_range[1])
         
@@ -50,6 +60,17 @@ class MonitoringStation:
             return True
 
     def inconsistent_typical_range_stations(stations):
+        """Returns the stations with inconsistent typical ranges given a list
+        of stations.
+        
+        Arguements:
+            stations (MonitoringStation list)
+        
+        Returns:
+            list of Monitoring Stations:
+                the monitoring stations with inconsistent typical ranges
+        
+        """
         output = []
         for station in stations:
             if not station.typical_range_consistent():
