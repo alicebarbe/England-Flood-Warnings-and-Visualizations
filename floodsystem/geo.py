@@ -44,14 +44,14 @@ def stations_within_radius(stations, centre, r):
             
             
     Returns:
-        (station, distance) (MonitoringStation, float):
-            pair of station object and the corresponding distance from it to point p
+        list of station ([MonitoringStation]):
+            list of station objects
     """
     output = []
     for pair in stations_by_distance(stations, centre):
         # check if distance is within r of centre
         if pair[1] <= r:
-            output.append(pair)
+            output.append(pair[0])
     return output
 
 

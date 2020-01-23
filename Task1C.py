@@ -12,10 +12,10 @@ def run():
     """Requirements for Task 1C"""
 
     # Build list of stations within radius of coordinates
-    stations_dists = stations_within_radius(build_station_list(), (52.2053, 0.1218), 10)
+    stations = stations_within_radius(build_station_list(), (52.2053, 0.1218), 10)
     
     # Get alphabetized list of station names
-    stations_list = [station_dist[0].name for station_dist in stations_dists]
+    stations_list = [station.name for station in stations]
 
     print(sorted(stations_list))
 
