@@ -8,8 +8,10 @@ Created on Sun Jan 18 20:47:52 2020
 from floodsystem.stationdata import build_station_list
 from floodsystem.geo import rivers_with_stations, stations_by_river
 
+
 def run():
-     # print first 10 rivers with at least one monitoring station
+    """Requirements for Task 1D"""
+    # print first 10 rivers with at least one monitoring station
     station_list = build_station_list()
     river_set = rivers_with_stations(station_list)
 
@@ -24,5 +26,7 @@ def run():
         station_names = [s.name for s in station_river_dict[river]]
         print("Stations near {}: \n {}".format(river, sorted(station_names)))
 
+
 if __name__ == "__main__":
+    print("*** Task 1D: CUED Part IA Flood Warning System ***")
     run()
