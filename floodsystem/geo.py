@@ -107,8 +107,8 @@ def stations_by_river(stations):
 def rivers_by_station_number(stations, N):
     """Finds the N rivers with the greatest number of stations. the rivers are
     returned in order of decreasing number of stations. If there is a tie between
-     multiple rivers at the Nth entry, all rivers with equal number of stations
-     are returned
+    multiple rivers at the Nth entry, all rivers with equal number of stations
+    are returned
 
     Arguments:
         stations (list of MonitoringStation):
