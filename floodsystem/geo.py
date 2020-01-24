@@ -18,7 +18,7 @@ def stations_by_distance(stations, p):
     Arguments:
         stations (list of MonitoringStation): 
             generated using build_station_list.
-        p (lat, lon): 
+        p (lat, lon):
             float coordinates of the center.
             
     Returns:
@@ -38,7 +38,7 @@ def stations_within_radius(stations, centre, r):
     Arguments:
         stations (list of MonitoringStation): 
             generated using build_station_list.
-        p (lat, lon) (float, float): 
+        centre (lat, lon) (float, float):
             float coordinates of the center.
         r (float):
             
