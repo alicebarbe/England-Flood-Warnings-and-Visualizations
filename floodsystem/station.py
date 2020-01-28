@@ -6,7 +6,7 @@ for manipulating/modifying station data
 
 """
 
-from utils import map
+from floodsystem.utils import map
 
 
 class MonitoringStation:
@@ -65,10 +65,16 @@ class MonitoringStation:
         """"Returns the water level as a proportion of the typical range
         This returns 0.0 when the water level is equal to the lower typical range
         and 1.0 when the water level is equal to the upper typical range
+
         Returns:
             relative_water_level float
-                the relative water level compared to the typical range"""
-        return map(self.latest_level, self.typical_range[0], self.typical_range[1], 0.0, 1.0)
+                the relative water level compared to the typical range.
+                If the typical range is not consistent, 0.0 is returned
+        """
+        if not self.typical_range_consistent():
+            return map(self.latest_level, self.typical_range[0], self.typical_range[1], 0.0, 1.0)
+        else:
+            return 0.0
 
     @staticmethod
     def inconsistent_typical_range_stations(stations):
