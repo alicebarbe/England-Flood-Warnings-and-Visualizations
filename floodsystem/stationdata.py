@@ -68,11 +68,11 @@ def build_station_list(use_cache=True, test=False):
     return stations
 
 
-def update_water_levels(stations):
+def update_water_levels(stations, use_cache=False):
     """Attach level data contained in measure_data to stations"""
 
     # Fetch level data
-    measure_data = datafetcher.fetch_latest_water_level_data()
+    measure_data = datafetcher.fetch_latest_water_level_data(use_cache)
 
     # Build map from measure id to latest reading (value)
     measure_id_to_value = dict()
