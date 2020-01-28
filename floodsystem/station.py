@@ -6,6 +6,8 @@ for manipulating/modifying station data
 
 """
 
+from utils import map
+
 
 class MonitoringStation:
     """This class represents a river level monitoring station"""
@@ -58,6 +60,15 @@ class MonitoringStation:
             return self.typical_range[0] <= self.typical_range[1]
         else:
             return True
+
+    def relative_water_level(self):
+        """"Returns the water level as a proportion of the typical range
+        This returns 0.0 when the water level is equal to the lower typical range
+        and 1.0 when the water level is equal to the upper typical range
+        Returns:
+            relative_water_level float
+                the relative water level compared to the typical range"""
+        return map(self.latest_level, self.typical_range[0], self.typical_range[1], 0.0, 1.0)
 
     @staticmethod
     def inconsistent_typical_range_stations(stations):
