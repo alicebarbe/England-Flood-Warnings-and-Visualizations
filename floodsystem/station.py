@@ -72,8 +72,8 @@ class MonitoringStation:
                 If the typical range is not consistent, 0.0 is returned
         """
         if self.typical_range_consistent() and self.typical_range is not None and self.latest_level:
-            # only run map if the range is consistent and not None
-            return map(self.latest_level, self.typical_range[0], self.typical_range[1], 0.0, 1.0)
+            # only run map if the range is consistent and not None and the latest level is set
+            return map(self.latest_level, self.typical_range, (0.0, 1.0))
         else:
             return 0.0
 
