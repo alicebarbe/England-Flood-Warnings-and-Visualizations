@@ -21,10 +21,31 @@ def stations_level_over_threshold(stations, tol):
     output = []
 
     for station in stations:
-        if station.typical_range_consistent():
-            relative_level = station.relative_water_level()
+        relative_level = station.relative_water_level()
 
+        if relative_level is not None:
             if relative_level > tol:
                 output.append((station, relative_level))
 
     return sorted_by_key(output, 1, reverse=True)
+
+
+def stations_highest_rel_level(stations, N):
+    """Returns the N stations with the highest relative water levels,
+     in descending order. Only 10 values are returned regarless of any
+    tie conditions.
+
+     Arguments:
+         stations (list of MonitoringStation):
+            generated using build_station_list.
+         N int
+            Number of stations to returns
+
+    Returns:
+        [stations_with_highest_levels] [MonitoringStation]
+            List of MonitoringStation objects wiht the highest
+            relative water levels
+    """
+
+    stations_ordered_by_level = sorted(stations, key=MonitoringStation.get_relative_water_level, reverse=True)
+    return stations_ordered_by_level[:N]

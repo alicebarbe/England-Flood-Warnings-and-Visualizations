@@ -69,13 +69,13 @@ class MonitoringStation:
         Returns:
             relative_water_level float
                 the relative water level compared to the typical range.
-                If the typical range is not consistent, 0.0 is returned
+                If the typical range is not consistent, None is returned
         """
         if self.typical_range_consistent() and self.typical_range is not None and self.latest_level:
             # only run map if the range is consistent and not None and the latest level is set
             return map(self.latest_level, self.typical_range, (0.0, 1.0))
         else:
-            return 0.0
+            return None
 
     @staticmethod
     def inconsistent_typical_range_stations(stations):
@@ -95,3 +95,26 @@ class MonitoringStation:
             if not station.typical_range_consistent():
                 output.append(station)
         return output
+
+    @staticmethod
+    def get_relative_water_level(station):
+        """Returns the relative water level of a given station
+        Useful to pass directly to sorted() as a key
+
+        Arguments:
+            station MonitoringStation
+                The monitoring station object
+
+        Returns:
+            relative_water_level float
+                the relative water level of the station"""
+
+        level = station.relative_water_level()
+        if level is not None:
+            return level
+        else:
+            # if the value is not available, put the station at
+            # the bottom of the list
+            return -256
+
+
