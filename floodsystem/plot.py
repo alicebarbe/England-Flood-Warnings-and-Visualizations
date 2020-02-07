@@ -26,15 +26,18 @@ def plot_water_levels(argv):
         print(i, station.name)
         
         fig.add_trace(go.Scatter(x=dates, y=levels,
-                                    mode='lines', name='Water level'),
+                                 mode='lines', name='Water level', 
+                                 showlegend=(i==0), legendgroup="level"),
                          row=i+1, col=1)
         fig.add_trace(go.Scatter(x=[min(dates), max(dates)],
-                                    y=[station.typical_range[0], station.typical_range[0]],
-                                    mode='lines', name='Typical low level'),
+                                 y=[station.typical_range[0], station.typical_range[0]],
+                                 mode='lines', name='Typical low level', 
+                                 showlegend=(i==0), legendgroup="low"),
                          row=i+1, col=1)
         fig.add_trace(go.Scatter(x=[min(dates), max(dates)],
-                                    y=[station.typical_range[1], station.typical_range[1]],
-                                    mode='lines', name='Typical high level'),
+                                 y=[station.typical_range[1], station.typical_range[1]],
+                                 mode='lines', name='Typical high level', 
+                                 showlegend=(i==0), legendgroup="high"),
                          row=i+1, col=1)
         fig.update_yaxes(range=[min(0, min(levels), station.typical_range[0])-0.1, 
                                 max(1, max(levels), station.typical_range[1])+0.1],
