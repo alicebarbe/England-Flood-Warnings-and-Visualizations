@@ -77,6 +77,7 @@ def fetch_station_data(use_cache=True):
 
     return data
 
+
 def fetch_test_station_data():
     """Returns data from a test json file which is not updated and
     therefore can be used to check functions against known results
@@ -93,6 +94,7 @@ def fetch_test_station_data():
         raise e
 
     return data
+
 
 def fetch_latest_water_level_data(use_cache=False):
     """Fetch latest levels from all 'measures'. Returns JSON object"""
@@ -154,3 +156,13 @@ def fetch_measure_levels(measure_id, dt):
         levels.append(measure['value'])
 
     return dates, levels
+
+
+def fetch_flood_warnings(severity_level):
+    """Fetches the flood warnings issued from the API"""
+
+    url = "http://environment.data.gov.uk/flood-monitoring/id/floods?min-severity={}".format(severity_level)
+    print(url)
+    data = fetch(url)
+
+    return data
