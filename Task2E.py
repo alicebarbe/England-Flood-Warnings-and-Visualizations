@@ -11,12 +11,15 @@ def run():
     stations_list = build_station_list()
     at_risk_stations = stations_highest_rel_level(stations_list, 5)
     argv = []
+    
+    # create input list
     for station in at_risk_stations:
         data = fetch_measure_levels(station.measure_id, 
                                     dt=timedelta(days=days_to_plot))
         argv.append(station)
         argv.append(data[0])
         argv.append(data[1])
+        
     plot_water_levels(argv)
     
 if __name__ == "__main__":
