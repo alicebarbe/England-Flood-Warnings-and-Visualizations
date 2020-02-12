@@ -166,3 +166,14 @@ def fetch_flood_warnings(severity_level):
     data = fetch(url)
 
     return data
+
+def fetch_stations_by_type(type):
+    """Fetches the stations of other types issued from the
+    put type = Groundwater for groundwater stations"""
+
+    base_url = "http://environment.data.gov.uk/flood-monitoring/id/"
+    url = base_url + "stations?status=Active&type={}&_view=full".format(type)
+    print(url)
+    data = fetch(url)
+
+    return data
