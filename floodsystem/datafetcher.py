@@ -149,11 +149,12 @@ def fetch_measure_levels(measure_id, dt):
     dates, levels = [], []
     for measure in data['items']:
         # Convert date-time string to a datetime object
-        d = dateutil.parser.parse(measure['dateTime'])
+        if 'dateTime' in measure and 'value' in measure:
+            d = dateutil.parser.parse(measure['dateTime'])
 
-        # Append data
-        dates.append(d)
-        levels.append(measure['value'])
+            # Append data
+            dates.append(d)
+            levels.append(measure['value'])
 
     return dates, levels
 
