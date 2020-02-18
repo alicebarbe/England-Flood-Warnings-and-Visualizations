@@ -138,3 +138,13 @@ def rivers_by_station_number(stations, N):
         num_ties += 1
 
     return output[:(N + num_ties)]
+
+
+def stations_in_warning(stations, warning):
+    warning_stations = []
+    for station in stations:
+        if station.coord is not None:
+            if warning.coord_in_region(station.coord):
+                warning_stations.append(station)
+
+    return warning_stations
