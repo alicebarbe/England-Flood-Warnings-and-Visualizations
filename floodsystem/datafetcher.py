@@ -163,10 +163,22 @@ def fetch_flood_warnings(severity_level):
     """Fetches the flood warnings issued from the API"""
 
     url = "http://environment.data.gov.uk/flood-monitoring/id/floods?min-severity={}".format(severity_level)
-    print(url)
     data = fetch(url)
 
     return data
+
+
+def fetch_warning_region(url):
+    """"fetches a geoJSON polygon for area over which a warning is active"""
+
+    data = fetch(url)
+
+    if 'features' in data:
+        if len(data['features']) > 0:
+            if 'geometry' in data['features']:
+                return data['features'][0]['geometry']
+
+    return None
 
 def fetch_stations_by_type(type):
     """Fetches the stations of other types issued from the

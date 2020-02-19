@@ -2,12 +2,13 @@ from shapely.geometry import Point, Polygon, shape
 from enum import Enum
 from floodsystem.utils import sorted_by_key
 
+
 class FloodWarning:
 
     def __init__(self,
                  identifier=None,
                  county=None,
-                 severity=None,
+                 severity_lev=None,
                  tidal=None,
                  message=None,
                  region=None):
@@ -15,21 +16,26 @@ class FloodWarning:
         self.id = identifier
         self.county = county
 
-        self.severity_level = SeverityLevel.low
-        self.severity = severity
+        self.severity = SeverityLevel(severity_lev) if severity_lev is not None else SeverityLevel.low
+        self.severity_lev = severity_lev
 
         self.tidal = tidal
         self.message = message
-        self.region = None
+        self.region = region
 
         self.towns = []
 
     def __repr__(self):
-        d = "Flood Warning"
-        d += "id : " + self.id
-        d += "county : " + self.county
-        d += "severity : " + self.severity_level + " (" + self.severity + ") "
-        d += "towns affected : " + self.towns
+        d = "== Flood Warning == \n"
+        d += "id : " + (self.id if self.id is not None else "None") + "\n"
+        d += "county : " + (self.county if self.county is not None else "None") + "\n"
+        d += "severity : " + str(self.severity_lev) + " (" + self.severity.name + ") " + "\n"
+
+        d += "towns affected : "
+        for t in self.towns:
+            d += t + ", "
+        d += "\n"
+
         d += "Message : " + self.message
         return d
 
@@ -52,7 +58,7 @@ class FloodWarning:
 
     def find_towns_affected(self, stations):
         self.towns = []
-        for station in stations_in_warning(stations, self):
+        for station in self.stations_in_warning(stations):
             self.towns.append(station.town)
 
         return self.towns
@@ -76,10 +82,11 @@ class FloodWarning:
     def order_warning_list_with_severity(warnings):
 
         # convert warnings to a list of tuples containing the warning and the severity
-        warning_and_severity = [(w, w.severity) for w in warnings]
+        warning_and_severity = [(w, repr(w.severity)) for w in warnings]
 
         warnings_sorted = [t[0] for t in sorted_by_key(warning_and_severity, 1)]
         return warnings_sorted
+
 
 class SeverityLevel(Enum):
     severe = 1
