@@ -5,6 +5,7 @@ from floodsystem.stationdata import build_station_list
 from floodsystem.datafetcher import fetch_measure_levels
 from floodsystem.flood import stations_highest_rel_level
 from floodsystem.plot import plot_water_levels
+from floodsystem.plot import plot_water_levels_with_fit
 
 def run():
     days_to_plot = 10
@@ -20,7 +21,8 @@ def run():
         argv.append(data[0])
         argv.append(data[1])
         
-    plot_water_levels(argv)
+    #plot_water_levels(argv)
+    plot_water_levels_with_fit(argv, 10)
     
 if __name__ == "__main__":
     print("*** Task 2E: CUED Part IA Flood Warning System ***")

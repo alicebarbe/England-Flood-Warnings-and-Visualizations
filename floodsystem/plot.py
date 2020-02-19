@@ -3,8 +3,9 @@
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from plotly.offline import plot
+from floodsystem.analysis import polyfit
 
-def plot_water_levels(listinput):
+def create_water_levels_plot(listinput):
     """Plot the water levels of stations given corresponding date. Subplots are
     created for each station.
     
@@ -54,4 +55,27 @@ def plot_water_levels(listinput):
                       row=i+1, col=1)
         #fig.update_xaxes(title_text="Dates", row=i+1, col=1)
     fig.update_layout(height=1000)
+    return fig
+    
+def plot_water_levels(listinput):
+    fig = create_water_levels_plot(listinput)
     plot(fig, auto_open=True)
+    
+def plot_water_levels_with_fit(listinput, p):
+    fig = create_water_levels_plot(listinput)
+    
+    for i in range(len(listinput)//3):
+        # initialize values to plot
+        station = listinput[3*i]
+        dates = listinput[3*i+1]
+        levels = listinput[3*i+2]
+    
+        poly_levels = polyfit(dates, levels, p)
+        fig.add_trace(go.Scatter(x=dates, y=poly_levels,
+                                 mode='lines', name='Fitted water level', 
+                                 showlegend=(i==0), legendgroup="fittedlevel",
+                                 line_color='orange'),
+                      row=i+1, col=1)
+    plot(fig, auto_open=True)
+        
+    
