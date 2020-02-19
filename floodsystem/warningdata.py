@@ -1,5 +1,6 @@
 from floodsystem import datafetcher
-from floodsystem.warning import FloodWarning
+from floodsystem.warning import FloodWarning, SeverityLevel
+
 
 
 def build_warning_list(severity):
@@ -14,12 +15,11 @@ def build_warning_list(severity):
         if 'county' in w['floodArea']:
             warning.county = w['floodArea']['county']
         if 'polygon' in w['floodArea']:
-            warning.region = w['floodArea']['polygon']
+            warning.region = FloodWarning.geo_json_to_shape(w['floodArea']['polygon'])
 
         if 'severity' in w:
             warning.severity = w['severity']
-        if 'severity_level' in w:
-            warning.severity_level = w['severity_level']
+            warning.severity_level = SeverityLevel(w['severity'])
 
         if 'isTidal' in w:
             warning.tidal = w['isTidal']

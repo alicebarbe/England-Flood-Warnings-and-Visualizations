@@ -17,7 +17,7 @@ def sorted_by_key(x, i, reverse=False):
 
     Sort on second entry of tuple:
 
-      > sorted_by_key([(1, 2), (5, 1]), 1)
+      > sorted_by_key([(1, 2), (5, 1)], 1)
       >>> [(5, 1), (1, 2)]
 
     """
