@@ -4,9 +4,9 @@ Created on Wed Feb 12 11:49:59 2020
 
 @author: atylb2
 """
+
 from datetime import datetime
 import numpy as np
-import matplotlib.pyplot as plt
 
 def polyfit(dates, levels, p):
     """Creates polynomial of order p that fits the level data
@@ -27,9 +27,15 @@ def polyfit(dates, levels, p):
             date in dates
     
     """
+    # convert date to minutes since epoch
     x = [date.timestamp() / 60 for date in dates]
+    
+    # normalize dates to start at 0, where the first date is 0
     x = [a - x[-1] for a in x]
+    
+    # fit polynomial to levels
     p_coeff = np.polyfit(x, levels, p)
     poly = np.poly1d(p_coeff)
     
+    # return polynomial object initial time offset
     return (poly, dates[-1])

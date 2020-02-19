@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-#from datetime import datetime, timedelta
+
+import numpy as np
+from datetime import datetime, timedelta
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from plotly.offline import plot
 from floodsystem.analysis import polyfit
-import numpy as np
-from datetime import datetime
 
 def create_water_levels_plot(listinput):
     """Plot the water levels of stations given corresponding date. Subplots are
@@ -57,13 +57,16 @@ def create_water_levels_plot(listinput):
                          title_text="Water Level",
                       row=i+1, col=1)
         #fig.update_xaxes(title_text="Dates", row=i+1, col=1)
+
     fig.update_layout(height=1000)
     return fig
+
     
 def plot_water_levels(listinput):
     """Display plot generated in create_water_levels_plot."""
     fig = create_water_levels_plot(listinput)
     plot(fig, auto_open=True)
+
     
 def plot_water_levels_with_fit(listinput, p):
     """Add best-fit line to water level graphs, and display them
@@ -100,9 +103,8 @@ def plot_water_levels_with_fit(listinput, p):
         fig.add_trace(go.Scatter(x=dates, y=x_levels,
                                  mode='lines', name='Fitted water level', 
                                  showlegend=(i==0), legendgroup="fittedlevel",
-                                 line_color='turquoise'),
+                                 line_color='gray'),
                       row=i+1, col=1)
             
     plot(fig, auto_open=True)
         
-    
