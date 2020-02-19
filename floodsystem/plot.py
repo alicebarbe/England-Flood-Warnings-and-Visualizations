@@ -4,6 +4,8 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from plotly.offline import plot
 from floodsystem.analysis import polyfit
+import numpy as np
+from datetime import datetime
 
 def create_water_levels_plot(listinput):
     """Plot the water levels of stations given corresponding date. Subplots are
@@ -15,7 +17,8 @@ def create_water_levels_plot(listinput):
             levels (list), in this order. List must be of length multiple of 3.
             
     Returns:
-        none; creates temp-plot.html file and auto-opens it.
+        fig (plotly go.figure):
+            plotly figure with water levels, high, and low plotted
     
     """ 
     if len(listinput) % 3 != 0:
@@ -58,24 +61,48 @@ def create_water_levels_plot(listinput):
     return fig
     
 def plot_water_levels(listinput):
+    """Display plot generated in create_water_levels_plot."""
     fig = create_water_levels_plot(listinput)
     plot(fig, auto_open=True)
     
 def plot_water_levels_with_fit(listinput, p):
+    """Add best-fit line to water level graphs, and display them
+    
+    Arguments:
+        listinput (list): 
+            list of station (MonitoringStation), dates (list), and
+            levels (list), in this order. List must be of length multiple of 3.
+        p (integer):
+            order of polynomial fit
+    
+    Returns:
+        none; creates temp-plot.html file and auto-opens it.
+    
+    """ 
     fig = create_water_levels_plot(listinput)
     
     for i in range(len(listinput)//3):
         # initialize values to plot
-        station = listinput[3*i]
         dates = listinput[3*i+1]
         levels = listinput[3*i+2]
     
-        poly_levels = polyfit(dates, levels, p)
-        fig.add_trace(go.Scatter(x=dates, y=poly_levels,
+        poly, d0 = polyfit(dates, levels, p)
+        
+        # convert dates to minutes (integers), normalized to start at zero
+        x = [date.timestamp() / 60 for date in dates]
+        offset = d0.timestamp() / 60
+        x = [a - offset for a in x]
+
+        # calculate levels from fit
+        x_levels = poly(x)
+        
+        # plot curve
+        fig.add_trace(go.Scatter(x=dates, y=x_levels,
                                  mode='lines', name='Fitted water level', 
                                  showlegend=(i==0), legendgroup="fittedlevel",
-                                 line_color='orange'),
+                                 line_color='turquoise'),
                       row=i+1, col=1)
+            
     plot(fig, auto_open=True)
         
     
