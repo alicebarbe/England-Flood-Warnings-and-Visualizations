@@ -1,4 +1,4 @@
-from shapely.geometry import Point, Polygon, shape
+from shapely.geometry import Point, MultiPolygon, Polygon, shape
 from enum import Enum
 from floodsystem.utils import sorted_by_key
 
@@ -8,13 +8,18 @@ class FloodWarning:
     def __init__(self,
                  identifier=None,
                  county=None,
+                 label=None,
+                 description=None,
                  severity_lev=None,
                  tidal=None,
                  message=None,
-                 region=None):
+                 region=None,
+                 geojson=None):
 
         self.id = identifier
         self.county = county
+        self.label = label
+        self.description = description
 
         self.severity = SeverityLevel(severity_lev) if severity_lev is not None else SeverityLevel.low
         self.severity_lev = severity_lev
@@ -22,6 +27,7 @@ class FloodWarning:
         self.tidal = tidal
         self.message = message
         self.region = region
+        self.geojson = None
 
         self.towns = []
 
@@ -30,24 +36,20 @@ class FloodWarning:
         d += "id : " + (self.id if self.id is not None else "None") + "\n"
         d += "county : " + (self.county if self.county is not None else "None") + "\n"
         d += "severity : " + str(self.severity_lev) + " (" + self.severity.name + ") " + "\n"
-
-        d += "towns affected : "
-        for t in self.towns:
-            d += t + ", "
-        d += "\n"
-
+        d += "areas affected : " + (self.label if self.label is not None else " Not Available") + "\n"
         d += "Message : " + self.message
         return d
 
     def coord_in_region(self, coord):
 
-        point = Point(coord[0], coord[1])
+        point = Point(coord[1], coord[0])
         if self.region is not None:
             return self.region.contains(point)
         else:
             return False
 
     def stations_in_warning(self, stations):
+
         warning_stations = []
         for station in stations:
             if station.coord is not None:
@@ -86,6 +88,22 @@ class FloodWarning:
 
         warnings_sorted = [t[0] for t in sorted_by_key(warning_and_severity, 1)]
         return warnings_sorted
+
+    def get_points(self):
+        if self.region.geom_type == 'Polygon':
+            print("polygon")
+            return self.region.exterior.xy
+
+        if self.region.geom_type == 'MultiPolygon':
+            allx = []
+            ally = []
+            for poly in self.region:
+                allx.append(p for p in poly.xy[0])
+                ally.append(p for p in poly.xy[1])
+            return allx, ally
+
+        else:
+            return (0,0)
 
 
 class SeverityLevel(Enum):

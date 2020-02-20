@@ -175,10 +175,16 @@ def fetch_warning_region(url):
 
     if 'features' in data:
         if len(data['features']) > 0:
-            if 'geometry' in data['features'][0]:
-                return data['features'][0]['geometry']
+            return data['features']
 
     return None
+
+def fetch_warning_area(url):
+    """"fetches information on the area of a warning"""
+
+    data = fetch(url)
+
+    return data
 
 def fetch_stations_by_type(type):
     """Fetches the stations of other types issued from the
