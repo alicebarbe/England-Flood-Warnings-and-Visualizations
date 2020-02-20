@@ -14,6 +14,7 @@ def run():
     relevant_warnings = []
 
     for warning in warnings:
+        print(warning.stations_in_warning(stations))
         warning.find_towns_affected(stations)
         if repr(warning.severity) <= repr(severity):
             relevant_warnings.append(warning)
@@ -21,8 +22,9 @@ def run():
     # we want the most severe warnings first - given that the list will be long ...
     sorted_warnings = FloodWarning.order_warning_list_with_severity(warnings)
     for warning in sorted_warnings:
-        print(warning)
-        print("\n")
+        pass
+        #print(warning)
+        #print("\n")
 
 
 if __name__ == "__main__":

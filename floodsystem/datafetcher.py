@@ -175,7 +175,7 @@ def fetch_warning_region(url):
 
     if 'features' in data:
         if len(data['features']) > 0:
-            if 'geometry' in data['features']:
+            if 'geometry' in data['features'][0]:
                 return data['features'][0]['geometry']
 
     return None

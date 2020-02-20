@@ -14,9 +14,12 @@ def build_warning_list(severity):
             warning.identifier = w['id']
         if 'county' in w['floodArea']:
             warning.county = w['floodArea']['county']
+            print('warning county : ' + warning.county)
         if 'polygon' in w['floodArea']:
+            print(w['floodArea']['polygon'])
             poly = datafetcher.fetch_warning_region(w['floodArea']['polygon'])
             if poly is not None:
+                print("setting polygon")
                 warning.region = FloodWarning.geo_json_to_shape(poly)
 
         if 'severityLevel' in w:
