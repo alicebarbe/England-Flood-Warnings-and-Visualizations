@@ -11,7 +11,7 @@ import matplotlib.pylab as plt
 def run():
     """Requirements for task 2G"""
 
-    severity = SeverityLevel.low
+    severity = SeverityLevel.moderate
 
     stations = build_station_list()
     # a severity of 3 includes all active flood warnings

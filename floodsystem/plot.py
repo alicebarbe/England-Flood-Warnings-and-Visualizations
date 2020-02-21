@@ -8,6 +8,7 @@ from plotly.offline import plot
 import plotly.express as px
 from floodsystem.analysis import polyfit
 
+
 def create_water_levels_plot(listinput):
     """Plot the water levels of stations given corresponding date. Subplots are
     created for each station.
@@ -110,10 +111,10 @@ def plot_water_levels_with_fit(listinput, p):
     plot(fig, auto_open=True)
 
 def map_flood_warnings(geojson, df):
-    fig = px.choropleth(df, geojson=geojson, color="severity",
+    fig = px.choropleth_mapbox(df, geojson=geojson, color="severity",
                         locations="id", featureidkey="properties.FWS_TACODE",
-                        projection="mercator", hover_name="label")
+                        mapbox_style="carto-positron", hover_name="label")
     fig.update_geos(fitbounds="locations", visible=True)
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-    fig.show()
+    plot(fig, auto_open=True)
         
