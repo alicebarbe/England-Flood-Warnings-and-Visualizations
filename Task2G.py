@@ -11,16 +11,16 @@ import matplotlib.pylab as plt
 def run():
     """Requirements for task 2G"""
 
-    severity = SeverityLevel.severe
+    severity = SeverityLevel.low
 
     stations = build_station_list()
     # a severity of 3 includes all active flood warnings
-    warnings = build_warning_list(SeverityLevel.moderate.value)
+    warnings = build_warning_list(severity.value)
     for warning in warnings:
-        warning.simplify_geojson(tol=0.001, convex_hull=True)
+        warning.simplify_geojson(tol=0., buf=0.002, convex_hull=True)
 
     geojson = build_regions_geojson(warnings, 'test.json')
-    df = build_severity_dataframe(warnings)
+    df = build_severity_dataframe(warnings, severity.value)
 
     map_flood_warnings(geojson, df)
 

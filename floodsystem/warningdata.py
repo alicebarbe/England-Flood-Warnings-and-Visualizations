@@ -1,7 +1,6 @@
 from floodsystem import datafetcher
 from floodsystem.warning import FloodWarning, SeverityLevel
 import pandas as pd
-from pprint import pprint
 import json
 
 
@@ -87,13 +86,16 @@ def build_regions_geojson(warnings, file=None):
     return data
 
 
-def build_severity_dataframe(warnings):
+def build_severity_dataframe(warnings, min_severity):
     """Builds a pandas dataframe with data from the warnings, which is used to
     colour the map regionson a plot
 
     Arguments:
         warnings [FLoodWarnings]
             List of flood warnings
+
+        min_severity int
+            The minimum severity value for which to add warnings to the dataframe
 
     Returns:
         data_frame DataFrame
@@ -102,7 +104,10 @@ def build_severity_dataframe(warnings):
     data_arr = []
 
     for w in warnings:
-        if w.severity != SeverityLevel.low:
-            data_arr.append([w.severity.value, w.id])
+        if w.severity.value <= min_severity:
+            if w.label is not None:
+                data_arr.append([w.severity.value, w.id, w.label])
+            else:
+                data_arr.append([w.severity.value, w.id, "No Label"])
 
-    return pd.DataFrame(data_arr, columns=['severity', 'id'])
+    return pd.DataFrame(data_arr, columns=['severity', 'id', 'label'])

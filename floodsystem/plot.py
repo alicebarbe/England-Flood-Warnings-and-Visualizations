@@ -53,7 +53,7 @@ def plot_water_levels(argv):
 def map_flood_warnings(geojson, df):
     fig = px.choropleth(df, geojson=geojson, color="severity",
                         locations="id", featureidkey="properties.FWS_TACODE",
-                        projection="mercator")
+                        projection="mercator", hover_name="label")
     fig.update_geos(fitbounds="locations", visible=True)
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     fig.show()

@@ -91,7 +91,7 @@ class FloodWarning:
 
         return self.towns
 
-    def simplify_geojson(self, tol=0.02, convex_hull=False):
+    def simplify_geojson(self, tol=0.001, buf=0.005, convex_hull=False):
         """Simplifies the geometry of the polygon for better plotting, updating
         self.region and self.geojson
 
@@ -106,7 +106,7 @@ class FloodWarning:
             if convex_hull:
                 # removes concavity - doesnt seem to be working though
                 self.region[i] = r.convex_hull
-            self.region[i] = r.simplify(tol, preserve_topology=False)
+            self.region[i] = r.simplify(tol, preserve_topology=False).buffer(buf)
 
             # update the geoJSON object
             self.geojson[i]['geometry'] = mapping(self.region[i])
