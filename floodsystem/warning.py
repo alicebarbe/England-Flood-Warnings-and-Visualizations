@@ -30,6 +30,7 @@ class FloodWarning:
         self.message = message
         self.region = region
         self.geojson = geojson
+        self.is_poly_simplified = False
 
         self.towns = []
 

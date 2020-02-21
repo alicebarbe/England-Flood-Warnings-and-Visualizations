@@ -159,11 +159,31 @@ def fetch_measure_levels(measure_id, dt):
     return dates, levels
 
 
-def fetch_flood_warnings(severity_level):
+def fetch_flood_warnings(severity_level, use_cache=False):
     """Fetches the flood warnings issued from the API"""
 
     url = "http://environment.data.gov.uk/flood-monitoring/id/floods?min-severity={}".format(severity_level)
-    data = fetch(url)
+
+    sub_dir = 'cache'
+    try:
+        os.makedirs(sub_dir)
+    except FileExistsError:
+        pass
+    cache_file = os.path.join(sub_dir, 'warning_data.json')
+
+    # Attempt to load station data from file, otherwise fetch over
+    # Internet
+    if use_cache:
+        try:
+            # Attempt to load from file
+            data = load(cache_file)
+        except FileNotFoundError:
+            # If load from file fails, fetch and dump to file
+            data = fetch(url)
+            dump(data, cache_file)
+    else:
+        data = fetch(url)
+        dump(data, cache_file)
 
     return data
 
@@ -179,12 +199,14 @@ def fetch_warning_region(url):
 
     return None
 
+# seems to be unused?
 def fetch_warning_area(url):
     """"fetches information on the area of a warning"""
 
     data = fetch(url)
 
     return data
+
 
 def fetch_stations_by_type(type):
     """Fetches the stations of other types issued from the
