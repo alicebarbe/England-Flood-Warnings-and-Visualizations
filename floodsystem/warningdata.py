@@ -5,8 +5,16 @@ from pprint import pprint
 import json
 
 
-
 def build_warning_list(severity):
+    """Fetch warnings from the API and create a list of warnings
+    Arguments:
+        severity int
+            warnings above this minimum severity value (ie of lower numerical value) will be returned
+
+    Returns:
+        warnings [FloodWarnings]
+            A list of flood warnings
+    """
     data = datafetcher.fetch_flood_warnings(severity)
 
     warnings = []
@@ -26,7 +34,7 @@ def build_warning_list(severity):
         if 'polygon' in w['floodArea']:
             poly = datafetcher.fetch_warning_region(w['floodArea']['polygon'])
             if poly is not None:
-                warning.region = FloodWarning.geo_json_to_shape(poly[0]['geometry'])
+                warning.region = [FloodWarning.geo_json_to_shape(p['geometry']) for p in poly]
                 warning.geojson = poly
 
         if 'severityLevel' in w:
@@ -44,13 +52,26 @@ def build_warning_list(severity):
 
 
 def build_regions_geojson(warnings, file=None):
+    """Creates a geoJSON FeatureCollection object for plotting flood warnings on a map
+    Arguments:
+        warnings [FLoodWarnings]
+            List of flood warnings
+
+        file string
+            For debug purposes, saves parameters data to a file, without any coordinates
+            if file is a non-None string
+
+    Returns:
+        json_object dictionary
+            The geoJSON object containing the regions of all the warnings in warnings
+    """
     features = []
     features_without_coords = []
 
     for w in warnings:
         for feature in w.geojson:
             features.append(feature)
-            #pprint(feature)
+            # pprint(feature)
             if file is not None:
                 if 'geometry' in feature:
                     feature_without_coords = feature.copy().pop("geometry")
@@ -67,6 +88,17 @@ def build_regions_geojson(warnings, file=None):
 
 
 def build_severity_dataframe(warnings):
+    """Builds a pandas dataframe with data from the warnings, which is used to
+    colour the map regionson a plot
+
+    Arguments:
+        warnings [FLoodWarnings]
+            List of flood warnings
+
+    Returns:
+        data_frame DataFrame
+            Pandas DataFrame with the relevant data
+    """
     data_arr = []
 
     for w in warnings:

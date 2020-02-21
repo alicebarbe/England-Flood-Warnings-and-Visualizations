@@ -88,7 +88,7 @@ def update_water_levels(stations, use_cache=False):
         # Reset latestlevel
         station.latest_level = None
 
-        # Atach new level data (if available)
+        # Attach new level data (if available)
         if station.measure_id in measure_id_to_value:
             if isinstance(measure_id_to_value[station.measure_id], float):
                 station.latest_level = measure_id_to_value[station.measure_id]

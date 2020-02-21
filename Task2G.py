@@ -9,20 +9,20 @@ from pprint import pprint
 import matplotlib.pylab as plt
 
 def run():
+    """Requirements for task 2G"""
+
     severity = SeverityLevel.severe
 
     stations = build_station_list()
     # a severity of 3 includes all active flood warnings
-    warnings = build_warning_list(SeverityLevel.high.value)
+    warnings = build_warning_list(SeverityLevel.moderate.value)
+    for warning in warnings:
+        warning.simplify_geojson(tol=0.001, convex_hull=True)
 
     geojson = build_regions_geojson(warnings, 'test.json')
     df = build_severity_dataframe(warnings)
-    #print(df)
-    #pprint(geojson)
 
     map_flood_warnings(geojson, df)
-    return
-    relevant_warnings = []
 
     ''''
     for warning in warnings:
