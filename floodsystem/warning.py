@@ -85,6 +85,15 @@ class FloodWarning:
         return warning_stations
 
     def find_towns_affected(self, stations):
+        """"Finds the towns within the flood warning region
+        with a monitoring station in their vicinity
+
+        Args:
+            stations: (list of MonitoringStations) produced using stationdata.build_station_list
+
+        Returns:
+            towns: (list of Strings) A list of names of the towns affected
+        """
         self.towns = []
         for station in self.stations_in_warning(stations):
             self.towns.append(station.town)
