@@ -91,19 +91,18 @@ class FloodWarning:
 
         return self.towns
 
-    def simplify_geojson(self, tol=0.001, buf=0.005, convex_hull=False):
+    def simplify_geojson(self, tol=0.001, buf=0.005, convex=False):
         """Simplifies the geometry of the polygon for better plotting, updating
         self.region and self.geojson
 
-        Arguments:
-            tol float
-                Determines the maximum allowed deviation from the original shape
-            convex_hull bool
-                If true, the shape is approximated to a convex polygon
+        Args:
+            tol: (float) Determines the maximum allowed deviation from the original shape
+            buf: (float) The amount to dilate the shapes in order to smooth them
+            convex: (bool) If true, the shape is approximated to a convex polygon
 
         """
         for i, r in enumerate(self.region):
-            if convex_hull:
+            if convex:
                 # removes concavity - doesnt seem to be working though
                 self.region[i] = r.convex_hull
             self.region[i] = r.simplify(tol, preserve_topology=False).buffer(buf)
