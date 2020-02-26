@@ -10,8 +10,8 @@ def run():
     """Requirements for task 2G"""
 
     # a severity of moderate includes all currently active flood warnings
-    # severity.low includes warnings which were in force in the past
-    severity = SeverityLevel.high
+    # severity.low includes warnings which were in force in the past 24 hours
+    severity = SeverityLevel.moderate
 
     print("Building warning list...")
     warnings, polys, areas = build_warning_list(severity.value)
