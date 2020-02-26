@@ -32,6 +32,8 @@ class FloodWarning:
         self.geojson = geojson
         self.is_poly_simplified = False
 
+        self.last_update = None
+
         self.towns = []
 
     def __repr__(self):

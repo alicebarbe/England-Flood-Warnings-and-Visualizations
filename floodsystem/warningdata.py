@@ -34,6 +34,9 @@ def build_warning_list(severity, use_pickle_caches=True):
         if 'county' in w['floodArea']:
             warning.county = w['floodArea']['county']
 
+        if 'timeMessageChanged' in w:
+            warning.last_update = w['timeMessageChanged']
+
         # attempts to set the area based on a cached value, if not, pulls from the api
         if use_pickle_caches:
             for area in areas:
@@ -176,9 +179,14 @@ def build_severity_dataframe(warnings, min_severity):
 
     for w in warnings:
         if w.severity.value <= min_severity:
-            if w.label is not None:
-                data_arr.append([w.severity.value, w.id, w.label])
-            else:
-                data_arr.append([w.severity.value, w.id, "No Label"])
+            l = None
+            last_update = None
 
-    return pd.DataFrame(data_arr, columns=['severity', 'id', 'label'])
+            if w.label is not None:
+                l = w.label
+            if w.last_update is not None:
+                last_update = w.last_update
+
+            data_arr.append([w.severity.name, w.id, l, last_update])
+
+    return pd.DataFrame(data_arr, columns=['severity', 'id', 'label', 'last_updated'])

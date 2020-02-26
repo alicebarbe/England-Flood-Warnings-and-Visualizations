@@ -11,7 +11,7 @@ def run():
 
     # a severity of moderate includes all currently active flood warnings
     # severity.low includes warnings which were in force in the past
-    severity = SeverityLevel.moderate
+    severity = SeverityLevel.high
 
     print("Building warning list...")
     warnings, polys, areas = build_warning_list(severity.value)
