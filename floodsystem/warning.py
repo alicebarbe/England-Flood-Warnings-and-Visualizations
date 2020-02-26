@@ -1,5 +1,6 @@
 from shapely.geometry import Point, MultiPolygon, Polygon, shape, mapping
 from enum import Enum
+from haversine import haversine
 from floodsystem.utils import sorted_by_key
 
 
@@ -31,6 +32,7 @@ class FloodWarning:
         self.region = region
         self.geojson = geojson
         self.is_poly_simplified = False
+        self.coord = None
 
         self.last_update = None
 
@@ -61,7 +63,7 @@ class FloodWarning:
         if self.region is not None:
             # return true if any one region contains the point
             for r in self.region:
-                if self.region.contains(point):
+                if r.contains(point):
                     return True
             return False
         else:
@@ -154,6 +156,17 @@ class FloodWarning:
 
         warnings_sorted = [t[0] for t in sorted_by_key(warning_and_severity, 1)]
         return warnings_sorted
+
+    @staticmethod
+    def check_warnings_at_location(warnings, loc):
+        """loc must be of the form (Lat, long)"""
+
+        warnings_at_loc = []
+        for warning in warnings:
+            if warning.coord_in_region(loc):
+                warnings_at_loc.append(warning)
+
+        return warnings_at_loc
 
     # debug function
     def get_points(self):

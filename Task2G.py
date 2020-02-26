@@ -11,7 +11,7 @@ def run():
 
     # a severity of moderate includes all currently active flood warnings
     # severity.low includes warnings which were in force in the past 24 hours
-    severity = SeverityLevel.moderate
+    severity = SeverityLevel.severe
 
     print("Building warning list...")
     warnings, polys, areas = build_warning_list(severity.value)
@@ -19,7 +19,7 @@ def run():
     print("Simplifying geometry...")
     for warning in warnings:
         if not warning.is_poly_simplified:
-            warning.simplify_geojson(tol=0., buf=0.002, convex=True)
+            warning.simplify_geojson(tol=0.005, buf=0.002, convex=True)
 
     print("Making datasets...")
     geojson = build_regions_geojson(warnings)
@@ -35,10 +35,20 @@ def run():
     print("Mapping warnings...")
     map_flood_warnings(geojson, df)
 
+    print("Checking for warnings in Jesus College, Cambridge ...")
+    jc_coords = (52.20527, 0.120705)
+    warnings_here = FloodWarning.check_warnings_at_location(warnings, jc_coords)
+    if len(warnings_here) == 0:
+        print("No flood warnings in this location")
+    else:
+        print("The following warnings apply to this location")
+        for warning in warnings_here:
+            print(warning)
+            print("\n")
+
     print("Saving caches...")
     save_to_pickle_cache('warning_polys.pk', polys)
     save_to_pickle_cache('warning_areas.pk', areas)
-
 
 
 if __name__ == "__main__":

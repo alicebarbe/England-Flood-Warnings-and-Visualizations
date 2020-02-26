@@ -113,10 +113,19 @@ def plot_water_levels_with_fit(listinput, p):
 
 def map_flood_warnings(geojson, df):
     colours = {'low': 'green', 'moderate': 'yellow', 'high': 'orange', 'severe': 'red'}
-    fig = px.choropleth_mapbox(df, geojson=geojson, color="severity",
-                               locations="id", featureidkey="properties.FWS_TACODE",
-                               mapbox_style="carto-positron", hover_name="label",
-                               hover_data=['last_updated'], color_discrete_map=colours, opacity=0.3)
-    fig.update_geos(fitbounds="locations", lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
+    fig = px.choropleth_mapbox(df,
+                               geojson=geojson,
+                               color="severity",
+                               locations="id",
+                               featureidkey="properties.FWS_TACODE",
+                               mapbox_style="carto-positron",
+                               hover_name="label",
+                               hover_data=['last_updated'],
+                               color_discrete_map=colours,
+                               opacity=0.4,
+                               center={"lat": 52.4, "lon": -1.5},
+                               zoom=6)
+
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
     plot(fig, auto_open=True)
