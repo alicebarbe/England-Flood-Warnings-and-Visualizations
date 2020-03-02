@@ -10,14 +10,14 @@ def build_warning_list(severity, use_pickle_caches=True):
     """Fetch warnings from the API and create a list of warnings. Also updates caches
     for flood regions for any new warnings
     Arguments:
-        severity int
+        severity: int.
             warnings above this minimum severity value (ie of lower numerical value) will be returned
-        use_pickle_caches bool
+        use_pickle_caches: bool.
             If true, then cached data regarding flood regions is used -
             the flood warnings are still the most recent pulled from the API
 
     Returns:
-        (warnings, polys, areas) ([FloodWarnings] list list)
+        (warnings, polys, areas): ([FloodWarnings] list list).
             A tuple containting the floodwarning list, as well as poly and area data to be cached
     """
     data = datafetcher.fetch_flood_warnings(severity)
@@ -104,15 +104,15 @@ def build_warning_list(severity, use_pickle_caches=True):
 def build_regions_geojson(warnings, file=None):
     """Creates a geoJSON FeatureCollection object for plotting flood warnings on a map
     Arguments:
-        warnings [FLoodWarnings]
+        warnings: [FLoodWarnings].
             List of flood warnings
 
-        file string
+        file: string.
             For debug purposes, saves parameters data to a file, without any coordinates
             if file is a non-None string
 
     Returns:
-        json_object dictionary
+        json_object: dictionary.
             The geoJSON object containing the regions of all the warnings in warnings
     """
     features = []
@@ -138,6 +138,15 @@ def build_regions_geojson(warnings, file=None):
 
 
 def retrieve_pickle_cache(filename):
+    """"Reads a cached pickle file and returns the result.
+    Args:
+        filename: string.
+            The name of the pickle file to be read. This file must be in the cache directory
+
+    Returns:
+        pickle_variables:
+            The python variables read from the pickle file.
+    """
     sub_dir = 'cache'
     try:
         os.makedirs(sub_dir)
@@ -155,6 +164,16 @@ def retrieve_pickle_cache(filename):
 
 
 def save_to_pickle_cache(filename, data):
+    """"Saves data to a pickle cache file.
+    Args:
+        filename: string.
+            The name of the pickle file to be saved. The file is placed
+            in the cache directory.
+
+        data:
+            The data to be saved to a pickle file. Any Python variable
+            type may be used
+    """
     sub_dir = 'cache'
     try:
         os.makedirs(sub_dir)
@@ -175,14 +194,14 @@ def build_severity_dataframe(warnings, min_severity):
     colour the map regions on a plot
 
     Arguments:
-        warnings [FLoodWarnings]
+        warnings: [FLoodWarnings].
             List of flood warnings
 
-        min_severity int
+        min_severity: int.
             The minimum severity value for which to add warnings to the dataframe
 
     Returns:
-        data_frame DataFrame
+        data_frame: DataFrame.
             Pandas DataFrame with the relevant data
     """
     data_arr = []

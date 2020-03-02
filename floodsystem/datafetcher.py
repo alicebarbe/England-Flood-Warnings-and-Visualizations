@@ -83,7 +83,7 @@ def fetch_test_station_data():
     therefore can be used to check functions against known results
 
     Returns:
-        data json_object
+        data: json_object.
             A json object containing data from station_data_test.json
     """
     test_data_file = 'station_data_test.json'
@@ -199,7 +199,7 @@ def fetch_warning_region(url):
 
     return None
 
-# seems to be unused?
+
 def fetch_warning_area(url):
     """"fetches information on the area of a warning"""
 

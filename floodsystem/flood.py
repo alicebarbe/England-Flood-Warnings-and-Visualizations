@@ -8,13 +8,13 @@ def stations_level_over_threshold(stations, tol):
     The stations are listed in order of decreasing relative water level
 
     Arguments:
-        stations (list of MonitoringStation):
+        stations: (list of MonitoringStation).
             generated using build_station_list.
-        tol  float
+        tol:  float.
             All stations with relative water levels above tol are returned
 
     Returns:
-        [(station, rel_water_level)] [(MonitoringStation, float)]
+        [(station, rel_water_level)]: [(MonitoringStation, float)].
             A list of tuples containing the MonitoringStation object
             and its relative water level
     """
@@ -36,13 +36,13 @@ def stations_highest_rel_level(stations, N):
     tie conditions.
 
      Arguments:
-         stations (list of MonitoringStation):
+         stations: (list of MonitoringStation).
             generated using build_station_list.
-         N int
+         N: int.
             Number of stations to returns
 
     Returns:
-        [stations_with_highest_levels] [MonitoringStation]
+        [stations_with_highest_levels]: [MonitoringStation].
             List of MonitoringStation objects wiht the highest
             relative water levels
     """

@@ -51,11 +51,11 @@ class FloodWarning:
         """Determines if a given coordinate is within the region of the flood warning
 
         Arguments:
-            coord (lat, long)
+            coord: (lat, long).
                 The coordinates of the point in question, as a tuple
 
         Returns:
-            is_in_region bool
+            is_in_region: bool.
                 True if the point is in the region, false if the point is outside
                 the region or the region is None"""
 
@@ -73,11 +73,11 @@ class FloodWarning:
         """Produces a list of stations which are within the warning
 
         Arguments:
-            stations [MonitoringStations]
+            stations: [MonitoringStations]
                 Created using stationdata.build_station_list()
 
         Returns:
-            stations_in_warning [MonitoringStation]
+            stations_in_warning: [MonitoringStation]
                 List of monitoring stations whose coordinates are within the warning region
         """
 
@@ -129,11 +129,11 @@ class FloodWarning:
         """"Converts a geoJSON to a shapely object
 
         Arguments:
-            geo_json_obj  json_object
+            geo_json_obj:  json_object.
                 The geoJSON object to be converted
 
         Returns:
-            shape  shapely_object
+            shape:  shapely_object.
                 The shapely object (of type corresponding to the type of the input)
                 The shape is corrected to form a simple polygon, e.g. by adding points
                 at self intersections"""
@@ -143,11 +143,11 @@ class FloodWarning:
     def order_warning_list_with_severity(warnings):
         """ Puts warnings in order of decreasing severity (most severe first)
         Arguments:
-            warnings [FloodWarning]
+            warnings: [FloodWarning].
                 List of flood warnings
 
         Returns:
-            warnings_sorted [FloodWarning]
+            warnings_sorted: [FloodWarning].
                 Ordered list of flood warnings
         """
 
@@ -159,7 +159,17 @@ class FloodWarning:
 
     @staticmethod
     def check_warnings_at_location(warnings, loc):
-        """loc must be of the form (Lat, long)"""
+        """Checks for any flood warnings concerning a specified location
+
+        Arguments:
+            loc: tuple of the form (Lat, Long)
+
+            warnings: [Warning].
+                List of warnings generated from warningdata.build_warning_list
+
+        Returns:
+            warnings_at_loc: list of Warnings.
+                A list of warnings pertaining to the location provided."""
 
         warnings_at_loc = []
         for warning in warnings:
@@ -167,25 +177,6 @@ class FloodWarning:
                 warnings_at_loc.append(warning)
 
         return warnings_at_loc
-
-    # debug function
-    def get_points(self):
-        for r in self.region:
-            if r.geom_type == 'Polygon':
-                print("polygon")
-                return self.region.exterior.xy
-
-            if r.geom_type == 'MultiPolygon':
-                allx = []
-                ally = []
-                for poly in r:
-                    allx.append(p for p in poly.xy[0])
-                    ally.append(p for p in poly.xy[1])
-                return allx, ally
-
-            else:
-                return (0,0)
-
 
 class SeverityLevel(Enum):
     """Enum to map severity levels to descriptive severities"""

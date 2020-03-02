@@ -65,7 +65,12 @@ def create_water_levels_plot(listinput):
 
 
 def plot_water_levels(listinput):
-    """Display plot generated in create_water_levels_plot."""
+    """Display plot generated in create_water_levels_plot
+
+    Args:
+        listinput: (list) list of station (MonitoringStation), dates (list), and
+            levels (list), in this order. List must be of length multiple of 3.
+    """
     fig = create_water_levels_plot(listinput)
     plot(fig, auto_open=True)
 
@@ -112,6 +117,16 @@ def plot_water_levels_with_fit(listinput, p):
 
 
 def map_flood_warnings(geojson, df):
+    """"Plots flood warnings as a chloropleth map figure
+    Arguments:
+        geojson: geo_json_object.
+            Contains the perimeter definitions for all warnings. Created from
+            warningdata.build_regions_geojson
+
+        df: Pandas Dataframe.
+            Contains information regarding the severity of the floods and the location name.
+            Created using warningdata.build_severity_dataframe
+    """
     colours = {'low': 'green', 'moderate': 'yellow', 'high': 'orange', 'severe': 'red'}
     fig = px.choropleth_mapbox(df,
                                geojson=geojson,

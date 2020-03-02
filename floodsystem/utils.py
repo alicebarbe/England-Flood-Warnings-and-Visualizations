@@ -36,15 +36,15 @@ def map(x, in_range, out_range):
     constrained to the input range
 
     Arguments:
-        x float
+        x: float.
             the input value
-        in_range (float, float)
+        in_range: (float, float).
             tuple of the input range
-        out_range (float, float)
+        out_range: (float, float).
             tuple of output range
 
     Returns:
-        out_val float
+        out_val: float.
             the mapped value
      """
 

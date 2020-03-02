@@ -16,13 +16,13 @@ def stations_by_distance(stations, p):
     distance pairs in an ordered list, by distance.
 
     Arguments:
-        stations (list of MonitoringStation): 
+        stations: (list of MonitoringStation).
             generated using build_station_list.
-        p (lat, lon):
+        p: (lat, lon).
             float coordinates of the center.
             
     Returns:
-        (station, distance) (MonitoringStation, float):
+        (station, distance): (MonitoringStation, float).
             pair of station object and the corresponding distance from it to point p
     """
     output = []
@@ -36,15 +36,15 @@ def stations_within_radius(stations, centre, r):
     """Return station/distance pair that are within radius r of center.
     
     Arguments:
-        stations (list of MonitoringStation): 
+        stations: (list of MonitoringStation).
             generated using build_station_list.
-        centre (lat, lon) (float, float):
+        centre: (lat, lon) (float, float).
             float coordinates of the center.
         r (float):
             
             
     Returns:
-        list of station ([MonitoringStation]):
+        list of station: ([MonitoringStation]).
             list of station objects
     """
     output = []
@@ -59,11 +59,11 @@ def rivers_with_stations(stations):
     """Return a set containing names of rivers with an associated monitoring station
 
     Arguments:
-        stations (list of MonitoringStation):
+        stations: (list of MonitoringStation).
             generated using build_station_list.
 
     Returns:
-        {river_name} {string}
+        {river_name}: {string}.
             A set containing the names of all the rivers with a monitoring station
     """
 
@@ -81,11 +81,11 @@ def stations_by_river(stations):
     containing MonitoringStations with key values for each river
 
     Arguments:
-        stations (list of MonitoringStation):
+        stations: (list of MonitoringStation).
             generated using build_station_list.
 
     Returns:
-        {river_name : [MonitoringStations]} {string : [MonitoringStation]}
+        {river_name : [MonitoringStations]}: {string : [MonitoringStation]}.
             dict containing lists of MonitoringStations for each river. The dict
             keys are the river names
     """
@@ -111,15 +111,15 @@ def rivers_by_station_number(stations, N):
     are returned
 
     Arguments:
-        stations (list of MonitoringStation):
+        stations: (list of MonitoringStation).
             generated using build_station_list.
 
-        N (int)
+        N: (int).
             The number of rivers to return, in descending order of number of
             stations
 
     Returns:
-        (river_name, number_of_stations) (string, int)
+        (river_name, number_of_stations): (string, int).
             list of tuples containing the river names and number of stations
             of rivers with the N highest number of monitoring stations
     """

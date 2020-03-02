@@ -67,7 +67,7 @@ class MonitoringStation:
         and 1.0 when the water level is equal to the upper typical range
 
         Returns:
-            relative_water_level float
+            relative_water_level: float.
                 the relative water level compared to the typical range.
                 If the typical range is not consistent, None is returned
         """
@@ -83,7 +83,7 @@ class MonitoringStation:
         of stations.
         
         Arguments:
-            stations (MonitoringStation list)
+            stations: (MonitoringStation list)
         
         Returns:
             list of Monitoring Stations:
@@ -102,11 +102,11 @@ class MonitoringStation:
         Useful to pass directly to sorted() as a key
 
         Arguments:
-            station MonitoringStation
+            station: MonitoringStation.
                 The monitoring station object
 
         Returns:
-            relative_water_level float
+            relative_water_level: float.
                 the relative water level of the station"""
 
         level = station.relative_water_level()

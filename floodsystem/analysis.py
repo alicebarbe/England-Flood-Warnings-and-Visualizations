@@ -12,17 +12,17 @@ def polyfit(dates, levels, p):
     """Creates polynomial of order p that fits the level data
     
     Arguments:
-        dates (list of DateTime objects):
+        dates: (list of DateTime objects).
             list of dates with datapoints
-        levels (list of floats):
+        levels: (list of floats).
             list of levels corresponding to each point in dates
-        p (int):
+        p: (int).
             order of polynomial to fit
     
     Returns:
-        poly (np.poly1d object):
+        poly: (np.poly1d object).
             polynomial object that fits level data
-        d0 (DateTime object):
+        d0: (DateTime object).
             offset used to normalize dates to start at 0, equal to the first
             date in dates
     
