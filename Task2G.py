@@ -3,7 +3,7 @@
 from floodsystem.stationdata import build_station_list
 from floodsystem.warningdata import build_warning_list, build_regions_geojson, build_severity_dataframe, save_to_pickle_cache
 from floodsystem.warning import FloodWarning, SeverityLevel
-from floodsystem.plot import map_flood_warnings
+from floodsystem.plot import map_flood_warnings, map_flood_warnings_interactive
 
 
 def run():
@@ -11,10 +11,13 @@ def run():
 
     # a severity of moderate includes all currently active flood warnings
     # severity.low includes warnings which were in force in the past 24 hours
-    severity = SeverityLevel.severe
+    severity = SeverityLevel.high
 
-    print("Building warning list...")
+    print("Building warning list of severity {}...".format(severity.value))
     warnings, polys, areas = build_warning_list(severity.value)
+    if len(warnings) == 0:
+        print("No warnings of this severity")
+        return
 
     print("Simplifying geometry...")
     for warning in warnings:
@@ -33,7 +36,7 @@ def run():
 
     print("\n")
     print("Mapping warnings...")
-    map_flood_warnings(geojson, df)
+    map_flood_warnings_interactive(geojson, df)
 
     print("Checking for warnings in Jesus College, Cambridge ...")
     jc_coords = (52.20527, 0.120705)

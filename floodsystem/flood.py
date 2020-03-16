@@ -32,8 +32,8 @@ def stations_level_over_threshold(stations, tol):
 
 def stations_highest_rel_level(stations, N):
     """Returns the N stations with the highest relative water levels,
-     in descending order. Only 10 values are returned regarless of any
-    tie conditions.
+     in descending order. Only N values are returned regarless of any
+    tie conditions. Fewer than N may be returned if len(stations) < N
 
      Arguments:
          stations: (list of MonitoringStation).
@@ -43,7 +43,7 @@ def stations_highest_rel_level(stations, N):
 
     Returns:
         [stations_with_highest_levels]: [MonitoringStation].
-            List of MonitoringStation objects wiht the highest
+            List of MonitoringStation objects with the highest
             relative water levels
     """
 

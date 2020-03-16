@@ -70,7 +70,10 @@ class FloodWarning:
             return False
 
     def stations_in_warning(self, stations):
-        """Produces a list of stations which are within the warning
+        """Produces a list of stations which are within the warning.
+        Note it is often the case that a warning region may have no stations in it.
+        This is because the Met Office define the warning regions based on
+        floodplanes or elevations
 
         Arguments:
             stations: [MonitoringStations]

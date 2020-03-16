@@ -4,9 +4,10 @@ import numpy as np
 from datetime import datetime, timedelta
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-from plotly.offline import plot
+from plotly.offline import plot, iplot
 import plotly.express as px
 from floodsystem.analysis import polyfit
+from ipywidgets import HBox
 
 
 def create_water_levels_plot(listinput):
@@ -116,6 +117,10 @@ def plot_water_levels_with_fit(listinput, p):
     plot(fig, auto_open=True)
 
 
+def on_flood_region_click():
+    print('Click registered')
+
+
 def map_flood_warnings(geojson, df):
     """"Plots flood warnings as a chloropleth map figure
     Arguments:
@@ -128,19 +133,61 @@ def map_flood_warnings(geojson, df):
             Created using warningdata.build_severity_dataframe
     """
     colours = {'low': 'green', 'moderate': 'yellow', 'high': 'orange', 'severe': 'red'}
-    fig = px.choropleth_mapbox(df,
-                               geojson=geojson,
-                               color="severity",
-                               locations="id",
-                               featureidkey="properties.FWS_TACODE",
-                               mapbox_style="carto-positron",
-                               hover_name="label",
-                               hover_data=['last_updated'],
-                               color_discrete_map=colours,
-                               opacity=0.4,
-                               center={"lat": 52.4, "lon": -1.5},
-                               zoom=6)
+
+    if df.empty:
+        print("Empty dataframe. Possibly no flood warnings at this time")
+        return
+
+    fig = go.FigureWidget(px.choropleth_mapbox(df,
+                                               geojson=geojson,
+                                               color="severity",
+                                               locations="id",
+                                               featureidkey="properties.FWS_TACODE",
+                                               mapbox_style="carto-positron",
+                                               hover_name="label",
+                                               hover_data=['last_updated'],
+                                               color_discrete_map=colours,
+                                               opacity=0.4,
+                                               center={"lat": 52.4, "lon": -1.5},
+                                               zoom=6))
 
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
     plot(fig, auto_open=True)
+
+
+def map_flood_warnings_interactive(geojson, df):
+    """"Plots flood warnings as a chloropleth map figure, with support for
+    interactive actions, such as click events
+    Arguments:
+        geojson: geo_json_object.
+            Contains the perimeter definitions for all warnings. Created from
+            warningdata.build_regions_geojson
+
+        df: Pandas Dataframe.
+            Contains information regarding the severity of the floods and the location name.
+            Created using warningdata.build_severity_dataframe
+    """
+    colours = {'low': 'green', 'moderate': 'yellow', 'high': 'orange', 'severe': 'red'}
+
+    if df.empty:
+        print("Empty dataframe. Possibly no flood warnings at this time")
+        return
+
+    fig = go.FigureWidget(px.choropleth_mapbox(df,
+                                               geojson=geojson,
+                                               color="severity",
+                                               locations="id",
+                                               featureidkey="properties.FWS_TACODE",
+                                               mapbox_style="carto-positron",
+                                               hover_name="label",
+                                               hover_data=['last_updated'],
+                                               color_discrete_map=colours,
+                                               opacity=0.4,
+                                               center={"lat": 52.4, "lon": -1.5},
+                                               zoom=6))
+
+    fig.data[0].on_click(on_flood_region_click)
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
+    plot(fig)

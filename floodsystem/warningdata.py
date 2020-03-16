@@ -119,21 +119,25 @@ def build_regions_geojson(warnings, file=None):
     features_without_coords = []
 
     for w in warnings:
-        for feature in w.geojson:
-            features.append(feature)
-            # pprint(feature)
-            if file is not None:
-                if 'geometry' in feature:
-                    feature_without_coords = feature.copy().pop("geometry")
-                else:
-                    feature_without_coords = feature.copy()
-                features_without_coords.append(feature_without_coords)
+        if w.geojson is not None:
+            for feature in w.geojson:
+                features.append(feature)
+                # pprint(feature)
+                if file is not None:
+                    if 'geometry' in feature:
+                        feature_without_coords = feature.copy().pop("geometry")
+                    else:
+                        feature_without_coords = feature.copy()
+                    features_without_coords.append(feature_without_coords)
 
     data = {'type': 'FeatureCollection', 'features': features}
+
+    # debugging - outputs the geojson to a file for verification
     if file is not None:
         with open(file, 'w') as out:
             data_without_coords = {'type': 'FeatureCollection', 'features': features_without_coords}
             json.dump(data_without_coords, out)
+
     return data
 
 
@@ -148,12 +152,7 @@ def retrieve_pickle_cache(filename):
             The python variables read from the pickle file.
     """
     sub_dir = 'cache'
-    try:
-        os.makedirs(sub_dir)
-    except FileExistsError:
-        pass
     cache_file = os.path.join(sub_dir, filename)
-    print(cache_file)
 
     try:
         with open(cache_file, 'rb') as f:
@@ -207,18 +206,19 @@ def build_severity_dataframe(warnings, min_severity):
     data_arr = []
 
     for w in warnings:
-        if w.severity.value <= min_severity:
-            l = "Not available"
-            last_update = "Not available"
-            message = "Not available"
+        if w.severity is not None:
+            if w.severity.value <= min_severity:
+                l = "Not available"
+                last_update = "Not available"
+                message = "Not available"
 
-            if w.label is not None:
-                l = w.label
-            if w.last_update is not None:
-                last_update = w.last_update
-            if w.description is not None:
-                message = w.message
+                if w.label is not None:
+                    l = w.label
+                if w.last_update is not None:
+                    last_update = w.last_update
+                if w.description is not None:
+                    message = w.message
 
-            data_arr.append([w.severity.name, w.id, l, last_update, message])
+                data_arr.append([w.severity.name, w.id, l, last_update, message])
 
     return pd.DataFrame(data_arr, columns=['severity', 'id', 'label', 'last_updated', 'warning_message'])
