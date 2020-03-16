@@ -42,9 +42,10 @@ class FloodWarning:
         d = "== Flood Warning == \n"
         d += "id : " + (self.id if self.id is not None else "None") + "\n"
         d += "county : " + (self.county if self.county is not None else "None") + "\n"
-        d += "severity : " + str(self.severity_lev) + " (" + self.severity.name + ") " + "\n"
+        d += "severity : " + str(self.severity_lev if self.severity_lev is not None else 4)
+        d += " (" + self.severity.name + ") " + "\n"
         d += "areas affected : " + (self.label if self.label is not None else " Not Available") + "\n"
-        d += "Message : " + self.message
+        d += "Message : " + self.message if self.message is not None else "Not Available" + "\n"
         return d
 
     def coord_in_region(self, coord):
