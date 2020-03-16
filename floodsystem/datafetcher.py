@@ -86,7 +86,7 @@ def fetch_test_station_data():
         data: json_object.
             A json object containing data from station_data_test.json
     """
-    test_data_file = 'station_data_test.json'
+    test_data_file = 'test/station_data_test.json'
 
     try:
         data = load(test_data_file)

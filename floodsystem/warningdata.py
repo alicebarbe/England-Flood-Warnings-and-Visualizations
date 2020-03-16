@@ -211,6 +211,7 @@ def build_severity_dataframe(warnings, min_severity):
                 l = "Not available"
                 last_update = "Not available"
                 message = "Not available"
+                warning_id = "Not available"
 
                 if w.label is not None:
                     l = w.label
@@ -218,7 +219,9 @@ def build_severity_dataframe(warnings, min_severity):
                     last_update = w.last_update
                 if w.description is not None:
                     message = w.message
+                if w.id is not None:
+                    warning_id = w.id
 
-                data_arr.append([w.severity.name, w.id, l, last_update, message])
+                data_arr.append([w.severity.name, warning_id, l, last_update, message])
 
     return pd.DataFrame(data_arr, columns=['severity', 'id', 'label', 'last_updated', 'warning_message'])
