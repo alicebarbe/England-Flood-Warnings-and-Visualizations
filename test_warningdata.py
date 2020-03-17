@@ -37,7 +37,8 @@ def test_build_severity_dataframe():
     print(df.count().values)
     assert (all([col_len == 2 for col_len in df.count().values]))
 
-def test_pickle_dump_and_recieve():
+
+def test_pickle_dump_and_receive():
     """Checks that a pickle file is produced and that the retrieved data
      is identical to the original"""
 
@@ -46,6 +47,6 @@ def test_pickle_dump_and_recieve():
     assert (os.path.isfile('cache/test_file.pk'))
 
     retrieved_data = retrieve_pickle_cache('test_file.pk')
-    assert(retrieved_data == test_data)
+    assert (retrieved_data == test_data)
 
     os.remove('cache/test_file.pk')

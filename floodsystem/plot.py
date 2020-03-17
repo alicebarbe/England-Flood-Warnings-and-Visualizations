@@ -121,7 +121,7 @@ def on_flood_region_click():
     print('Click registered')
 
 
-def map_flood_warnings(geojson, df):
+def map_flood_warnings(geojson, df, df2):
     """"Plots flood warnings as a chloropleth map figure
     Arguments:
         geojson: geo_json_object.
@@ -138,20 +138,32 @@ def map_flood_warnings(geojson, df):
         print("Empty dataframe. Possibly no flood warnings at this time")
         return
 
-    fig = go.FigureWidget(px.choropleth_mapbox(df,
-                                               geojson=geojson,
-                                               color="severity",
-                                               locations="id",
-                                               featureidkey="properties.FWS_TACODE",
-                                               mapbox_style="carto-positron",
-                                               hover_name="label",
-                                               hover_data=['last_updated'],
-                                               color_discrete_map=colours,
-                                               opacity=0.4,
-                                               center={"lat": 52.4, "lon": -1.5},
-                                               zoom=6))
 
-    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+
+    fig = go.Figure()
+    fig.add_choroplethmapbox(geojson=geojson,
+                             #colorscale=colours,
+                           z=df.warning_severity,
+                            #autocolorscale=False,
+                           locations=df.id,
+                           featureidkey="properties.FWS_TACODE",
+                           #mapbox_style="carto-positron",
+                           #hover_name=df.label,
+                           #hover_data=[df.last_updated],
+                           #colorscale=colours,
+                           #opacity=0.4,
+                           #center={"lat": 52.4, "lon": -1.5},
+                           #zoom=6)
+                             )
+
+
+    fig.add_scattermapbox(lon=df2.lon, lat=df2.lat,
+                            #color="continent",  # which column to use to set the color of markers
+                            text=df2.name,
+                            mode='markers'# column added to hover information
+    )
+
+    fig.update_layout(mapbox_style="carto-positron", margin={"r": 0, "t": 0, "l": 0, "b": 0})
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
     plot(fig, auto_open=True)
 

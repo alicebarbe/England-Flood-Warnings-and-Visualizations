@@ -18,21 +18,21 @@ def build_warning_list(severity, use_pickle_caches=True):
 
     Returns:
         (warnings, polys, areas): ([FloodWarnings] list list).
-            A tuple containting the floodwarning list, as well as poly and area data to be cached
+            A tuple containing the floodwarning list, as well as poly and area data to be cached
     """
     data = datafetcher.fetch_flood_warnings(severity)
-    if use_pickle_caches:
-        polys = retrieve_pickle_cache('warning_polys.pk')
-        areas = retrieve_pickle_cache('warning_areas.pk')
-
-    warnings = []
     # lists to be cached - updates the cache regardless of use_pickle_caches
     polys_new = []
     areas_new = []
 
-    for p, a in zip(polys, areas):
-        polys_new.append(p)
-        areas_new.append(a)
+    if use_pickle_caches:
+        polys = retrieve_pickle_cache('warning_polys.pk')
+        areas = retrieve_pickle_cache('warning_areas.pk')
+        for p, a in zip(polys, areas):
+            polys_new.append(p)
+            areas_new.append(a)
+
+    warnings = []
 
     for w in data['items']:
         warning = FloodWarning()
@@ -71,7 +71,8 @@ def build_warning_list(severity, use_pickle_caches=True):
                     if poly is not None:
                         warning.region = poly[1]
                         warning.geojson = poly[0]
-                        warning.is_poly_simplified = True
+                        warning.is_poly_simplified = poly[2]
+
                     break
 
         if not warning.region or not warning.geojson:
@@ -81,11 +82,7 @@ def build_warning_list(severity, use_pickle_caches=True):
                 if poly is not None:
                     warning.region = [FloodWarning.geo_json_to_shape(p['geometry']) for p in poly]
                     warning.geojson = poly
-
-                    warning.simplify_geojson(tol=0.005, buf=0.002, convex=True)
-                    warning.is_poly_simplified = True
-
-                    polys_new.append([warning.geojson, warning.region])
+                    polys_new.append([warning.geojson, warning.region, warning.is_poly_simplified])
 
         if 'severityLevel' in w:
             warning.severity_lev = w['severityLevel']
@@ -212,6 +209,7 @@ def build_severity_dataframe(warnings, min_severity):
                 last_update = "Not available"
                 message = "Not available"
                 warning_id = "Not available"
+                warning_severity = 4
 
                 if w.label is not None:
                     l = w.label
@@ -221,7 +219,20 @@ def build_severity_dataframe(warnings, min_severity):
                     message = w.message
                 if w.id is not None:
                     warning_id = w.id
+                if w.severity_lev is not None:
+                    warning_severity = w.severity_lev
 
-                data_arr.append([w.severity.name, warning_id, l, last_update, message])
+                data_arr.append([w.severity.name, warning_id, l, last_update, message, warning_severity])
 
-    return pd.DataFrame(data_arr, columns=['severity', 'id', 'label', 'last_updated', 'warning_message'])
+    return pd.DataFrame(data_arr, columns=['severity', 'id', 'label', 'last_updated', 'warning_message', 'warning_severity'])
+
+def build_station_dataframe(stations):
+
+    df = pd.DataFrame()
+
+    df['name'] = [station.name for station in stations]
+    df['lon'] = [station.coord[1] for station in stations]
+    df['lat'] = [station.coord[0] for station in stations]
+    df['level'] = [station.latest_level for station in stations]
+
+    return df

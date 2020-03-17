@@ -109,7 +109,7 @@ class FloodWarning:
 
         return self.towns
 
-    def simplify_geojson(self, tol=0.001, buf=0.005, convex=False):
+    def simplify_geojson(self, tol=0.000, buf=0.000, convex=False):
         """Simplifies the geometry of the polygon for better plotting, updating
         self.region and self.geojson
 
