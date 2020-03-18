@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from floodsystem.stationdata import build_station_list
-from floodsystem.warningdata import build_warning_list, build_regions_geojson, build_severity_dataframe, save_to_pickle_cache, build_station_dataframe, update_poly_area_caches
+from floodsystem.warningdata import build_warning_list, build_regions_geojson, build_severity_dataframe, save_to_pickle_cache, retrieve_pickle_cache, build_station_dataframe, update_poly_area_caches
 from floodsystem.warning import FloodWarning, SeverityLevel
-from floodsystem.plot import map_flood_warnings, map_flood_warnings_interactive
+from floodsystem.plot import map_flood_warnings, map_flood_warnings_interactive, get_recommended_simplification_params
 
 
 def run():
@@ -22,15 +22,14 @@ def run():
         return
 
     print("Simplifying geometry...")
-    TOL = 0.001
-    BUFFER = 0.002
-    """
+    simplification_params = {'tol': 0.0001, 'buf': 0.0002}  # get_recommended_simplification_params(len(warnings))
+
     for warning in warnings:
-        
-        if not (warning.is_poly_simplified['tol'] == TOL and warning.is_poly_simplified['buf'] == BUFFER):
-            warning.simplify_geojson(tol=TOL, buf=BUFFER)
-            warning.is_poly_simplified = {'tol': TOL, 'buf': BUFFER}
-    """
+        # if the simplification parameters used for the cached file were incorrect, resimplify the geometry
+        if warning.is_poly_simplified != simplification_params:
+            print('resimplifying')
+            warning.simplify_geojson(tol=simplification_params['tol'], buf=simplification_params['buf'])
+            warning.is_poly_simplified = simplification_params
 
     print("Making datasets...")
     geojson = build_regions_geojson(warnings)

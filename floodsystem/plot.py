@@ -138,30 +138,27 @@ def map_flood_warnings(geojson, df, df2):
         print("Empty dataframe. Possibly no flood warnings at this time")
         return
 
-
-
     fig = go.Figure()
     fig.add_choroplethmapbox(geojson=geojson,
-                             #colorscale=colours,
-                           z=df.warning_severity,
-                            #autocolorscale=False,
-                           locations=df.id,
-                           featureidkey="properties.FWS_TACODE",
-                           #mapbox_style="carto-positron",
-                           #hover_name=df.label,
-                           #hover_data=[df.last_updated],
-                           #colorscale=colours,
-                           #opacity=0.4,
-                           #center={"lat": 52.4, "lon": -1.5},
-                           #zoom=6)
+                             # colorscale=colours,
+                             z=df.warning_severity,
+                             # autocolorscale=False,
+                             locations=df.id,
+                             featureidkey="properties.FWS_TACODE",
+                             # mapbox_style="carto-positron",
+                             # hover_name=df.label,
+                             # hover_data=[df.last_updated],
+                             # colorscale=colours,
+                             # opacity=0.4,
+                             # center={"lat": 52.4, "lon": -1.5},
+                             # zoom=6)
                              )
 
-
     fig.add_scattermapbox(lon=df2.lon, lat=df2.lat,
-                            #color="continent",  # which column to use to set the color of markers
-                            text=df2.name,
-                            mode='markers'# column added to hover information
-    )
+                          # color="continent",  # which column to use to set the color of markers
+                          text=df2.name,
+                          mode='markers'  # column added to hover information
+                          )
 
     fig.update_layout(mapbox_style="carto-positron", margin={"r": 0, "t": 0, "l": 0, "b": 0})
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
@@ -203,3 +200,27 @@ def map_flood_warnings_interactive(geojson, df):
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
     plot(fig)
+
+
+def get_recommended_simplification_params(warning_len):
+    """"Returns the recommended geometry simplification tolerance and buffer, based
+    on the number of warnings present. These settings are designed to prevent the map
+    interface from lagging if many warnings are present
+
+    Arguments:
+        warning_len: int.
+            The number of warnings in the warning list
+
+    Returns:
+        simplification params: {'tol': float, 'buf': float}.
+            Parameters which determine the degree of shape approximation
+            recommended for mapping
+    """
+
+    if warning_len < 10:
+        return {'tol': 0.000, 'buf': 0.000}
+    else:
+        tol = (round(warning_len, -1) - 10) * 0.00005
+        buf = (round(warning_len, -1) - 10) * 0.0001
+
+        return {'tol': tol, 'buf': buf}

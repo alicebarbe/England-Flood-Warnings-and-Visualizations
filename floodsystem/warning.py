@@ -31,7 +31,8 @@ class FloodWarning:
         self.message = message
         self.region = region
         self.geojson = geojson
-        self.is_poly_simplified = False
+        self.simplified_geojson = geojson
+        self.is_poly_simplified = {'tol': 0.000, 'buf': 0.000}
         self.coord = None
         self.area_json = None
 
@@ -110,24 +111,19 @@ class FloodWarning:
 
         return self.towns
 
-    def simplify_geojson(self, tol=0.000, buf=0.000, convex=False):
+    def simplify_geojson(self, tol=0.001, buf=0.002):
         """Simplifies the geometry of the polygon for better plotting, updating
-        self.region and self.geojson
+        self.simplified_geojson
 
-        Args:
-            tol: (float) Determines the maximum allowed deviation from the original shape
-            buf: (float) The amount to dilate the shapes in order to smooth them
-            convex: (bool) If true, the shape is approximated to a convex polygon
-
+        Arguments:
+            tol: (float).
+                Determines the maximum allowed deviation from the original shape
+            buf: (float).
+                The amount to dilate the shapes in order to smooth them
         """
         for i, r in enumerate(self.region):
-            if convex:
-                # removes concavity - doesnt seem to be working though
-                self.region[i] = r.convex_hull
-            self.region[i] = r.simplify(tol, preserve_topology=False).buffer(buf)
-
-            # update the geoJSON object
-            self.geojson[i]['geometry'] = mapping(self.region[i])
+            simplified_poly = r.simplify(tol, preserve_topology=False).buffer(buf)
+            self.simplified_geojson[i]['geometry'] = mapping(simplified_poly)
 
     @staticmethod
     def geo_json_to_shape(geo_json_obj):
