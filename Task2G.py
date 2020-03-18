@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from floodsystem.stationdata import build_station_list
-from floodsystem.warningdata import build_warning_list, build_regions_geojson, build_severity_dataframe, save_to_pickle_cache, build_station_dataframe
+from floodsystem.warningdata import build_warning_list, build_regions_geojson, build_severity_dataframe, save_to_pickle_cache, build_station_dataframe, update_poly_area_caches
 from floodsystem.warning import FloodWarning, SeverityLevel
 from floodsystem.plot import map_flood_warnings, map_flood_warnings_interactive
 
@@ -16,7 +16,7 @@ def run():
     severity = SeverityLevel.high
 
     print("Building warning list of severity {}...".format(severity.value))
-    warnings, polys, areas = build_warning_list(severity.value)
+    warnings = build_warning_list(severity.value)
     if len(warnings) == 0:
         print("No warnings of this severity")
         return
@@ -59,8 +59,7 @@ def run():
             print("\n")
 
     print("Saving caches...")
-    save_to_pickle_cache('warning_polys.pk', polys)
-    save_to_pickle_cache('warning_areas.pk', areas)
+    update_poly_area_caches(warnings)
 
 
 if __name__ == "__main__":

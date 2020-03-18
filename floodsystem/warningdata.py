@@ -17,20 +17,14 @@ def build_warning_list(severity, use_pickle_caches=True):
             the flood warnings are still the most recent pulled from the API
 
     Returns:
-        (warnings, polys, areas): ([FloodWarnings] list list).
-            A tuple containing the floodwarning list, as well as poly and area data to be cached
+        warnings: [FloodWarnings].
+            The list of FloodWarning objects of severity greater than or equal to severity
     """
     data = datafetcher.fetch_flood_warnings(severity)
-    # lists to be cached - updates the cache regardless of use_pickle_caches
-    polys_new = []
-    areas_new = []
 
     if use_pickle_caches:
         polys = retrieve_pickle_cache('warning_polys.pk')
         areas = retrieve_pickle_cache('warning_areas.pk')
-        for p, a in zip(polys, areas):
-            polys_new.append(p)
-            areas_new.append(a)
 
     warnings = []
 
@@ -59,9 +53,10 @@ def build_warning_list(severity, use_pickle_caches=True):
             if '@id' in w['floodArea']:
                 print("making area api call")
                 flood_area = datafetcher.fetch_warning_area(w['floodArea']['@id'])
+
                 warning.label = flood_area['items']['label']
                 warning.description = flood_area['items']['description']
-                areas_new.append(flood_area)
+                warning.area_json = flood_area
 
         # attempts to set the poly based on a cached value, if not, pulls from the api
         if use_pickle_caches:
@@ -82,7 +77,6 @@ def build_warning_list(severity, use_pickle_caches=True):
                 if poly is not None:
                     warning.region = [FloodWarning.geo_json_to_shape(p['geometry']) for p in poly]
                     warning.geojson = poly
-                    polys_new.append([warning.geojson, warning.region, warning.is_poly_simplified])
 
         if 'severityLevel' in w:
             warning.severity_lev = w['severityLevel']
@@ -95,7 +89,41 @@ def build_warning_list(severity, use_pickle_caches=True):
 
         warnings.append(warning)
 
-    return warnings, polys_new, areas_new
+    return warnings
+
+
+def update_poly_area_caches(warnings, poly_cache='warning_polys.pk', area_cache='warning_areas.pk'):
+    """Creates updated lists of polygons and areas pertaining to any new warnings.
+    If previous cached data is available, the new data is appended to this.
+
+    Arguments:
+        warnings: [FloodWarnings].
+            The list of FloodWarning objects of severity greater than or equal to severity
+
+        poly_cache: string.
+            The name of the polygon cache file. If no value is passed, defaults to 'warning_polys.pk'
+
+        area_cache: string.
+            The name of the area cache file. If no value is passed, defaults to 'warning_areas.pk'
+    """
+
+    # tries to retrieve all previously cached data, and adds on any
+    polys = retrieve_pickle_cache(poly_cache)
+    areas = retrieve_pickle_cache(area_cache)
+
+    for warning in warnings:
+        # if the warning id does not already have a corresponding polygon region cached, add it
+        if any((poly[0][0]['properties']['FWS_TACODE'] == warning.id) for poly in polys):
+            if warning.geojson is not None and warning.region is not None:
+                polys.append([warning.geojson, warning.region, warning.is_poly_simplified])
+
+        # if the warning id does not already have corresponding area data cached, add it
+        if any((area['items']['currentWarning']['floodAreaID'] == warning.id) for area in areas):
+            if warning.area_json is not None:
+                areas.append(warning.area_json)
+
+    save_to_pickle_cache(poly_cache, polys)
+    save_to_pickle_cache(area_cache, areas)
 
 
 def build_regions_geojson(warnings, file=None):

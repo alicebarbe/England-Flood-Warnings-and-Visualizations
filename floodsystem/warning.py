@@ -33,6 +33,7 @@ class FloodWarning:
         self.geojson = geojson
         self.is_poly_simplified = False
         self.coord = None
+        self.area_json = None
 
         self.last_update = None
 
