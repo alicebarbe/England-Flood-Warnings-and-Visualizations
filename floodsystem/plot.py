@@ -138,20 +138,25 @@ def map_flood_warnings(geojson, df, df2):
         print("Empty dataframe. Possibly no flood warnings at this time")
         return
 
+    hover_temp = "<b>%{customdata[2]}</b><br>" \
+                 "severity : %{customdata[0]}<br>" \
+                 "last update : %{customdata[3]}<br><br>"
+                 # "message : %{customdata[4]}"  - prints as one big long line
+
     fig = go.Figure()
     fig.add_choroplethmapbox(geojson=geojson,
-                             # colorscale=colours,
+                             colorscale='YlGnBu',
                              z=df.warning_severity,
-                             # autocolorscale=False,
+                             autocolorscale=False,
                              locations=df.id,
                              featureidkey="properties.FWS_TACODE",
+                             hovertemplate=hover_temp,
+                             customdata= [row for _, row in df.iterrows()],
                              # mapbox_style="carto-positron",
-                             # hover_name=df.label,
-                             # hover_data=[df.last_updated],
                              # colorscale=colours,
                              # opacity=0.4,
                              # center={"lat": 52.4, "lon": -1.5},
-                             # zoom=6)
+                             # zoom=6
                              )
 
     fig.add_scattermapbox(lon=df2.lon, lat=df2.lat,
@@ -160,7 +165,11 @@ def map_flood_warnings(geojson, df, df2):
                           mode='markers'  # column added to hover information
                           )
 
-    fig.update_layout(mapbox_style="carto-positron", margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fig.update_layout(mapbox_style="carto-positron",
+                      margin={"r": 0, "t": 0, "l": 0, "b": 0},
+                      mapbox_zoom=5.5,
+                      mapbox_center={"lat": 52.5, "lon": 0.5})
+
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
     plot(fig, auto_open=True)
 

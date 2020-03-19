@@ -20,25 +20,25 @@ class FloodWarning:
                  geojson=None):
 
         self.id = identifier
-        self.county = county
-        self.label = label
-        self.description = description
-
         self.severity = SeverityLevel(severity_lev) if severity_lev is not None else SeverityLevel.low
         self.severity_lev = severity_lev
 
-        self.tidal = tidal
-        self.message = message
+        self.area_json = None
+        self.label = label
+        self.description = description
+        self.coord = None
+
+        self.county = county
+        self.towns = []
+
         self.region = region
         self.geojson = geojson
         self.simplified_geojson = geojson
         self.is_poly_simplified = {'tol': 0.000, 'buf': 0.000}
-        self.coord = None
-        self.area_json = None
 
+        self.tidal = tidal
+        self.message = message
         self.last_update = None
-
-        self.towns = []
 
     def __repr__(self):
         d = "== Flood Warning == \n"

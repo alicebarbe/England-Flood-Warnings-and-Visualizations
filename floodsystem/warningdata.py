@@ -240,6 +240,7 @@ def build_severity_dataframe(warnings, min_severity):
         data_frame: DataFrame.
             Pandas DataFrame with the relevant data
     """
+
     data_arr = []
 
     for w in warnings:
@@ -264,15 +265,5 @@ def build_severity_dataframe(warnings, min_severity):
 
                 data_arr.append([w.severity.name, warning_id, l, last_update, message, warning_severity])
 
-    return pd.DataFrame(data_arr, columns=['severity', 'id', 'label', 'last_updated', 'warning_message', 'warning_severity'])
-
-def build_station_dataframe(stations):
-
-    df = pd.DataFrame()
-
-    df['name'] = [station.name for station in stations]
-    df['lon'] = [station.coord[1] for station in stations]
-    df['lat'] = [station.coord[0] for station in stations]
-    df['level'] = [station.latest_level for station in stations]
-
+    df = pd.DataFrame(data_arr, columns=['severity', 'id', 'label', 'last_updated', 'warning_message', 'warning_severity'])
     return df

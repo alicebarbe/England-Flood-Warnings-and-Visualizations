@@ -6,6 +6,8 @@ JSON objects fetched from the Internet and
 
 """
 
+import pandas as pd
+
 from floodsystem import datafetcher
 from floodsystem.station import MonitoringStation
 
@@ -92,3 +94,25 @@ def update_water_levels(stations, use_cache=False):
         if station.measure_id in measure_id_to_value:
             if isinstance(measure_id_to_value[station.measure_id], float):
                 station.latest_level = measure_id_to_value[station.measure_id]
+
+
+def build_station_dataframe(stations):
+    """Creates a pandas Datafraome containing data for all the monitoring stations
+
+    Arguments:
+        stations: list of MonitoringStation
+            generated using build_station_list.
+
+    Returns:
+        df: pandas DataFrame
+            the output dataframe"""
+
+    df = pd.DataFrame()
+
+    df['name'] = [(station.name if station.name is not None else "Unnamed") for station in stations]
+    df['lon'] = [(station.coord[1] if station.coord is not None else None) for station in stations]
+    df['lat'] = [(station.coord[0] if station.coord is not None else None) for station in stations]
+    df['level'] = [(station.latest_level if station.latest_level is not None else "Not available") for station in
+                   stations]
+
+    return df
