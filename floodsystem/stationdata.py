@@ -1,13 +1,10 @@
 # Copyright (C) 2018 Garth N. Wells
 #
 # SPDX-License-Identifier: MIT
-"""This module provides interface for extracting station data from
-JSON objects fetched from the Internet and
-
-"""
+"""Interface for extracting station data from JSON objects fetched from the
+Internet."""
 
 import pandas as pd
-
 from floodsystem import datafetcher
 from floodsystem.station import MonitoringStation
 
@@ -22,8 +19,17 @@ def build_station_list(use_cache=True, test=False):
 
     If the flag test is set to true then fixed test data is used so
     results may be compared to known values for the data
-    """
 
+    Parameters
+    ----------
+    use_cache : bool, optional
+    test : bool, optional
+
+    Returns
+    -------
+    stations : list[MonitoringStations]
+
+    """
     # Fetch station data - if testing use the fixed test data
     if test:
         data = datafetcher.fetch_test_station_data()
@@ -71,8 +77,7 @@ def build_station_list(use_cache=True, test=False):
 
 
 def update_water_levels(stations, use_cache=False):
-    """Attach level data contained in measure_data to stations"""
-
+    """Attach level data contained in measure_data to stations."""
     # Fetch level data
     measure_data = datafetcher.fetch_latest_water_level_data(use_cache)
 
@@ -97,22 +102,30 @@ def update_water_levels(stations, use_cache=False):
 
 
 def build_station_dataframe(stations):
-    """Creates a pandas Datafraome containing data for all the monitoring stations
+    """Create a pandas DataFrame containing data for all monitoring stations.
 
-    Arguments:
-        stations: list of MonitoringStation
-            generated using build_station_list.
+    Parameters
+    ----------
+    stations : list[MonitoringStation]
+        generated using build_station_list.
 
-    Returns:
-        df: pandas DataFrame
-            the output dataframe"""
+    Returns
+    -------
+    df : pandas DataFrame
+        the output dataframe.
 
+    """
     df = pd.DataFrame()
-
-    df['name'] = [(station.name if station.name is not None else "Unnamed") for station in stations]
-    df['lon'] = [(station.coord[1] if station.coord is not None else None) for station in stations]
-    df['lat'] = [(station.coord[0] if station.coord is not None else None) for station in stations]
-    df['level'] = [(station.latest_level if station.latest_level is not None else "Not available") for station in
-                   stations]
+    df['name'] = [(station.name if station.name is not None else "Unnamed")
+                  for station in stations]
+    df['lon'] = [(station.coord[1] if station.coord is not None else None)
+                 for station in stations]
+    df['lat'] = [(station.coord[0] if station.coord is not None else None)
+                 for station in stations]
+    df['level'] = [(station.latest_level if station.latest_level is not None
+                    else "Not available") for station in stations]
+    df['rel_level'] = [station.relative_water_level() if
+                       station.relative_water_level() is not None else 0
+                       for station in stations]
 
     return df

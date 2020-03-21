@@ -1,22 +1,26 @@
+"""Methods to determine risk of flood at stations."""
+
 from floodsystem.station import MonitoringStation
 from floodsystem.utils import sorted_by_key
 
 
 def stations_level_over_threshold(stations, tol):
-    """Returns the stations whose relative water level exceeds
-    the value of tol and the relative water levels of these stations.
-    The stations are listed in order of decreasing relative water level
+    """Return the stations whose relative water level exceed a threshold.
 
-    Arguments:
-        stations: (list of MonitoringStation).
-            generated using build_station_list.
-        tol:  float.
-            All stations with relative water levels above tol are returned
+    The stations are listed in order of decreasing relative water level.
 
-    Returns:
-        [(station, rel_water_level)]: [(MonitoringStation, float)].
-            A list of tuples containing the MonitoringStation object
-            and its relative water level
+    Parameters
+    ----------
+    stations : list[MonitoringStation]
+    tol : float
+        threshold for relative water level
+
+    Returns
+    -------
+    list[(MonitoringStation, float)]
+        A list of tuples containing the MonitoringStation object and its
+        relative water level.
+
     """
     output = []
 
@@ -31,21 +35,26 @@ def stations_level_over_threshold(stations, tol):
 
 
 def stations_highest_rel_level(stations, N):
-    """Returns the N stations with the highest relative water levels,
-     in descending order. Only N values are returned regarless of any
-    tie conditions. Fewer than N may be returned if len(stations) < N
+    """Return the N stations with the highest relative water levels.
 
-     Arguments:
-         stations: (list of MonitoringStation).
-            generated using build_station_list.
-         N: int.
-            Number of stations to returns
+    Only N values are returned regarless of any tie conditions.
+    Fewer than N may be returned if len(stations) < N
 
-    Returns:
-        [stations_with_highest_levels]: [MonitoringStation].
-            List of MonitoringStation objects with the highest
-            relative water levels
+
+    Parameters
+    ----------
+    stations : list[MonitoringStation]
+        generated using build_station_list..
+    N : int
+        Number of stations to returns.
+
+    Returns
+    -------
+    list[MonitoringStation]
+        List of MonitoringStation objects with the highest relative water
+        levels.
+
     """
-
-    stations_ordered_by_level = sorted(stations, key=MonitoringStation.get_relative_water_level, reverse=True)
+    stations_ordered_by_level = sorted(stations,
+        key=MonitoringStation.get_relative_water_level, reverse=True)
     return stations_ordered_by_level[:N]

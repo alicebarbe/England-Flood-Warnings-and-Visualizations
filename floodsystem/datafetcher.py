@@ -9,7 +9,6 @@ latest time history level data
 import datetime
 import json
 import os
-
 import dateutil.parser
 import requests
 
@@ -189,7 +188,7 @@ def fetch_flood_warnings(severity_level, use_cache=False):
 
 
 def fetch_warning_region(url):
-    """"fetches a geoJSON polygon for area over which a warning is active"""
+    """fetches a geoJSON polygon for area over which a warning is active"""
 
     data = fetch(url)
 
@@ -201,7 +200,7 @@ def fetch_warning_region(url):
 
 
 def fetch_warning_area(url):
-    """"fetches information on the area of a warning"""
+    """fetches information on the area of a warning"""
 
     data = fetch(url)
 
