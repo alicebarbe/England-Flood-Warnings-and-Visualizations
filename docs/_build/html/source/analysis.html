@@ -7,11 +7,11 @@
     <title>analysis module &#8212; Flood Warning System 1.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -32,35 +32,26 @@
             
   <div class="section" id="module-analysis">
 <span id="analysis-module"></span><h1>analysis module<a class="headerlink" href="#module-analysis" title="Permalink to this headline">¶</a></h1>
-<p>Created on Wed Feb 12 11:49:59 2020</p>
-<p>&#64;author: atylb2</p>
+<p>Module for analysis of historical level data.</p>
 <dl class="function">
 <dt id="analysis.polyfit">
 <code class="sig-prename descclassname">analysis.</code><code class="sig-name descname">polyfit</code><span class="sig-paren">(</span><em class="sig-param">dates</em>, <em class="sig-param">levels</em>, <em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#analysis.polyfit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates polynomial of order p that fits the level data</p>
+<dd><p>Create polynomial of order p that fits the level data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dates</strong> – (list of DateTime objects).
-list of dates with datapoints</p></li>
-<li><p><strong>levels</strong> – (list of floats).
-list of levels corresponding to each point in dates</p></li>
-<li><p><strong>p</strong> – (int).
-order of polynomial to fit</p></li>
+<li><p><strong>dates</strong> (<em>list</em><em>[</em><em>DateTime</em><em>]</em>) – list of dates with data points.</p></li>
+<li><p><strong>levels</strong> (<em>list</em><em>[</em><em>floats</em><em>]</em>) – list of levels corresponding to each point in dates.</p></li>
+<li><p><strong>p</strong> (<em>int</em>) – order of polynomial to fit.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>(np.poly1d object).</dt><dd><p>polynomial object that fits level data</p>
-</dd>
-<dt>d0: (DateTime object).</dt><dd><p>offset used to normalize dates to start at 0, equal to the first
-date in dates</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>poly</strong> (<em>np.poly1d</em>) – polynomial object that fits level data.</p></li>
+<li><p><em>DateTime</em> – offset used to normalize dates to start at 0, equal to the first
+date in dates.</p></li>
+</ul>
 </p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>poly</p>
 </dd>
 </dl>
 </dd></dl>
@@ -101,7 +92,7 @@ date in dates</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -118,7 +109,7 @@ date in dates</p>
       &copy;2020, Alice Barbe, Daniel Siromani.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

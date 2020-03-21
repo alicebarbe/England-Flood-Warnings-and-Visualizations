@@ -7,11 +7,11 @@
     <title>station module &#8212; Flood Warning System 1.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -32,32 +32,26 @@
             
   <div class="section" id="module-station">
 <span id="station-module"></span><h1>station module<a class="headerlink" href="#module-station" title="Permalink to this headline">¶</a></h1>
-<p>This module provides a model for a monitoring station, and tools
-for manipulating/modifying station data</p>
+<p>Model for a monitoring station and tools for manipulating station data.</p>
 <dl class="class">
 <dt id="station.MonitoringStation">
 <em class="property">class </em><code class="sig-prename descclassname">station.</code><code class="sig-name descname">MonitoringStation</code><span class="sig-paren">(</span><em class="sig-param">station_id</em>, <em class="sig-param">measure_id</em>, <em class="sig-param">label</em>, <em class="sig-param">coord</em>, <em class="sig-param">typical_range</em>, <em class="sig-param">river</em>, <em class="sig-param">town</em><span class="sig-paren">)</span><a class="headerlink" href="#station.MonitoringStation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This class represents a river level monitoring station</p>
+<p>Class representing a river level monitoring station.</p>
 <dl class="method">
 <dt id="station.MonitoringStation.get_relative_water_level">
 <em class="property">static </em><code class="sig-name descname">get_relative_water_level</code><span class="sig-paren">(</span><em class="sig-param">station</em><span class="sig-paren">)</span><a class="headerlink" href="#station.MonitoringStation.get_relative_water_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the relative water level of a given station
-Useful to pass directly to sorted() as a key</p>
+<dd><p>Return the relative water level of a given station.</p>
+<p>Useful to pass directly to sorted() as a key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>station</strong> – MonitoringStation.
-The monitoring station object</p>
+<dd class="field-odd"><p><strong>station</strong> (<a class="reference internal" href="../index.html#floodsystem.station.MonitoringStation" title="floodsystem.station.MonitoringStation"><em>MonitoringStation</em></a>) – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>float.</dt><dd><p>the relative water level of the station</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>the relative water level of the station.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>relative_water_level</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -65,17 +59,16 @@ The monitoring station object</p>
 <dl class="method">
 <dt id="station.MonitoringStation.inconsistent_typical_range_stations">
 <em class="property">static </em><code class="sig-name descname">inconsistent_typical_range_stations</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#station.MonitoringStation.inconsistent_typical_range_stations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the stations with inconsistent typical ranges given a list
-of stations.</p>
+<dd><p>Return the stations with inconsistent typical ranges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stations</strong> – (MonitoringStation list)</p>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="../index.html#floodsystem.station.MonitoringStation" title="floodsystem.station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the monitoring stations with inconsistent typical ranges</p>
+<dd class="field-even"><p><strong>output</strong> – the monitoring stations with inconsistent typical ranges.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list of Monitoring Stations</p>
+<dd class="field-odd"><p>list[MonituringStation]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -83,20 +76,16 @@ of stations.</p>
 <dl class="method">
 <dt id="station.MonitoringStation.relative_water_level">
 <code class="sig-name descname">relative_water_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#station.MonitoringStation.relative_water_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Returns the water level as a proportion of the typical range
-This returns 0.0 when the water level is equal to the lower typical range
+<dd><p>Return the water level as a proportion of the typical range.</p>
+<p>This is 0.0 when the water level is equal to the lower typical range
 and 1.0 when the water level is equal to the upper typical range</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>float.</dt><dd><p>the relative water level compared to the typical range.
-If the typical range is not consistent, None is returned</p>
-</dd>
-</dl>
-</p>
+<dd class="field-odd"><p>the relative water level compared to the typical range.
+If the typical range is not consistent, None is returned.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>relative_water_level</p>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -104,12 +93,11 @@ If the typical range is not consistent, None is returned</p>
 <dl class="method">
 <dt id="station.MonitoringStation.typical_range_consistent">
 <code class="sig-name descname">typical_range_consistent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#station.MonitoringStation.typical_range_consistent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns true if the typical range is inconsistent, i.e. lowest value
-is greater than largest value.</p>
-<p>Arguments:</p>
+<dd><p>Return true if the typical range is inconsistent.</p>
+<p>Range is inconsistent if lowest value is greater than largest value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>if typical range is consistent</p>
+<dd class="field-odd"><p>if typical range is consistent.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>bool</p>
@@ -155,7 +143,7 @@ is greater than largest value.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -172,7 +160,7 @@ is greater than largest value.</p>
       &copy;2020, Alice Barbe, Daniel Siromani.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
