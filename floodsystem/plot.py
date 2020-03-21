@@ -9,6 +9,8 @@ import plotly.express as px
 from floodsystem.analysis import polyfit
 from ipywidgets import HBox
 
+from floodsystem.warning import SeverityLevel
+
 
 def create_water_levels_plot(listinput):
     """Plot the water levels of stations given corresponding date. Subplots are
@@ -121,49 +123,74 @@ def on_flood_region_click():
     print('Click registered')
 
 
-def map_flood_warnings(geojson, df, df2):
-    """"Plots flood warnings as a chloropleth map figure
+def map_flood_warnings(geojson, warning_df=None, station_df=None):
+    """"Plots flood warnings and station levels as a chloropleth map figure.
+     To plot warnings or stations alone, leave the df for the other as None
     Arguments:
         geojson: geo_json_object.
             Contains the perimeter definitions for all warnings. Created from
             warningdata.build_regions_geojson
 
-        df: Pandas Dataframe.
+        warning_df: Pandas Dataframe.
             Contains information regarding the severity of the floods and the location name.
-            Created using warningdata.build_severity_dataframe
+            Created using warningdata.build_severity_dataframe. Defaults to None, where warnings
+            are not mapped.
+
+        station_df: Pandas Dataframe.
+            Contains information of position and relative water level of each station, to
+            be plotted as a scatter map. Defaults to None, where stations are not mapped.
     """
-    colours = {'low': 'green', 'moderate': 'yellow', 'high': 'orange', 'severe': 'red'}
+    colours = {'severe': 'rgb(200, 0, 50)',
+               'high': 'rgb(150, 125, 75)',
+               'moderate': 'rgb(0, 200, 200)',
+               'low': 'rgb(0, 255, 100)'}
 
-    if df.empty:
-        print("Empty dataframe. Possibly no flood warnings at this time")
-        return
-
-    hover_temp = "<b>%{customdata[2]}</b><br>" \
-                 "severity : %{customdata[0]}<br>" \
-                 "last update : %{customdata[3]}<br><br>"
-                 # "message : %{customdata[4]}"  - prints as one big long line
+    hover_temp_choro = "<b>%{customdata[2]}</b><br>" \
+                       "severity : %{customdata[0]}<br>" \
+                       "last update : %{customdata[3]}<br><br>"
+                        # "message : %{customdata[4]}"  - prints as one big long line
 
     fig = go.Figure()
-    fig.add_choroplethmapbox(geojson=geojson,
-                             colorscale='YlGnBu',
-                             z=df.warning_severity,
-                             autocolorscale=False,
-                             locations=df.id,
-                             featureidkey="properties.FWS_TACODE",
-                             hovertemplate=hover_temp,
-                             customdata= [row for _, row in df.iterrows()],
-                             # mapbox_style="carto-positron",
-                             # colorscale=colours,
-                             # opacity=0.4,
-                             # center={"lat": 52.4, "lon": -1.5},
-                             # zoom=6
-                             )
 
-    fig.add_scattermapbox(lon=df2.lon, lat=df2.lat,
-                          # color="continent",  # which column to use to set the color of markers
-                          text=df2.name,
-                          mode='markers'  # column added to hover information
-                          )
+    if not (warning_df is None or warning_df.empty):
+        # discrete colours are not supported therefore we overlay figures for each level of severity
+        for i, s in enumerate(reversed(SeverityLevel)):
+            # we create a dataframe of all the rows which are of the severity we are considering
+            single_sev_df = warning_df[warning_df['severity'] == s.name]
+
+            if not single_sev_df.empty:
+                colour_scale = [[0, colours[s.name]], [1, colours[s.name]]]
+
+                fig.add_choroplethmapbox(geojson=geojson,
+                                         z=single_sev_df.warning_severity,
+                                         colorscale=colour_scale,
+                                         zmin=s.value-0.5,
+                                         zmax=s.value+0.5,
+                                         colorbar_len=0.2,
+                                         colorbar_y=0.8 - 0.2 * i,
+                                         colorbar_showticklabels=False,
+                                         colorbar_title_text=s.name,
+                                         colorbar_thickness=20,
+                                         autocolorscale=False,
+                                         locations=single_sev_df.id,
+                                         featureidkey="properties.FWS_TACODE",
+                                         hovertemplate=hover_temp_choro,
+                                         customdata=[row for _, row in single_sev_df.iterrows()],
+                                         marker_opacity=0.4)
+
+    if not (station_df is None or station_df.empty):
+        fig.add_scattermapbox(lon=station_df.lon, lat=station_df.lat,
+                              # color="continent",  # which column to use to set the color of markers
+                              text=station_df.name,
+                              mode='markers',  # column added to hover information
+                              marker_color=station_df.rel_level,
+                              marker_cmin=station_df.rel_level.mean() - 2 * station_df.rel_level.std(),
+                              marker_cmax=station_df.rel_level.mean() + 2 * station_df.rel_level.std(),
+                              marker_colorscale='YlOrRd',
+                              marker_colorbar_thickness=15,
+                              marker_colorbar_x=0.02,
+                              marker_colorbar_title='Station relative water level'
+                              )
 
     fig.update_layout(mapbox_style="carto-positron",
                       margin={"r": 0, "t": 0, "l": 0, "b": 0},
