@@ -83,11 +83,11 @@ class MonitoringStation:
 
         Parameters
         ----------
-        stations : list of MonitoringStation
+        stations : list[MonitoringStation]
 
         Returns
         -------
-        output : list of MonituringStation
+        output : list[MonituringStation]
             the monitoring stations with inconsistent typical ranges.
 
         """

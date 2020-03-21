@@ -5,7 +5,6 @@
 Internet."""
 
 import pandas as pd
-
 from floodsystem import datafetcher
 from floodsystem.station import MonitoringStation
 
@@ -28,7 +27,7 @@ def build_station_list(use_cache=True, test=False):
 
     Returns
     -------
-    stations : list of MonitoringStations
+    stations : list[MonitoringStations]
 
     """
     # Fetch station data - if testing use the fixed test data
@@ -107,7 +106,7 @@ def build_station_dataframe(stations):
 
     Parameters
     ----------
-    stations : list of MonitoringStation
+    stations : list[MonitoringStation]
         generated using build_station_list.
 
     Returns

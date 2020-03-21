@@ -1,12 +1,12 @@
-from shapely.geometry import Point, MultiPolygon, Polygon, shape, mapping
+"""Store and process flood warning data from Flood Monitoring API."""
+
 from enum import Enum
-from haversine import haversine
+from shapely.geometry import Point, shape, mapping
 from floodsystem.utils import sorted_by_key
 
 
 class FloodWarning:
-
-    """A Class to store data regarding flood warnings, obtained from the Flood Monitoring API"""
+    """A flood warning data class, obtained from the Flood Monitoring API."""
 
     def __init__(self,
                  identifier=None,
@@ -20,7 +20,8 @@ class FloodWarning:
                  geojson=None):
 
         self.id = identifier
-        self.severity = SeverityLevel(severity_lev) if severity_lev is not None else SeverityLevel.low
+        self.severity = SeverityLevel(severity_lev) if severity_lev \
+            is not None else SeverityLevel.low
         self.severity_lev = severity_lev
 
         self.area_json = None
@@ -51,17 +52,20 @@ class FloodWarning:
         return d
 
     def coord_in_region(self, coord):
-        """Determines if a given coordinate is within the region of the flood warning
+        """Determine if a coordinate is within the region of the flood warning.
 
-        Arguments:
-            coord: (lat, long).
-                The coordinates of the point in question, as a tuple
+        Parameters
+        ----------
+        coord : (lat, long)
+            The coordinates of the point in question, as a tuple.
 
-        Returns:
-            is_in_region: bool.
-                True if the point is in the region, false if the point is outside
-                the region or the region is None"""
+        Returns
+        -------
+        bool
+            True if the point is in the region, false if the point is outside
+            the region or the region is None.
 
+        """
         point = Point(coord[1], coord[0])
         if self.region is not None:
             # return true if any one region contains the point
@@ -69,24 +73,29 @@ class FloodWarning:
                 if r.contains(point):
                     return True
             return False
+        # TODO: return after else - convention fix?
         else:
             return False
 
     def stations_in_warning(self, stations):
-        """Produces a list of stations which are within the warning.
-        Note it is often the case that a warning region may have no stations in it.
-        This is because the Met Office define the warning regions based on
+        """Produce a list of stations which are within the warning.
+
+        Note it is often the case that a warning region may have no stations in
+        it. This is because the Met Office defines the warning regions based on
         floodplanes or elevations
 
-        Arguments:
-            stations: [MonitoringStations]
-                Created using stationdata.build_station_list()
+        Parameters
+        ----------
+        stations : list[MonitoringStation]
+            Created using stationdata.build_station_list().
 
-        Returns:
-            stations_in_warning: [MonitoringStation]
-                List of monitoring stations whose coordinates are within the warning region
+        Returns
+        -------
+        warning_stations : list[MonitoringStation]
+            List of monitoring stations whose coordinates are within the
+            warning region.
+
         """
-
         warning_stations = []
         for station in stations:
             if station.coord is not None:
@@ -96,14 +105,18 @@ class FloodWarning:
         return warning_stations
 
     def find_towns_affected(self, stations):
-        """"Finds the towns within the flood warning region
-        with a monitoring station in their vicinity
+        """Find towns in the flood warning region with a monitoring station.
 
-        Args:
-            stations: (list of MonitoringStations) produced using stationdata.build_station_list
+        Parameters
+        ----------
+        stations : list[MonitoringStations]
+            produced using stationdata.build_station_list.
 
-        Returns:
-            towns: (list of Strings) A list of names of the towns affected
+        Returns
+        -------
+        list[String]
+            list of names of the towns affected.
+
         """
         self.towns = []
         for station in self.stations_in_warning(stations):
@@ -112,14 +125,21 @@ class FloodWarning:
         return self.towns
 
     def simplify_geojson(self, tol=0.001, buf=0.002):
-        """Simplifies the geometry of the polygon for better plotting, updating
-        self.simplified_geojson
+        """Simplify polygon geometry for better plotting, update self.simplified_geojson.
 
-        Arguments:
-            tol: (float).
-                Determines the maximum allowed deviation from the original shape
-            buf: (float).
-                The amount to dilate the shapes in order to smooth them
+        Parameters
+        ----------
+        tol : float, optional
+            Determines the maximum allowed deviation from the original shape.
+            The default is 0.001.
+        buf : float, optional
+            The amount to dilate the shapes in order to smooth them.
+            The default is 0.002.
+
+        Returns
+        -------
+        None.
+
         """
         for i, r in enumerate(self.region):
             simplified_poly = r.simplify(tol, preserve_topology=False).buffer(buf)
@@ -127,32 +147,39 @@ class FloodWarning:
 
     @staticmethod
     def geo_json_to_shape(geo_json_obj):
-        """"Converts a geoJSON to a shapely object
+        """Convert a geoJSON to a shapely object.
 
-        Arguments:
-            geo_json_obj:  json_object.
-                The geoJSON object to be converted
+        Parameters
+        ----------
+        geo_json_obj : dict
+            geoJSON object to be converted.
 
-        Returns:
-            shape:  shapely_object.
-                The shapely object (of type corresponding to the type of the input)
-                The shape is corrected to form a simple polygon, e.g. by adding points
-                at self intersections"""
+        Returns
+        -------
+        shapely_object
+            The shapely object (of type corresponding to the type of the input)
+            The shape is corrected to form a simple polygon, e.g. by adding
+            points at self intersections.
+
+        """
         return shape(geo_json_obj).buffer(0)
 
     @staticmethod
     def order_warning_list_with_severity(warnings):
-        """ Puts warnings in order of decreasing severity (most severe first)
-        Arguments:
-            warnings: [FloodWarning].
-                List of flood warnings
+        """Put warnings in order of decreasing severity (most severe first).
 
-        Returns:
-            warnings_sorted: [FloodWarning].
-                Ordered list of flood warnings
+        Parameters
+        ----------
+        warnings : list[FloodWarning]
+            list of flood warnings.
+
+        Returns
+        -------
+        warnings_sorted : list[FloodWarning]
+            Ordered list of flood warnings.
+
         """
-
-        # convert warnings to a list of tuples containing the warning and the severity
+        # convert warnings to a list of tuples containing warning and severity
         warning_and_severity = [(w, repr(w.severity)) for w in warnings]
 
         warnings_sorted = [t[0] for t in sorted_by_key(warning_and_severity, 1)]
@@ -160,18 +187,20 @@ class FloodWarning:
 
     @staticmethod
     def check_warnings_at_location(warnings, loc):
-        """Checks for any flood warnings concerning a specified location
+        """Check for any flood warnings concerning a specified location.
 
-        Arguments:
-            loc: tuple of the form (Lat, Long)
+        Parameters
+        ----------
+        warnings : list[Warning]
+             List of warnings generated from warningdata.build_warning_list.
+        loc : (lat, long)
 
-            warnings: [Warning].
-                List of warnings generated from warningdata.build_warning_list
+        Returns
+        -------
+        warnings_at_loc : list[Warning]
+            A list of warnings pertaining to the location provided.
 
-        Returns:
-            warnings_at_loc: list of Warnings.
-                A list of warnings pertaining to the location provided."""
-
+        """
         warnings_at_loc = []
         for warning in warnings:
             if warning.coord_in_region(loc):
@@ -179,8 +208,9 @@ class FloodWarning:
 
         return warnings_at_loc
 
+
 class SeverityLevel(Enum):
-    """Enum to map severity levels to descriptive severities"""
+    """Enum to map severity levels to descriptive severities."""
 
     severe = 1
     high = 2

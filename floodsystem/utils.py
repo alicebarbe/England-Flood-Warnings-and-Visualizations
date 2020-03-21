@@ -21,7 +21,7 @@ def sorted_by_key(x, i, reverse=False):
 
     Parameters
     ----------
-    x : list of list/tuples
+    x : list[list/tuples]
     i : int
         ith component of lists to sort from.
     reverse : bool, optional
@@ -29,7 +29,7 @@ def sorted_by_key(x, i, reverse=False):
 
     Returns
     -------
-    list
+    list[list/tuples]
         sorted list of lists/tuples.
 
     """

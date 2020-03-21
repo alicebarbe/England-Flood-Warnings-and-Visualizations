@@ -12,10 +12,10 @@ def stations_by_distance(stations, p):
 
     Parameters
     ----------
-    stations : list of MonitoringStation
+    stations : list[MonitoringStation]
         generated using build_station_list.
-    p : TYPE
-        float coordinates of the center.
+    p : float
+        coordinates of the center.
 
     Returns
     -------
@@ -36,7 +36,7 @@ def stations_within_radius(stations, centre, r):
 
     Parameters
     ----------
-    stations : list of MonitoringStation
+    stations : list[MonitoringStation]
         generated using build_station_list.
     centre : (float, float)
         float coordinates of the center.
@@ -45,7 +45,7 @@ def stations_within_radius(stations, centre, r):
 
     Returns
     -------
-    output : ([MonitoringStation])
+    output : list[MonitoringStation]
         list of station objects.
 
     """
@@ -62,7 +62,7 @@ def rivers_with_stations(stations):
 
     Parameters
     ----------
-    stations : (list of MonitoringStation)
+    stations : list[MonitoringStation]
         generated using build_station_list.
 
     Returns
@@ -85,7 +85,7 @@ def stations_by_river(stations):
 
     Parameters
     ----------
-    stations : list of MonitoringStation
+    stations : list[MonitoringStation]
         generated using build_station_list..
 
     Returns
@@ -120,7 +120,7 @@ def rivers_by_station_number(stations_list, N):
 
     Parameters
     ----------
-    stations : list of MonitoringStation
+    stations : list[MonitoringStation]
         generated using build_station_list.
     N : int
         The number of rivers to return, in descending order of number of

@@ -9,4 +9,6 @@ __pycache__/
 
 .vscode/
 
+.pylint.d/
+
 temp-plot.html
