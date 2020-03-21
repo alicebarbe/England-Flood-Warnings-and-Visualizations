@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>geo module &#8212; Flood Warning System 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-geo">
+<span id="geo-module"></span><h1>geo module<a class="headerlink" href="#module-geo" title="Permalink to this headline">¶</a></h1>
+<p>This module contains a collection of functions related to
+geographical data.</p>
+<dl class="function">
+<dt id="geo.rivers_by_station_number">
+<code class="sig-prename descclassname">geo.</code><code class="sig-name descname">rivers_by_station_number</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">N</em><span class="sig-paren">)</span><a class="headerlink" href="#geo.rivers_by_station_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the N rivers with the greatest number of stations. the rivers are
+returned in order of decreasing number of stations. If there is a tie between
+multiple rivers at the Nth entry, all rivers with equal number of stations
+are returned</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stations</strong> – (list of MonitoringStation).
+generated using build_station_list.</p></li>
+<li><p><strong>N</strong> – (int).
+The number of rivers to return, in descending order of number of
+stations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>(string, int).</dt><dd><p>list of tuples containing the river names and number of stations
+of rivers with the N highest number of monitoring stations</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(river_name, number_of_stations)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="geo.rivers_with_stations">
+<code class="sig-prename descclassname">geo.</code><code class="sig-name descname">rivers_with_stations</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#geo.rivers_with_stations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a set containing names of rivers with an associated monitoring station</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stations</strong> – (list of MonitoringStation).
+generated using build_station_list.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>{string}.</dt><dd><p>A set containing the names of all the rivers with a monitoring station</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>{river_name}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="geo.stations_by_distance">
+<code class="sig-prename descclassname">geo.</code><code class="sig-name descname">stations_by_distance</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#geo.stations_by_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate distances from a coordinate p to each station. Return the station
+distance pairs in an ordered list, by distance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stations</strong> – (list of MonitoringStation).
+generated using build_station_list.</p></li>
+<li><p><strong>p</strong> – (lat, lon).
+float coordinates of the center.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>(MonitoringStation, float).</dt><dd><p>pair of station object and the corresponding distance from it to point p</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(station, distance)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="geo.stations_by_river">
+<code class="sig-prename descclassname">geo.</code><code class="sig-name descname">stations_by_river</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#geo.stations_by_river" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps stations to the rivers which they are associated with. Return a dict
+containing MonitoringStations with key values for each river</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stations</strong> – (list of MonitoringStation).
+generated using build_station_list.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>[MonitoringStations]}: {string<span class="classifier">[MonitoringStation]}.</span></dt><dd><p>dict containing lists of MonitoringStations for each river. The dict
+keys are the river names</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>{river_name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="geo.stations_within_radius">
+<code class="sig-prename descclassname">geo.</code><code class="sig-name descname">stations_within_radius</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">centre</em>, <em class="sig-param">r</em><span class="sig-paren">)</span><a class="headerlink" href="#geo.stations_within_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return station/distance pair that are within radius r of center.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stations</strong> – (list of MonitoringStation).
+generated using build_station_list.</p></li>
+<li><p><strong>centre</strong> – (lat, lon) (float, float).
+float coordinates of the center.</p></li>
+<li><p><strong>r</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>([MonitoringStation]).</dt><dd><p>list of station objects</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of station</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flood Warning System</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Alice Barbe, Daniel Siromani.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/source/geo.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>utils module &#8212; Flood Warning System 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-utils">
+<span id="utils-module"></span><h1>utils module<a class="headerlink" href="#module-utils" title="Permalink to this headline">¶</a></h1>
+<p>This module contains utility functions.</p>
+<dl class="function">
+<dt id="utils.map">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">map</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">in_range</em>, <em class="sig-param">out_range</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linearly maps a value of x from a range (in_min, in_max)
+to a range (out_min, out_max). Note that the value is
+not constrained to the output range, nor does x need to be
+constrained to the input range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – float.
+the input value</p></li>
+<li><p><strong>in_range</strong> – (float, float).
+tuple of the input range</p></li>
+<li><p><strong>out_range</strong> – (float, float).
+tuple of output range</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>float.</dt><dd><p>the mapped value</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>out_val</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.sorted_by_key">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">sorted_by_key</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">i</em>, <em class="sig-param">reverse=False</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.sorted_by_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a list of lists/tuples, return list sorted by the ith
+component of the list/tuple, E.g.</p>
+<p>Sort on first entry of tuple:</p>
+<blockquote>
+<div><p>&gt; sorted_by_key([(1, 2), (5, 1]), 0)
+&gt;&gt;&gt; [(1, 2), (5, 1)]</p>
+</div></blockquote>
+<p>Sort on second entry of tuple:</p>
+<blockquote>
+<div><p>&gt; sorted_by_key([(1, 2), (5, 1)], 1)
+&gt;&gt;&gt; [(5, 1), (1, 2)]</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flood Warning System</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Alice Barbe, Daniel Siromani.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/source/utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

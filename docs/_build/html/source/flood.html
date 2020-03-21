@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>flood module &#8212; Flood Warning System 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-flood">
+<span id="flood-module"></span><h1>flood module<a class="headerlink" href="#module-flood" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="flood.stations_highest_rel_level">
+<code class="sig-prename descclassname">flood.</code><code class="sig-name descname">stations_highest_rel_level</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">N</em><span class="sig-paren">)</span><a class="headerlink" href="#flood.stations_highest_rel_level" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns the N stations with the highest relative water levels,</dt><dd><p>in descending order. Only N values are returned regarless of any</p>
+</dd>
+</dl>
+<p>tie conditions. Fewer than N may be returned if len(stations) &lt; N</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>stations: (list of MonitoringStation).</dt><dd><p>generated using build_station_list.</p>
+</dd>
+<dt>N: int.</dt><dd><p>Number of stations to returns</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>[MonitoringStation].</dt><dd><p>List of MonitoringStation objects with the highest
+relative water levels</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[stations_with_highest_levels]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="flood.stations_level_over_threshold">
+<code class="sig-prename descclassname">flood.</code><code class="sig-name descname">stations_level_over_threshold</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">tol</em><span class="sig-paren">)</span><a class="headerlink" href="#flood.stations_level_over_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the stations whose relative water level exceeds
+the value of tol and the relative water levels of these stations.
+The stations are listed in order of decreasing relative water level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stations</strong> – (list of MonitoringStation).
+generated using build_station_list.</p></li>
+<li><p><strong>tol</strong> – float.
+All stations with relative water levels above tol are returned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>[(MonitoringStation, float)].</dt><dd><p>A list of tuples containing the MonitoringStation object
+and its relative water level</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(station, rel_water_level)]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flood Warning System</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Alice Barbe, Daniel Siromani.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/source/flood.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
