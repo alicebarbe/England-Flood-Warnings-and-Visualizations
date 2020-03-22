@@ -167,8 +167,16 @@ def map_flood_warnings(geojson, warning_df=None, station_df=None):
     hover_temp_choro = "<b>%{customdata[2]}</b><br>" \
                        "severity : %{customdata[0]}<br>" \
                        "last update : %{customdata[3]}<br><br>" \
-                       "warning link : <a href='https://flood-warning-information.service.gov.uk/warnings?location=" \
+                       "warning link : <a href='https://flood-warning-" \
+                       "information.service.gov.uk/warnings?location=" \
                        "%{customdata[6]}'> %{customdata[6]}</a>"
+
+    hover_temp_scatter = "<b>%{customdata[0]}</b><br>" \
+                         "Water level : %{customdata[3]} m<br>" \
+                         "Typical Range : %{customdata[5][0]}m - " \
+                         "%{customdata[5][1]}m<br>" \
+                         "Relative Level : %{customdata[4]:.3r}<br>" \
+                         "Town : %{customdata[6]}"
 
     fig = go.Figure()
 
@@ -201,17 +209,24 @@ def map_flood_warnings(geojson, warning_df=None, station_df=None):
                                          marker_opacity=0.4)
 
     if not (station_df is None or station_df.empty):
+        # define the ranges of the level scale to discount any outliers
+        min_lev = station_df.rel_level.mean() - 2 * station_df.rel_level.std()
+        max_lev = station_df.rel_level.mean() + 2 * station_df.rel_level.std()
+
         fig.add_scattermapbox(lon=station_df.lon, lat=station_df.lat,
                               # color="continent",  # color of markers column
                               text=station_df.name,
                               mode='markers',  # hover information column
                               marker_color=station_df.rel_level,
-                              marker_cmin=station_df.rel_level.mean() - 2 * station_df.rel_level.std(),
-                              marker_cmax=station_df.rel_level.mean() + 2 * station_df.rel_level.std(),
+                              marker_cmin=min_lev,
+                              marker_cmax=max_lev,
                               marker_colorscale='YlOrRd',
                               marker_colorbar_thickness=15,
                               marker_colorbar_x=0.02,
-                              marker_colorbar_title='Station relative water level'
+                              marker_colorbar_title='Relative Water Level',
+                              customdata=[row for _, row in
+                                            station_df.iterrows()],
+                              hovertemplate=hover_temp_scatter
                               )
 
     fig.update_layout(mapbox_style="carto-positron",

@@ -127,5 +127,10 @@ def build_station_dataframe(stations):
     df['rel_level'] = [station.relative_water_level() if
                        station.relative_water_level() is not None else 0
                        for station in stations]
+    df['typical_range'] = [station.typical_range if station.typical_range is
+                            not None else (0, 0) for station in stations]
+    df['town'] = [station.town if station.town is not None else "Not available"
+                  for station in stations]
+
 
     return df
