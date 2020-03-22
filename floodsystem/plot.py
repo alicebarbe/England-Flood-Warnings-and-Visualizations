@@ -165,10 +165,10 @@ def map_flood_warnings(geojson, warning_df=None,
     None.
 
     """
-    colours = {'severe': 'rgb(200, 0, 50)',
-               'high': 'rgb(150, 125, 75)',
-               'moderate': 'rgb(0, 200, 200)',
-               'low': 'rgb(0, 255, 100)'}
+    colours = {'severe': 'rgb(120, 60, 96)',
+               'high': 'rgb(249, 124, 79)',
+               'moderate': 'rgb(230, 236, 0)',
+               'low': 'rgb(158, 227, 114)'}
 
     hover_temp_choro = "<b>%{customdata[2]}</b><br>" \
                        "severity : %{customdata[0]}<br>" \

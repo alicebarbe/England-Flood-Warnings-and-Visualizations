@@ -299,7 +299,30 @@ def build_severity_dataframe(warnings):
                              "Not available" for w in warnings]
     df['int_severity'] = [w.severity_lev if w.severity_lev is not None else 5
                           for w in warnings]
-    df['county'] = [w.county if w.county is not None else "Not available"
-                    for w in warnings]
+
+    # in some cases the county names are very long so we limit to 50 characters
+    county_list = []
+    county_str_size_lim = 47
+    for warning in warnings:
+        if warning.county is None:
+            county_list.append("Not available")
+
+        elif len(warning.county) > 50:
+            counties = warning.county.split(',')
+            county_str = counties[0]
+
+            for county in counties[1:]:
+                if len(county_str) + len(county) + 1 < county_str_size_lim:
+                    county_str += ',' + county
+                else:
+                    county_str += '...'
+                    break
+
+            county_list.append(county_str)
+
+        else:
+            county_list.append(warning.county)
+
+    df['county'] = county_list
 
     return df

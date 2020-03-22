@@ -19,7 +19,7 @@ def run():
     stations = build_station_list()
     update_water_levels(stations)
 
-    severity = SeverityLevel.high
+    severity = SeverityLevel.low
 
     print("Building warning list of severity {}...".format(severity.value))
     warnings = build_warning_list(severity.value)
