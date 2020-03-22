@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from plotly.offline import plot
 from floodsystem.analysis import polyfit
 from floodsystem.warning import SeverityLevel
+import numpy as np
 
 
 def create_water_levels_plot(listinput):
@@ -187,43 +188,41 @@ def map_flood_warnings(geojson, warning_df=None,
     fig = go.Figure()
 
     if not (warning_df is None or warning_df.empty):
-        # discrete colours are not supported therefore we overlay figures for
-        # each level of severity
-        for i, s in enumerate(reversed(SeverityLevel)):
-            if s.value > min_severity:
-                # Only plot for warnings of greater severity (lower numeric
-                # value) than min_severity
-                continue
+        color_floats = np.linspace(min_severity, 0, min_severity+1)/min_severity
+        color_list = ["green", "yellow", "orange", "red"]
+        color_list.reverse()
+        colorscale = []
+        for i in range(len(color_floats) - 1):
+            colorscale.append((color_floats[i], color_list[i]))
+            colorscale.append((color_floats[i+1], color_list[i]))
+        colorscale.reverse()
+            
 
-            # we create a dataframe of all the rows of considered severity
-            single_sev_df = warning_df[warning_df['severity'] == s.name]
-
-            if not single_sev_df.empty:
-                colour_scale = [[0, colours[s.name]], [1, colours[s.name]]]
-
-                fig.add_choroplethmapbox(geojson=geojson,
-                                         z=single_sev_df.int_severity,
-                                         colorscale=colour_scale,
-                                         zmin=s.value - 0.5,
-                                         zmax=s.value + 0.5,
-                                         colorbar_len=0.2,
-                                         colorbar_y=0.8 - 0.2 * i,
-                                         colorbar_showticklabels=False,
-                                         colorbar_title_text=s.name,
-                                         colorbar_thickness=20,
-                                         autocolorscale=False,
-                                         locations=single_sev_df.id,
-                                         featureidkey="properties.FWS_TACODE",
-                                         hovertemplate=hover_temp_choro,
-                                         customdata=[row for _, row in
-                                                     single_sev_df.iterrows()],
-                                         marker_opacity=0.4)
+        fig.add_choroplethmapbox(geojson=geojson,
+                                 z=warning_df['int_severity'],
+                                 colorscale=colorscale,
+                                 #colorscale=colour_scale,
+                                 #zmin=s.value - 0.5,
+                                 #zmax=s.value + 0.5,
+                                 #colorbar_len=0.2,
+                                 #colorbar_y=0.8 - 0.2 * i,
+                                 #colorbar_showticklabels=False,
+                                 #colorbar_title_text=s.name,
+                                 #colorbar_thickness=20,
+                                 #autocolorscale=False,
+                                 locations=warning_df['id'],
+                                 featureidkey="properties.FWS_TACODE",
+                                 hovertemplate=hover_temp_choro,
+                                 customdata=[row for _, row in
+                                             warning_df.iterrows()],
+                                 marker_opacity=0.4)
 
     if not (station_df is None or station_df.empty):
         # define the ranges of the level scale to discount any outliers
         min_lev = station_df.rel_level.mean() - station_df.rel_level.std()
         max_lev = station_df.rel_level.mean() + station_df.rel_level.std()
 
+        # create map of stations
         fig.add_scattermapbox(lon=station_df.lon, lat=station_df.lat,
                               # color="continent",  # color of markers column
                               text=station_df.name,
@@ -231,19 +230,28 @@ def map_flood_warnings(geojson, warning_df=None,
                               marker_color=station_df.rel_level,
                               marker_cmin=min_lev,
                               marker_cmax=max_lev,
-                              marker_colorscale='haline_r',
+                              #marker_colorscale='haline_r',
+                              marker_colorscale='rdbu',
+                              #marker_reversescale=True,
+                              #marker_colorscale = [(0, "red"),   (0.33, "red"),
+                              #                     (0.33, "green"), (0.66, "green"),
+                              #                     (0.66, "blue"),  (1, "blue")],
                               marker_colorbar_thickness=15,
                               marker_colorbar_x=0.02,
                               marker_colorbar_title='Relative Water Level',
+                              #marker_color=(round((station_df.rel_level),
                               customdata=[row for _, row in
-                                            station_df.iterrows()],
-                              hovertemplate=hover_temp_scatter
+                                          station_df.iterrows()],
+                              hovertemplate=hover_temp_scatter,
+                              legendgroup="Stations"
                               )
 
     fig.update_layout(mapbox_style="carto-positron",
                       margin={"r": 0, "t": 0, "l": 0, "b": 0},
                       mapbox_zoom=5.5,
-                      mapbox_center={"lat": 52.5, "lon": 0.5})
+                      mapbox_center={"lat": 52.5, "lon": 0.5},
+                      showlegend=True,
+                      legend_orientation="h")
 
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
     plot(fig, auto_open=True)
