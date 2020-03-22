@@ -166,8 +166,9 @@ def map_flood_warnings(geojson, warning_df=None, station_df=None):
 
     hover_temp_choro = "<b>%{customdata[2]}</b><br>" \
                        "severity : %{customdata[0]}<br>" \
-                       "last update : %{customdata[3]}<br><br>"
-                       # "message : %{customdata[4]}"  - prints as one big line
+                       "last update : %{customdata[3]}<br><br>" \
+                       "warning link : <a href='https://flood-warning-information.service.gov.uk/warnings?location=" \
+                       "%{customdata[6]}'> %{customdata[6]}</a>"
 
     fig = go.Figure()
 
@@ -184,8 +185,8 @@ def map_flood_warnings(geojson, warning_df=None, station_df=None):
                 fig.add_choroplethmapbox(geojson=geojson,
                                          z=single_sev_df.warning_severity,
                                          colorscale=colour_scale,
-                                         zmin=s.value-0.5,
-                                         zmax=s.value+0.5,
+                                         zmin=s.value - 0.5,
+                                         zmax=s.value + 0.5,
                                          colorbar_len=0.2,
                                          colorbar_y=0.8 - 0.2 * i,
                                          colorbar_showticklabels=False,

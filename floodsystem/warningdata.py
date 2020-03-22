@@ -290,29 +290,31 @@ def build_severity_dataframe(warnings, min_severity):
     data_arr = []
 
     for w in warnings:
-        if w.severity is not None:
-            if w.severity.value <= min_severity:
-                l = "Not available"
-                last_update = "Not available"
-                message = "Not available"
-                warning_id = "Not available"
-                warning_severity = 4
+        if w.severity is not None and w.severity.value <= min_severity:
+            l = "Not available"
+            last_update = "Not available"
+            message = "Not available"
+            warning_id = "Not available"
+            county = None
+            int_severity = 4
 
-                if w.label is not None:
-                    l = w.label
-                if w.last_update is not None:
-                    last_update = w.last_update
-                if w.description is not None:
-                    message = w.message
-                if w.id is not None:
-                    warning_id = w.id
-                if w.severity_lev is not None:
-                    warning_severity = w.severity_lev
+            if w.label is not None:
+                l = w.label
+            if w.last_update is not None:
+                last_update = w.last_update
+            if w.description is not None:
+                message = w.message
+            if w.id is not None:
+                warning_id = w.id
+            if w.severity_lev is not None:
+                int_severity = w.severity_lev
+            if w.county is not None:
+                county = w.county
 
                 data_arr.append([w.severity.name, warning_id, l, last_update,
-                                 message, warning_severity])
+                                 message, int_severity, county])
 
     df = pd.DataFrame(data_arr, columns=['severity', 'id', 'label',
                                          'last_updated', 'warning_message',
-                                         'warning_severity'])
+                                         'warning_severity', 'county'])
     return df
