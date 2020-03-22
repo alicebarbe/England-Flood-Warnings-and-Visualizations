@@ -137,7 +137,8 @@ def plot_water_levels_with_fit(listinput, p):
     plot(fig, auto_open=True)
 
 
-def map_flood_warnings(geojson, warning_df=None, station_df=None):
+def map_flood_warnings(geojson, warning_df=None,
+                       min_severity=4, station_df=None):
     """Plot flood warnings and station levels as a chloropleth map figure.
 
     Parameters
@@ -153,6 +154,11 @@ def map_flood_warnings(geojson, warning_df=None, station_df=None):
          Contains information of position and relative water level of each
          station, to be plotted as a scatter map. Defaults to None, where
          stations are not mapped.
+    min_severity : int, optional
+        If provided, plots only warnings equal to or above this severity
+        level Use SeverityLevel.value to obtain the integer value
+        corresponding to a named severity level. default is 4 (all warnings
+        plotted)
 
     Returns
     -------
@@ -184,6 +190,11 @@ def map_flood_warnings(geojson, warning_df=None, station_df=None):
         # discrete colours are not supported therefore we overlay figures for
         # each level of severity
         for i, s in enumerate(reversed(SeverityLevel)):
+            if s.value > min_severity:
+                # Only plot for warnings of greater severity (lower numeric
+                # value) than min_severity
+                continue
+
             # we create a dataframe of all the rows of considered severity
             single_sev_df = warning_df[warning_df['severity'] == s.name]
 
@@ -191,7 +202,7 @@ def map_flood_warnings(geojson, warning_df=None, station_df=None):
                 colour_scale = [[0, colours[s.name]], [1, colours[s.name]]]
 
                 fig.add_choroplethmapbox(geojson=geojson,
-                                         z=single_sev_df.warning_severity,
+                                         z=single_sev_df.int_severity,
                                          colorscale=colour_scale,
                                          zmin=s.value - 0.5,
                                          zmax=s.value + 0.5,

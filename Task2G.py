@@ -43,7 +43,7 @@ def run():
 
     print("Making datasets...")
     geojson = build_regions_geojson(warnings)
-    df = build_severity_dataframe(warnings, severity.value)
+    df = build_severity_dataframe(warnings)
     df2 = build_station_dataframe(stations)
 
     # we want the most severe warnings first - given that the list will be long
@@ -54,7 +54,8 @@ def run():
 
     print("\n")
     print("Mapping warnings...")
-    map_flood_warnings(geojson, warning_df=df, station_df=df2)
+    map_flood_warnings(geojson, warning_df=df, min_severity=severity.value,
+                       station_df=df2)
 
     print("Checking for warnings in Jesus College, Cambridge ...")
     jc_coords = (52.20527, 0.120705)
