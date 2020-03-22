@@ -165,10 +165,10 @@ def map_flood_warnings(geojson, warning_df=None,
     None.
 
     """
-    colours = {'severe': 'rgb(120, 60, 96)',
-               'high': 'rgb(249, 124, 79)',
-               'moderate': 'rgb(230, 236, 0)',
-               'low': 'rgb(158, 227, 114)'}
+    colours = {'severe': 'rgb(41, 24, 107)',
+               'high': 'rgb(18, 95, 142)',
+               'moderate': 'rgb(65, 157, 133)',
+               'low': 'rgb(160, 214, 91)'}
 
     hover_temp_choro = "<b>%{customdata[2]}</b><br>" \
                        "severity : %{customdata[0]}<br>" \
@@ -221,8 +221,8 @@ def map_flood_warnings(geojson, warning_df=None,
 
     if not (station_df is None or station_df.empty):
         # define the ranges of the level scale to discount any outliers
-        min_lev = station_df.rel_level.mean() - 2 * station_df.rel_level.std()
-        max_lev = station_df.rel_level.mean() + 2 * station_df.rel_level.std()
+        min_lev = station_df.rel_level.mean() - station_df.rel_level.std()
+        max_lev = station_df.rel_level.mean() + station_df.rel_level.std()
 
         fig.add_scattermapbox(lon=station_df.lon, lat=station_df.lat,
                               # color="continent",  # color of markers column
@@ -231,7 +231,7 @@ def map_flood_warnings(geojson, warning_df=None,
                               marker_color=station_df.rel_level,
                               marker_cmin=min_lev,
                               marker_cmax=max_lev,
-                              marker_colorscale='YlOrRd',
+                              marker_colorscale='haline_r',
                               marker_colorbar_thickness=15,
                               marker_colorbar_x=0.02,
                               marker_colorbar_title='Relative Water Level',
