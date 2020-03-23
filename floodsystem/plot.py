@@ -193,38 +193,45 @@ def map_flood_warnings(geojson, warning_df=None,
         # TODO: color configs somewhere more global
         color_list = ["red", "orange", "yellow", "green"]
         colorscale = []
+        # I thought I liked discrete bars
         for i in range(len(color_floats) - 1):
             colorscale.append((color_floats[i], color_list[i]))
             colorscale.append((color_floats[i+1], color_list[i]))
+        # NVM I liked the continuous bar - comment this to go back to discrete
+        colorscale = color_list[:min_severity]
         # TODO: replace with something more efficient, from the enum?
-        ticktext=["severe", "high", "medium", "low"][:min_severity]
+        #ticktext = ["severe", "high", "medium", "low"][:min_severity]
+        ticktext = ["low", "medium", "high", "severe"][4-min_severity:]
 
         fig.add_choroplethmapbox(geojson=geojson,
                                  z=warning_df['int_severity'],
+                                 zmax=min_severity+0.1,
+                                 zmin=1-0.1,
                                  colorscale=colorscale,
-                                 #colorscale=colour_scale,
-                                 zmax=min_severity,
-                                 zmin=1,
-                                 #colorbar_len=0.2,
-                                 #colorbar_y=0.8 - 0.2 * i,
-                                 #colorbar_showticklabels=False,
-                                 # TODO: color bar without border
-                                 colorbar_thickness=20,
-                                 colorbar_bordercolor='white',
+                                 autocolorscale=False,
+
+                                 colorbar_thickness=15,
+                                 colorbar_outlinewidth=0,
                                  colorbar_tickvals=list(range(min_severity, 0, -1)),
                                  colorbar_ticktext=ticktext,
+                                 #colorbar_tickangle=90,
                                  colorbar_tickmode="array",
-                                 autocolorscale=False,
+                                 colorbar_x=0.13,
+                                 colorbar_yanchor="bottom",
+                                 colorbar_y=0,
+                                 colorbar_title_text="Flood Warnings",
+
                                  locations=warning_df['id'],
                                  featureidkey="properties.FWS_TACODE",
                                  hovertemplate=hover_temp_choro,
                                  customdata=[row for _, row in
                                              warning_df.iterrows()],
                                  marker_opacity=0.6,
-                                 # TODO: if I set the line width to 0 it's  pretty
+                                 # TODO: if I set linewidth to 0 it's pretty
                                  # but also impossible to click link because
                                  # the lines are super thin.
-                                 marker_line_color='white')
+                                 marker_line_color='white',
+                                 name="Flood Warning")
 
     if not (station_df is None or station_df.empty):
         # define the ranges of the level scale to discount any outliers
@@ -233,7 +240,6 @@ def map_flood_warnings(geojson, warning_df=None,
 
         # create map of stations
         fig.add_scattermapbox(lon=station_df.lon, lat=station_df.lat,
-                              # color="continent",  # color of markers column
                               text=station_df.name,
                               mode='markers',  # hover information column
                               marker_color=station_df.rel_level,
@@ -249,18 +255,21 @@ def map_flood_warnings(geojson, warning_df=None,
                               marker_colorbar_x=0.02,
                               marker_colorbar_title='Relative Water Level',
                               #marker_color=(round((station_df.rel_level),
+
                               customdata=[row for _, row in
                                           station_df.iterrows()],
                               hovertemplate=hover_temp_scatter,
-                              #legendgroup="Stations"
+                              name="Station",
                               )
 
     fig.update_layout(mapbox_style="carto-positron",
                       margin={"r": 0, "t": 0, "l": 0, "b": 0},
                       mapbox_zoom=5.5,
-                      mapbox_center={"lat": 52.5, "lon": 0.5},
-                      #showlegend=True,
-                      legend_orientation="h")
+                      mapbox_center={"lat": 53, "lon": -1.5},
+                      showlegend=True,
+                      legend_y=0.98,
+                      legend_x=0.9,
+                      legend_title="Click to display:")
 
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
     plot(fig, auto_open=True)
