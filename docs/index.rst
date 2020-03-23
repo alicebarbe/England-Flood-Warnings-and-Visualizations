@@ -19,6 +19,7 @@ Additionally, the following packages are needed:
 * numpy
 * shapely
 * plotly
+* matplotlib
 * pandas
 * requests
 * dateutils
