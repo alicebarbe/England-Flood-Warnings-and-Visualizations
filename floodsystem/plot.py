@@ -188,34 +188,43 @@ def map_flood_warnings(geojson, warning_df=None,
     fig = go.Figure()
 
     if not (warning_df is None or warning_df.empty):
-        color_floats = np.linspace(min_severity, 0, min_severity+1)/min_severity
-        color_list = ["green", "yellow", "orange", "red"]
-        color_list.reverse()
+        # create discrete color scale, depending on severities plotted
+        color_floats = np.linspace(0, min_severity, min_severity+1)/min_severity
+        # TODO: color configs somewhere more global
+        color_list = ["red", "orange", "yellow", "green"]
         colorscale = []
         for i in range(len(color_floats) - 1):
             colorscale.append((color_floats[i], color_list[i]))
             colorscale.append((color_floats[i+1], color_list[i]))
-        colorscale.reverse()
-            
+        # TODO: replace with something more efficient, from the enum?
+        ticktext=["severe", "high", "medium", "low"][:min_severity]
 
         fig.add_choroplethmapbox(geojson=geojson,
                                  z=warning_df['int_severity'],
                                  colorscale=colorscale,
                                  #colorscale=colour_scale,
-                                 #zmin=s.value - 0.5,
-                                 #zmax=s.value + 0.5,
+                                 zmax=min_severity,
+                                 zmin=1,
                                  #colorbar_len=0.2,
                                  #colorbar_y=0.8 - 0.2 * i,
                                  #colorbar_showticklabels=False,
-                                 #colorbar_title_text=s.name,
-                                 #colorbar_thickness=20,
-                                 #autocolorscale=False,
+                                 # TODO: color bar without border
+                                 colorbar_thickness=20,
+                                 colorbar_bordercolor='white',
+                                 colorbar_tickvals=list(range(min_severity, 0, -1)),
+                                 colorbar_ticktext=ticktext,
+                                 colorbar_tickmode="array",
+                                 autocolorscale=False,
                                  locations=warning_df['id'],
                                  featureidkey="properties.FWS_TACODE",
                                  hovertemplate=hover_temp_choro,
                                  customdata=[row for _, row in
                                              warning_df.iterrows()],
-                                 marker_opacity=0.4)
+                                 marker_opacity=0.6,
+                                 # TODO: if I set the line width to 0 it's  pretty
+                                 # but also impossible to click link because
+                                 # the lines are super thin.
+                                 marker_line_color='white')
 
     if not (station_df is None or station_df.empty):
         # define the ranges of the level scale to discount any outliers
@@ -243,14 +252,14 @@ def map_flood_warnings(geojson, warning_df=None,
                               customdata=[row for _, row in
                                           station_df.iterrows()],
                               hovertemplate=hover_temp_scatter,
-                              legendgroup="Stations"
+                              #legendgroup="Stations"
                               )
 
     fig.update_layout(mapbox_style="carto-positron",
                       margin={"r": 0, "t": 0, "l": 0, "b": 0},
                       mapbox_zoom=5.5,
                       mapbox_center={"lat": 52.5, "lon": 0.5},
-                      showlegend=True,
+                      #showlegend=True,
                       legend_orientation="h")
 
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
