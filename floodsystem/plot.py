@@ -1,12 +1,11 @@
 """Visualizations of historical data, flooding zones, and stations."""
 
+import matplotlib
+import numpy as np
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from plotly.offline import plot
 from floodsystem.analysis import polyfit
-from floodsystem.warning import SeverityLevel
-import matplotlib
-import numpy as np
 
 
 def create_water_levels_plot(listinput):
@@ -167,11 +166,6 @@ def map_flood_warnings(geojson, warning_df=None,
     None.
 
     """
-    colours = {'severe': 'rgb(41, 24, 107)',
-               'high': 'rgb(18, 95, 142)',
-               'moderate': 'rgb(65, 157, 133)',
-               'low': 'rgb(160, 214, 91)'}
-
     hover_temp_choro = "<b>%{customdata[2]}</b><br>" \
                        "severity : %{customdata[0]}<br>" \
                        "last update : %{customdata[3]}<br><br>" \
@@ -204,7 +198,6 @@ def map_flood_warnings(geojson, warning_df=None,
         # NVM I liked the continuous bar - comment this to go back to discrete
         colorscale = color_list[4-min_severity:]
         # TODO: replace with something more efficient, from the enum?
-        #ticktext = ["severe", "high", "medium", "low"][:min_severity]
         ticktext = ["low", "moderate", "high", "severe"][4-min_severity:]
 
         fig.add_choroplethmapbox(geojson=geojson,
@@ -293,8 +286,7 @@ def get_recommended_simplification_params(warning_len):
     """
     if warning_len < 10:
         return {'tol': 0.000, 'buf': 0.000}
-    else:
-        tol = (round(warning_len, -1) - 10) * 0.00005
-        buf = (round(warning_len, -1) - 10) * 0.0001
+    tol = (round(warning_len, -1) - 10) * 0.00005
+    buf = (round(warning_len, -1) - 10) * 0.0001
 
-        return {'tol': tol, 'buf': buf}
+    return {'tol': tol, 'buf': buf}
