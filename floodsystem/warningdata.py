@@ -1,24 +1,34 @@
-from floodsystem import datafetcher
-from floodsystem.warning import FloodWarning, SeverityLevel
-import pandas as pd
+"""Framework to import, cache, and use flood warning and corresponding data."""
+
 import json
 import pickle
 import os
+import pandas as pd
+from floodsystem import datafetcher
+from floodsystem.warning import FloodWarning, SeverityLevel
 
 
 def build_warning_list(severity, use_pickle_caches=True):
-    """Fetch warnings from the API and create a list of warnings. Also updates caches
-    for flood regions for any new warnings
-    Arguments:
-        severity: int.
-            warnings above this minimum severity value (ie of lower numerical value) will be returned
-        use_pickle_caches: bool.
-            If true, then cached data regarding flood regions is used -
-            the flood warnings are still the most recent pulled from the API
+    """Fetch warnings from the API and create a list of warnings.
 
-    Returns:
-        warnings: [FloodWarnings].
-            The list of FloodWarning objects of severity greater than or equal to severity
+    Also updates caches for flood regions for any new warnings.
+
+    Parameters
+    ----------
+    severity : int
+        warnings above this minimum severity value (ie of lower numerical
+        value) will be returned.
+    use_pickle_caches : bool, optional
+        If true, then cached data regarding flood regions is used - the flood
+        warnings are still the most recent pulled from the API. The default is
+        True.
+
+    Returns
+    -------
+    warnings : list[FloodWarning]
+        The list of FloodWarning objects of severity greater than or equal to
+        severity.
+
     """
     data = datafetcher.fetch_flood_warnings(severity)
 
@@ -39,10 +49,14 @@ def build_warning_list(severity, use_pickle_caches=True):
         if 'timeMessageChanged' in w:
             warning.last_update = w['timeMessageChanged']
 
-        # attempts to set the area based on a cached value, if not, pulls from the api
+        # attempts to set the area based on a cached value, if not,
+        # pulls from the api
         if use_pickle_caches:
-            # finds the first area in the cache which matches the warnings id, otherwise area is set to None
-            area = next((a for a in areas if (a['items']['currentWarning']['floodAreaID'] == warning.id)), None)
+            # finds the first area in the cache which matches the warnings id,
+            # otherwise area is set to None
+            area = next((a for a in areas if
+                         (a['items']['currentWarning']['floodAreaID']
+                          == warning.id)), None)
             if area is not None:
                 print('cache area found')
                 warning.label = area['items']['label']
@@ -58,10 +72,14 @@ def build_warning_list(severity, use_pickle_caches=True):
                 warning.description = flood_area['items']['description']
                 warning.area_json = flood_area
 
-        # attempts to set the poly based on a cached value, if not, pulls from the api
+        # attempts to set the poly based on a cached value, if not,
+        # pulls from the api
         if use_pickle_caches:
-            # finds the first poly in the cache which matches the warnings id, otherwise poly is set to None
-            poly = next((p for p in polys if (p[0][0]['properties']['FWS_TACODE'] == warning.id)), None)
+            # finds the first poly in the cache which matches the warnings id,
+            # otherwise poly is set to None
+            poly = next((p for p in polys if
+                         (p[0][0]['properties']['FWS_TACODE'] == warning.id)),
+                        None)
             if poly is not None:
                 warning.region = poly[1]
                 warning.geojson = poly[0]
@@ -73,7 +91,8 @@ def build_warning_list(severity, use_pickle_caches=True):
                 print("making api call")
                 poly = datafetcher.fetch_warning_region(w['floodArea']['polygon'])
                 if poly is not None:
-                    warning.region = [FloodWarning.geo_json_to_shape(p['geometry']) for p in poly]
+                    warning.region = [FloodWarning.geo_json_to_shape(p['geometry'])
+                                      for p in poly]
                     warning.geojson = poly
                     warning.is_poly_simplified = {'tol': 0.000, 'buf': 0.000}
                     warning.simplified_geojson = poly
@@ -92,39 +111,51 @@ def build_warning_list(severity, use_pickle_caches=True):
     return warnings
 
 
-def update_poly_area_caches(warnings, poly_cache='warning_polys.pk', area_cache='warning_areas.pk'):
-    """Creates updated lists of polygons and areas pertaining to any new warnings.
+def update_poly_area_caches(warnings, poly_cache='warning_polys.pk',
+                            area_cache='warning_areas.pk'):
+    """Create updated lists of polygons/areas pertaining to any new warnings.
+
     If previous cached data is available, the new data is appended to this.
+    polygon data is stored as a list of lists containing four attributes for
+    each warning: [[geojson, region, is_poly_simplified, simplified_geojson],
+    ...]
 
-    polygon data is stored as a list of lists containing four attributes for each warning, as shown below
-    [[geojson, region, is_poly_simplified, simplified_geojson], ...]
+    area data is stored as a list of json objects obtained from the API for
+    each warning: [[area_json], ...]
 
-    area data is stored as a list of json objects obtained from the API for each warning, as shown below
-    [[area_json], ...]
+    Parameters
+    ----------
+    warnings : list[FLoodWarnings]
+        The list of FloodWarning objects of severity greater than or equal to
+        severity.
+    poly_cache : string, optional
+        The name of the polygon cache file. The default is 'warning_polys.pk'.
+    area_cache : string, optional
+        The name of the area cache file. The default is 'warning_areas.pk'.
 
-    Arguments:
-        warnings: [FloodWarnings].
-            The list of FloodWarning objects of severity greater than or equal to severity
+    Returns
+    -------
+    None.
 
-        poly_cache: string.
-            The name of the polygon cache file. If no value is passed, defaults to 'warning_polys.pk'
-
-        area_cache: string.
-            The name of the area cache file. If no value is passed, defaults to 'warning_areas.pk'
     """
-
     # tries to retrieve all previously cached data, and adds on any
     polys = retrieve_pickle_cache(poly_cache)
     areas = retrieve_pickle_cache(area_cache)
 
     for warning in warnings:
-        # if the warning id does not already have a corresponding polygon region cached, add it
-        if not any((poly[0][0]['properties']['FWS_TACODE'] == warning.id) for poly in polys):
+        # if the warning id does not already have a corresponding polygon
+        # region cached, add it
+        if not any((poly[0][0]['properties']['FWS_TACODE'] == warning.id)
+                   for poly in polys):
             if warning.geojson is not None and warning.region is not None:
-                polys.append([warning.geojson, warning.region, warning.is_poly_simplified, warning.simplified_geojson])
+                polys.append([warning.geojson, warning.region,
+                              warning.is_poly_simplified,
+                              warning.simplified_geojson])
 
-        # if the warning id does not already have corresponding area data cached, add it
-        if not any((area['items']['currentWarning']['floodAreaID'] == warning.id) for area in areas):
+        # if the warning id does not already have corresponding area data
+        # cached, add it
+        if not any((area['items']['currentWarning']['floodAreaID'] ==
+                    warning.id) for area in areas):
             if warning.area_json is not None:
                 areas.append(warning.area_json)
 
@@ -133,14 +164,19 @@ def update_poly_area_caches(warnings, poly_cache='warning_polys.pk', area_cache=
 
 
 def retrieve_pickle_cache(filename):
-    """"Reads a cached pickle file and returns the result.
-    Args:
-        filename: string.
-            The name of the pickle file to be read. This file must be in the cache directory
+    """Read a cached pickle file and returns the result.
 
-    Returns:
-        pickle_variables:
-            The python variables read from the pickle file.
+    Parameters
+    ----------
+    filename : string
+        The name of the pickle file to be read.
+        This file must be in the cache directory.
+
+    Returns
+    -------
+    pickle_variables
+        The python variables read from the pickle file..
+
     """
     sub_dir = 'cache'
     cache_file = os.path.join(sub_dir, filename)
@@ -148,21 +184,26 @@ def retrieve_pickle_cache(filename):
     try:
         with open(cache_file, 'rb') as f:
             return pickle.load(f)
-            f.close()
     except (pickle.UnpicklingError, FileNotFoundError):
         return []
 
 
 def save_to_pickle_cache(filename, data):
-    """"Saves data to a pickle cache file.
-    Args:
-        filename: string.
-            The name of the pickle file to be saved. The file is placed
-            in the cache directory.
+    """Save data to a pickle cache file.
 
-        data:
-            The data to be saved to a pickle file. Any Python variable
-            type may be used
+    Parameters
+    ----------
+    filename : string
+        The name of the pickle file to be saved. The file is placed in the
+        cache directory.
+    data :
+        The data to be saved to a pickle file. Any Python variable type may
+        be used.
+
+    Returns
+    -------
+    None.
+
     """
     sub_dir = 'cache'
     try:
@@ -180,18 +221,22 @@ def save_to_pickle_cache(filename, data):
 
 
 def build_regions_geojson(warnings, file=None):
-    """Creates a geoJSON FeatureCollection object for plotting flood warnings on a map
-    Arguments:
-        warnings: [FLoodWarnings].
-            List of flood warnings
+    """Create geoJSON FeatureCollection object to plot flood warnings on a map.
 
-        file: string.
-            For debug purposes, saves parameters data to a file, without any coordinates
-            if file is a non-None string
+    Parameters
+    ----------
+    warnings : list[FloodWarning]
+        List of flood warnings.
+    file : string, optional
+        For debug purposes, saves parameters data to a file, without any
+        coordinates if file is a non-None string. The default is None.
 
-    Returns:
-        json_object: dictionary.
-            The geoJSON object containing the regions of all the warnings in warnings
+    Returns
+    -------
+    data : dict
+        The geoJSON object containing the regions of all the warnings in
+        warnings.
+
     """
     features = []
     features_without_coords = []
@@ -219,51 +264,65 @@ def build_regions_geojson(warnings, file=None):
     # debugging - outputs the geojson to a file for verification
     if file is not None:
         with open(file, 'w') as out:
-            data_without_coords = {'type': 'FeatureCollection', 'features': features_without_coords}
+            data_without_coords = {'type': 'FeatureCollection',
+                                   'features': features_without_coords}
             json.dump(data_without_coords, out)
 
     return data
 
 
-def build_severity_dataframe(warnings, min_severity):
-    """Builds a pandas dataframe with data from the warnings, which is used to
-    colour the map regions on a plot
+def build_severity_dataframe(warnings):
+    """Build dataframe with warnings data, used to colour the map regions.
 
-    Arguments:
-        warnings: [FLoodWarnings].
-            List of flood warnings
+    Parameters
+    ----------
+    warnings : list[FloodWarning]
+        list of flood warnings.
 
-        min_severity: int.
-            The minimum severity value for which to add warnings to the dataframe
+    Returns
+    -------
+    df : pandas.DataFrame
+        Pandas DataFrame with the relevant data for each warning
 
-    Returns:
-        data_frame: DataFrame.
-            Pandas DataFrame with the relevant data
     """
+    df = pd.DataFrame()
 
-    data_arr = []
+    df['severity'] = [w.severity.name if w.severity.name is not None else
+                      "Not available" for w in warnings]
+    df['id'] = [w.id if w.id is not None else "Not available"
+                for w in warnings]
+    df['label'] = [w.label if w.label is not None else "Not available"
+                   for w in warnings]
+    df['last_updated'] = [w.last_update if w.last_update is not None else
+                          "Not available" for w in warnings]
+    df['warning_message'] = [w.message if w.message is not None else
+                             "Not available" for w in warnings]
+    df['int_severity'] = [w.severity_lev if w.severity_lev is not None else 5
+                          for w in warnings]
 
-    for w in warnings:
-        if w.severity is not None:
-            if w.severity.value <= min_severity:
-                l = "Not available"
-                last_update = "Not available"
-                message = "Not available"
-                warning_id = "Not available"
-                warning_severity = 4
+    # in some cases the county names are very long so we limit to 50 characters
+    county_list = []
+    county_str_size_lim = 47
+    for warning in warnings:
+        if warning.county is None:
+            county_list.append("Not available")
 
-                if w.label is not None:
-                    l = w.label
-                if w.last_update is not None:
-                    last_update = w.last_update
-                if w.description is not None:
-                    message = w.message
-                if w.id is not None:
-                    warning_id = w.id
-                if w.severity_lev is not None:
-                    warning_severity = w.severity_lev
+        elif len(warning.county) > 50:
+            counties = warning.county.split(',')
+            county_str = counties[0]
 
-                data_arr.append([w.severity.name, warning_id, l, last_update, message, warning_severity])
+            for county in counties[1:]:
+                if len(county_str) + len(county) + 1 < county_str_size_lim:
+                    county_str += ',' + county
+                else:
+                    county_str += '...'
+                    break
 
-    df = pd.DataFrame(data_arr, columns=['severity', 'id', 'label', 'last_updated', 'warning_message', 'warning_severity'])
+            county_list.append(county_str)
+
+        else:
+            county_list.append(warning.county)
+
+    df['county'] = county_list
+
     return df

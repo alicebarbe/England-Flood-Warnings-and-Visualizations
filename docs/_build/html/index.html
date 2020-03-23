@@ -7,11 +7,11 @@
     <title>Welcome to Flood Warning System’s documentation! &#8212; Flood Warning System 1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -32,158 +32,50 @@
             
   <div class="section" id="module-floodsystem.analysis">
 <span id="welcome-to-flood-warning-system-s-documentation"></span><h1>Welcome to Flood Warning System’s documentation!<a class="headerlink" href="#module-floodsystem.analysis" title="Permalink to this headline">¶</a></h1>
-<p>Created on Wed Feb 12 11:49:59 2020</p>
-<p>&#64;author: atylb2</p>
+<p>Module for analysis of historical level data.</p>
 <dl class="function">
 <dt id="floodsystem.analysis.polyfit">
 <code class="sig-prename descclassname">floodsystem.analysis.</code><code class="sig-name descname">polyfit</code><span class="sig-paren">(</span><em class="sig-param">dates</em>, <em class="sig-param">levels</em>, <em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.analysis.polyfit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates polynomial of order p that fits the level data</p>
+<dd><p>Create polynomial of order p that fits the level data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dates</strong> – (list of DateTime objects).
-list of dates with datapoints</p></li>
-<li><p><strong>levels</strong> – (list of floats).
-list of levels corresponding to each point in dates</p></li>
-<li><p><strong>p</strong> – (int).
-order of polynomial to fit</p></li>
+<li><p><strong>dates</strong> (<em>list</em><em>[</em><em>DateTime</em><em>]</em>) – list of dates with data points.</p></li>
+<li><p><strong>levels</strong> (<em>list</em><em>[</em><em>floats</em><em>]</em>) – list of levels corresponding to each point in dates.</p></li>
+<li><p><strong>p</strong> (<em>int</em>) – order of polynomial to fit.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>(np.poly1d object).</dt><dd><p>polynomial object that fits level data</p>
-</dd>
-<dt>d0: (DateTime object).</dt><dd><p>offset used to normalize dates to start at 0, equal to the first
-date in dates</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>poly</strong> (<em>np.poly1d</em>) – polynomial object that fits level data.</p></li>
+<li><p><em>DateTime</em> – offset used to normalize dates to start at 0, equal to the first
+date in dates.</p></li>
+</ul>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>poly</p>
-</dd>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-floodsystem.datafetcher"></span><p>This module provides functionality for retrieving real-time and
-latest time history level data</p>
+<span class="target" id="module-floodsystem.flood"></span><p>Methods to determine risk of flood at stations.</p>
 <dl class="function">
-<dt id="floodsystem.datafetcher.dump">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">dump</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save JSON object to file</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.fetch">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">fetch</code><span class="sig-paren">(</span><em class="sig-param">url</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.fetch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch data from url and return fetched JSON object</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.fetch_flood_warnings">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">fetch_flood_warnings</code><span class="sig-paren">(</span><em class="sig-param">severity_level</em>, <em class="sig-param">use_cache=False</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.fetch_flood_warnings" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetches the flood warnings issued from the API</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.fetch_latest_water_level_data">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">fetch_latest_water_level_data</code><span class="sig-paren">(</span><em class="sig-param">use_cache=False</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.fetch_latest_water_level_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch latest levels from all ‘measures’. Returns JSON object</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.fetch_measure_levels">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">fetch_measure_levels</code><span class="sig-paren">(</span><em class="sig-param">measure_id</em>, <em class="sig-param">dt</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.fetch_measure_levels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch measure levels from latest reading and going back a period
-dt. Return list of dates and a list of values.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.fetch_station_data">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">fetch_station_data</code><span class="sig-paren">(</span><em class="sig-param">use_cache=True</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.fetch_station_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch data from Environment agency for all active river level
-monitoring stations via a REST API and return retrieved data as a
-JSON object.</p>
-<p>Fetched data is dumped to a cache file so on subsequent call it can
-optionally be retrieved from the cache file. This is faster than
-retrieval over the Internet and avoids excessive calls to the
-Environment Agency service.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.fetch_stations_by_type">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">fetch_stations_by_type</code><span class="sig-paren">(</span><em class="sig-param">type</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.fetch_stations_by_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetches the stations of other types issued from the
-put type = Groundwater for groundwater stations</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.fetch_test_station_data">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">fetch_test_station_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.fetch_test_station_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns data from a test json file which is not updated and
-therefore can be used to check functions against known results</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>json_object.</dt><dd><p>A json object containing data from station_data_test.json</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>data</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.fetch_warning_area">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">fetch_warning_area</code><span class="sig-paren">(</span><em class="sig-param">url</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.fetch_warning_area" title="Permalink to this definition">¶</a></dt>
-<dd><p>“fetches information on the area of a warning</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.fetch_warning_region">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">fetch_warning_region</code><span class="sig-paren">(</span><em class="sig-param">url</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.fetch_warning_region" title="Permalink to this definition">¶</a></dt>
-<dd><p>“fetches a geoJSON polygon for area over which a warning is active</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.datafetcher.load">
-<code class="sig-prename descclassname">floodsystem.datafetcher.</code><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.datafetcher.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load JSON object from file</p>
-</dd></dl>
-
-<span class="target" id="module-floodsystem.flood"></span><dl class="function">
 <dt id="floodsystem.flood.stations_highest_rel_level">
 <code class="sig-prename descclassname">floodsystem.flood.</code><code class="sig-name descname">stations_highest_rel_level</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">N</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.flood.stations_highest_rel_level" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Returns the N stations with the highest relative water levels,</dt><dd><p>in descending order. Only N values are returned regarless of any</p>
-</dd>
-</dl>
-<p>tie conditions. Fewer than N may be returned if len(stations) &lt; N</p>
-<blockquote>
-<div><dl class="simple">
-<dt>Arguments:</dt><dd><dl class="simple">
-<dt>stations: (list of MonitoringStation).</dt><dd><p>generated using build_station_list.</p>
-</dd>
-<dt>N: int.</dt><dd><p>Number of stations to returns</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</div></blockquote>
+<dd><p>Return the N stations with the highest relative water levels.</p>
+<p>Only N values are returned regarless of any tie conditions.
+Fewer than N may be returned if len(stations) &lt; N</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>[MonitoringStation].</dt><dd><p>List of MonitoringStation objects with the highest
-relative water levels</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – generated using build_station_list..</p></li>
+<li><p><strong>N</strong> (<em>int</em>) – Number of stations to returns.</p></li>
+</ul>
 </dd>
-</dl>
-</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of MonitoringStation objects with the highest relative water
+levels.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>[stations_with_highest_levels]</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation">MonitoringStation</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -191,61 +83,47 @@ relative water levels</p>
 <dl class="function">
 <dt id="floodsystem.flood.stations_level_over_threshold">
 <code class="sig-prename descclassname">floodsystem.flood.</code><code class="sig-name descname">stations_level_over_threshold</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">tol</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.flood.stations_level_over_threshold" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the stations whose relative water level exceeds
-the value of tol and the relative water levels of these stations.
-The stations are listed in order of decreasing relative water level</p>
+<dd><p>Return the stations whose relative water level exceed a threshold.</p>
+<p>The stations are listed in order of decreasing relative water level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stations</strong> – (list of MonitoringStation).
-generated using build_station_list.</p></li>
-<li><p><strong>tol</strong> – float.
-All stations with relative water levels above tol are returned</p></li>
+<li><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – </p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – threshold for relative water level</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>[(MonitoringStation, float)].</dt><dd><p>A list of tuples containing the MonitoringStation object
-and its relative water level</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>A list of tuples containing the MonitoringStation object and its
+relative water level.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[(station, rel_water_level)]</p>
+<dd class="field-odd"><p>list[(<a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation">MonitoringStation</a>, float)]</p>
 </dd>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-floodsystem.geo"></span><p>This module contains a collection of functions related to
-geographical data.</p>
+<span class="target" id="module-floodsystem.geo"></span><p>Collection of functions related to geographical data.</p>
 <dl class="function">
 <dt id="floodsystem.geo.rivers_by_station_number">
-<code class="sig-prename descclassname">floodsystem.geo.</code><code class="sig-name descname">rivers_by_station_number</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">N</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.geo.rivers_by_station_number" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the N rivers with the greatest number of stations. the rivers are
-returned in order of decreasing number of stations. If there is a tie between
-multiple rivers at the Nth entry, all rivers with equal number of stations
-are returned</p>
+<code class="sig-prename descclassname">floodsystem.geo.</code><code class="sig-name descname">rivers_by_station_number</code><span class="sig-paren">(</span><em class="sig-param">stations_list</em>, <em class="sig-param">N</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.geo.rivers_by_station_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the N rivers with the greatest number of stations.</p>
+<p>The rivers are returned in order of decreasing number of stations.
+If there is a tie between multiple rivers at the Nth entry, all rivers
+with equal number of stations are returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stations</strong> – (list of MonitoringStation).
-generated using build_station_list.</p></li>
-<li><p><strong>N</strong> – (int).
-The number of rivers to return, in descending order of number of
+<li><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – generated using build_station_list.</p></li>
+<li><p><strong>N</strong> (<em>int</em>) – The number of rivers to return, in descending order of number of
 stations</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>(string, int).</dt><dd><p>list of tuples containing the river names and number of stations
-of rivers with the N highest number of monitoring stations</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>list of tuples containing the river names and number of stations
+of rivers with the N highest number of monitoring stations.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(river_name, number_of_stations)</p>
+<dd class="field-odd"><p>list[(string, int)]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -253,21 +131,16 @@ of rivers with the N highest number of monitoring stations</p>
 <dl class="function">
 <dt id="floodsystem.geo.rivers_with_stations">
 <code class="sig-prename descclassname">floodsystem.geo.</code><code class="sig-name descname">rivers_with_stations</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.geo.rivers_with_stations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a set containing names of rivers with an associated monitoring station</p>
+<dd><p>Get names of rivers with an associated monitoring station.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stations</strong> – (list of MonitoringStation).
-generated using build_station_list.</p>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – generated using build_station_list.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>{string}.</dt><dd><p>A set containing the names of all the rivers with a monitoring station</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>output</strong> – A set containing the names of all the rivers with a monitoring station.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>{river_name}</p>
+<dd class="field-odd"><p>set</p>
 </dd>
 </dl>
 </dd></dl>
@@ -275,26 +148,20 @@ generated using build_station_list.</p>
 <dl class="function">
 <dt id="floodsystem.geo.stations_by_distance">
 <code class="sig-prename descclassname">floodsystem.geo.</code><code class="sig-name descname">stations_by_distance</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.geo.stations_by_distance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate distances from a coordinate p to each station. Return the station
-distance pairs in an ordered list, by distance.</p>
+<dd><p>Calculate distances from stations to a coordinate p.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stations</strong> – (list of MonitoringStation).
-generated using build_station_list.</p></li>
-<li><p><strong>p</strong> – (lat, lon).
-float coordinates of the center.</p></li>
+<li><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – generated using build_station_list.</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – coordinates of the center.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>(MonitoringStation, float).</dt><dd><p>pair of station object and the corresponding distance from it to point p</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>pair of station object and the corresponding distance from it to point
+p.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(station, distance)</p>
+<dd class="field-odd"><p>(<a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation">MonitoringStation</a>, float)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -302,23 +169,18 @@ float coordinates of the center.</p></li>
 <dl class="function">
 <dt id="floodsystem.geo.stations_by_river">
 <code class="sig-prename descclassname">floodsystem.geo.</code><code class="sig-name descname">stations_by_river</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.geo.stations_by_river" title="Permalink to this definition">¶</a></dt>
-<dd><p>Maps stations to the rivers which they are associated with. Return a dict
-containing MonitoringStations with key values for each river</p>
+<dd><p>Map stations to the rivers which they are associated with.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stations</strong> – (list of MonitoringStation).
-generated using build_station_list.</p>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – generated using build_station_list..</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>[MonitoringStations]}: {string<span class="classifier">[MonitoringStation]}.</span></dt><dd><p>dict containing lists of MonitoringStations for each river. The dict
-keys are the river names</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>output</strong> – {river_name : [MonitoringStations]}: {string : [MonitoringStation]}.
+dict containing lists of MonitoringStations for each river. The dict
+keys are the river names.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>{river_name</p>
+<dd class="field-odd"><p>dict()</p>
 </dd>
 </dl>
 </dd></dl>
@@ -330,41 +192,42 @@ keys are the river names</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stations</strong> – (list of MonitoringStation).
-generated using build_station_list.</p></li>
-<li><p><strong>centre</strong> – (lat, lon) (float, float).
-float coordinates of the center.</p></li>
-<li><p><strong>r</strong> (<em>float</em>) – </p></li>
+<li><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – generated using build_station_list.</p></li>
+<li><p><strong>centre</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – float coordinates of the center.</p></li>
+<li><p><strong>r</strong> (<em>float</em>) – radius from center.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>([MonitoringStation]).</dt><dd><p>list of station objects</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>output</strong> – list of station objects.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list of station</p>
+<dd class="field-odd"><p>list[<a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation">MonitoringStation</a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-floodsystem.plot"></span><dl class="function">
+<span class="target" id="module-floodsystem.plot"></span><p>Visualizations of historical data, flooding zones, and stations.</p>
+<dl class="function">
 <dt id="floodsystem.plot.create_water_levels_plot">
 <code class="sig-prename descclassname">floodsystem.plot.</code><code class="sig-name descname">create_water_levels_plot</code><span class="sig-paren">(</span><em class="sig-param">listinput</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.plot.create_water_levels_plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot the water levels of stations given corresponding date. Subplots are
-created for each station.</p>
+<dd><p>Plot the water levels of stations given corresponding date.</p>
+<p>Subplots are created for each station.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>listinput</strong> (<em>list</em>) – list of station (MonitoringStation), dates (list), and
-levels (list), in this order. List must be of length multiple of 3.</p>
+<dd class="field-odd"><p><strong>listinput</strong> (<em>list</em>) – <dl class="simple">
+<dt>list of station (MonitoringStation), dates (list), and</dt><dd><p>levels (list), in this order. List must be of length multiple of 3.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>plotly figure with water levels, high, and low plotted</p>
+</dl>
+</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>fig (plotly go.figure)</p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – when listinput is not of length multiple of three.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>fig</strong> – plotly figure with water levels, high, and low plotted.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>plotly.graph_objects.figure</p>
 </dd>
 </dl>
 </dd></dl>
@@ -372,61 +235,49 @@ levels (list), in this order. List must be of length multiple of 3.</p>
 <dl class="function">
 <dt id="floodsystem.plot.get_recommended_simplification_params">
 <code class="sig-prename descclassname">floodsystem.plot.</code><code class="sig-name descname">get_recommended_simplification_params</code><span class="sig-paren">(</span><em class="sig-param">warning_len</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.plot.get_recommended_simplification_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Returns the recommended geometry simplification tolerance and buffer, based
-on the number of warnings present. These settings are designed to prevent the map
-interface from lagging if many warnings are present</p>
+<dd><p>Return the recommended geometry simplification tolerance and buffer.</p>
+<p>These settings are based on the number of warnings present, and designed
+to prevent the map interface from lagging if many warnings are present.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>warning_len</strong> – int.
-The number of warnings in the warning list</p>
+<dd class="field-odd"><p><strong>warning_len</strong> (<em>int</em>) – number of warnings in the warning list.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>{‘tol’: float, ‘buf’: float}.</dt><dd><p>Parameters which determine the degree of shape approximation
-recommended for mapping</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>{‘tol’: float, ‘buf’: float}.
+Parameters which determine the degree of shape approximation
+recommended for mapping.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>simplification params</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="floodsystem.plot.map_flood_warnings">
-<code class="sig-prename descclassname">floodsystem.plot.</code><code class="sig-name descname">map_flood_warnings</code><span class="sig-paren">(</span><em class="sig-param">geojson</em>, <em class="sig-param">df</em>, <em class="sig-param">df2</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.plot.map_flood_warnings" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Plots flood warnings as a chloropleth map figure
-:param geojson: geo_json_object.</p>
-<blockquote>
-<div><p>Contains the perimeter definitions for all warnings. Created from
-warningdata.build_regions_geojson</p>
-</div></blockquote>
+<code class="sig-prename descclassname">floodsystem.plot.</code><code class="sig-name descname">map_flood_warnings</code><span class="sig-paren">(</span><em class="sig-param">geojson</em>, <em class="sig-param">warning_df=None</em>, <em class="sig-param">station_df=None</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.plot.map_flood_warnings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot flood warnings and station levels as a chloropleth map figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df</strong> – Pandas Dataframe.
-Contains information regarding the severity of the floods and the location name.
-Created using warningdata.build_severity_dataframe</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geojson</strong> (<em>geo_json</em>) – <dl class="simple">
+<dt>Contains the perimeter definitions for all warnings. Created from</dt><dd><p>warningdata.build_regions_geojson.</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="floodsystem.plot.map_flood_warnings_interactive">
-<code class="sig-prename descclassname">floodsystem.plot.</code><code class="sig-name descname">map_flood_warnings_interactive</code><span class="sig-paren">(</span><em class="sig-param">geojson</em>, <em class="sig-param">df</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.plot.map_flood_warnings_interactive" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Plots flood warnings as a chloropleth map figure, with support for
-interactive actions, such as click events
-:param geojson: geo_json_object.</p>
-<blockquote>
-<div><p>Contains the perimeter definitions for all warnings. Created from
-warningdata.build_regions_geojson</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df</strong> – Pandas Dataframe.
-Contains information regarding the severity of the floods and the location name.
-Created using warningdata.build_severity_dataframe</p>
+</p></li>
+<li><p><strong>warning_df</strong> (<em>pandas.dataframe</em><em>, </em><em>optional</em>) – Contains information regarding the severity of the floods and the
+location name. Created using warningdata.build_severity_dataframe.
+Defaults to None, where warnings are not mapped.</p></li>
+<li><p><strong>station_df</strong> (<em>pandas.dataframe</em><em>, </em><em>optional</em>) – Contains information of position and relative water level of each
+station, to be plotted as a scatter map. Defaults to None, where
+stations are not mapped.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -434,11 +285,17 @@ Created using warningdata.build_severity_dataframe</p>
 <dl class="function">
 <dt id="floodsystem.plot.plot_water_levels">
 <code class="sig-prename descclassname">floodsystem.plot.</code><code class="sig-name descname">plot_water_levels</code><span class="sig-paren">(</span><em class="sig-param">listinput</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.plot.plot_water_levels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Display plot generated in create_water_levels_plot</p>
+<dd><p>Display plot generated in create_water_levels_plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>listinput</strong> – (list) list of station (MonitoringStation), dates (list), and
-levels (list), in this order. List must be of length multiple of 3.</p>
+<dd class="field-odd"><p><strong>listinput</strong> (<em>list</em>) – list of station (MonitoringStation), dates (list), and levels (list),
+in this order. List must be of length multiple of 3.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -446,46 +303,43 @@ levels (list), in this order. List must be of length multiple of 3.</p>
 <dl class="function">
 <dt id="floodsystem.plot.plot_water_levels_with_fit">
 <code class="sig-prename descclassname">floodsystem.plot.</code><code class="sig-name descname">plot_water_levels_with_fit</code><span class="sig-paren">(</span><em class="sig-param">listinput</em>, <em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.plot.plot_water_levels_with_fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add best-fit line to water level graphs, and display them</p>
+<dd><p>Add best-fit line to water level graphs, and display them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>listinput</strong> (<em>list</em>) – list of station (MonitoringStation), dates (list), and
-levels (list), in this order. List must be of length multiple of 3.</p></li>
-<li><p><strong>p</strong> (<em>integer</em>) – order of polynomial fit</p></li>
+<li><p><strong>listinput</strong> (<em>list</em>) – list of station (MonitoringStation), dates (list), and levels (list),
+in this order. List must be of length multiple of 3.</p></li>
+<li><p><strong>p</strong> (<em>int</em>) – order of polynomial fit</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>none; creates temp-plot.html file and auto-opens it.</p>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-floodsystem.station"></span><p>This module provides a model for a monitoring station, and tools
-for manipulating/modifying station data</p>
+<span class="target" id="module-floodsystem.station"></span><p>Model for a monitoring station and tools for manipulating station data.</p>
 <dl class="class">
 <dt id="floodsystem.station.MonitoringStation">
 <em class="property">class </em><code class="sig-prename descclassname">floodsystem.station.</code><code class="sig-name descname">MonitoringStation</code><span class="sig-paren">(</span><em class="sig-param">station_id</em>, <em class="sig-param">measure_id</em>, <em class="sig-param">label</em>, <em class="sig-param">coord</em>, <em class="sig-param">typical_range</em>, <em class="sig-param">river</em>, <em class="sig-param">town</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.station.MonitoringStation" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class represents a river level monitoring station</p>
+<dd><p>Class representing a river level monitoring station.</p>
 <dl class="method">
 <dt id="floodsystem.station.MonitoringStation.get_relative_water_level">
 <em class="property">static </em><code class="sig-name descname">get_relative_water_level</code><span class="sig-paren">(</span><em class="sig-param">station</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.station.MonitoringStation.get_relative_water_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the relative water level of a given station
-Useful to pass directly to sorted() as a key</p>
+<dd><p>Return the relative water level of a given station.</p>
+<p>Useful to pass directly to sorted() as a key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>station</strong> – MonitoringStation.
-The monitoring station object</p>
+<dd class="field-odd"><p><strong>station</strong> (<a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a>) – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>float.</dt><dd><p>the relative water level of the station</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>the relative water level of the station.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>relative_water_level</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -493,17 +347,16 @@ The monitoring station object</p>
 <dl class="method">
 <dt id="floodsystem.station.MonitoringStation.inconsistent_typical_range_stations">
 <em class="property">static </em><code class="sig-name descname">inconsistent_typical_range_stations</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.station.MonitoringStation.inconsistent_typical_range_stations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the stations with inconsistent typical ranges given a list
-of stations.</p>
+<dd><p>Return the stations with inconsistent typical ranges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stations</strong> – (MonitoringStation list)</p>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the monitoring stations with inconsistent typical ranges</p>
+<dd class="field-even"><p><strong>output</strong> – the monitoring stations with inconsistent typical ranges.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list of Monitoring Stations</p>
+<dd class="field-odd"><p>list[MonituringStation]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -511,20 +364,16 @@ of stations.</p>
 <dl class="method">
 <dt id="floodsystem.station.MonitoringStation.relative_water_level">
 <code class="sig-name descname">relative_water_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.station.MonitoringStation.relative_water_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Returns the water level as a proportion of the typical range
-This returns 0.0 when the water level is equal to the lower typical range
+<dd><p>Return the water level as a proportion of the typical range.</p>
+<p>This is 0.0 when the water level is equal to the lower typical range
 and 1.0 when the water level is equal to the upper typical range</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>float.</dt><dd><p>the relative water level compared to the typical range.
-If the typical range is not consistent, None is returned</p>
-</dd>
-</dl>
-</p>
+<dd class="field-odd"><p>the relative water level compared to the typical range.
+If the typical range is not consistent, None is returned.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>relative_water_level</p>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -532,12 +381,11 @@ If the typical range is not consistent, None is returned</p>
 <dl class="method">
 <dt id="floodsystem.station.MonitoringStation.typical_range_consistent">
 <code class="sig-name descname">typical_range_consistent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.station.MonitoringStation.typical_range_consistent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns true if the typical range is inconsistent, i.e. lowest value
-is greater than largest value.</p>
-<p>Arguments:</p>
+<dd><p>Return true if the typical range is inconsistent.</p>
+<p>Range is inconsistent if lowest value is greater than largest value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>if typical range is consistent</p>
+<dd class="field-odd"><p>if typical range is consistent.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>bool</p>
@@ -547,26 +395,21 @@ is greater than largest value.</p>
 
 </dd></dl>
 
-<span class="target" id="module-floodsystem.stationdata"></span><p>This module provides interface for extracting station data from
-JSON objects fetched from the Internet and</p>
+<span class="target" id="module-floodsystem.stationdata"></span><p>Interface for extracting station data from JSON objects fetched from the
+Internet.</p>
 <dl class="function">
 <dt id="floodsystem.stationdata.build_station_dataframe">
 <code class="sig-prename descclassname">floodsystem.stationdata.</code><code class="sig-name descname">build_station_dataframe</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.stationdata.build_station_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a pandas Datafraome containing data for all the monitoring stations</p>
+<dd><p>Create a pandas DataFrame containing data for all monitoring stations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stations</strong> – list of MonitoringStation
-generated using build_station_list.</p>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – generated using build_station_list.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>pandas DataFrame</dt><dd><p>the output dataframe</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>df</strong> – the output dataframe.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>df</p>
+<dd class="field-odd"><p>pandas DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -581,42 +424,48 @@ represented as a MonitoringStation object.</p>
 available.</p>
 <p>If the flag test is set to true then fixed test data is used so
 results may be compared to known values for the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>use_cache</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>test</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>stations</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[MonitoringStations]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="floodsystem.stationdata.update_water_levels">
 <code class="sig-prename descclassname">floodsystem.stationdata.</code><code class="sig-name descname">update_water_levels</code><span class="sig-paren">(</span><em class="sig-param">stations</em>, <em class="sig-param">use_cache=False</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.stationdata.update_water_levels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attach level data contained in measure_data to stations</p>
+<dd><p>Attach level data contained in measure_data to stations.</p>
 </dd></dl>
 
-<span class="target" id="module-floodsystem.utils"></span><p>This module contains utility functions.</p>
+<span class="target" id="module-floodsystem.utils"></span><p>Utility functions.</p>
 <dl class="function">
 <dt id="floodsystem.utils.map">
 <code class="sig-prename descclassname">floodsystem.utils.</code><code class="sig-name descname">map</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">in_range</em>, <em class="sig-param">out_range</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.utils.map" title="Permalink to this definition">¶</a></dt>
-<dd><p>Linearly maps a value of x from a range (in_min, in_max)
-to a range (out_min, out_max). Note that the value is
-not constrained to the output range, nor does x need to be
-constrained to the input range</p>
+<dd><p>Linearly map a value of x from an input range to an output range.</p>
+<p>Note that the value is not constrained to the output range,
+nor does x need to be constrained to the input range</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – float.
-the input value</p></li>
-<li><p><strong>in_range</strong> – (float, float).
-tuple of the input range</p></li>
-<li><p><strong>out_range</strong> – (float, float).
-tuple of output range</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – the input value.</p></li>
+<li><p><strong>in_range</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – tuple of the input range.</p></li>
+<li><p><strong>out_range</strong> (<em>(</em><em>float float</em><em>)</em>) – tuple of output range.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>float.</dt><dd><p>the mapped value</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>the mapped value.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>out_val</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -624,9 +473,9 @@ tuple of output range</p></li>
 <dl class="function">
 <dt id="floodsystem.utils.sorted_by_key">
 <code class="sig-prename descclassname">floodsystem.utils.</code><code class="sig-name descname">sorted_by_key</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">i</em>, <em class="sig-param">reverse=False</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.utils.sorted_by_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>For a list of lists/tuples, return list sorted by the ith
-component of the list/tuple, E.g.</p>
-<p>Sort on first entry of tuple:</p>
+<dd><p>For a list of lists, return list sorted by the ith component of list.</p>
+<p>E.g.
+Sort on first entry of tuple:</p>
 <blockquote>
 <div><p>&gt; sorted_by_key([(1, 2), (5, 1]), 0)
 &gt;&gt;&gt; [(1, 2), (5, 1)]</p>
@@ -636,33 +485,44 @@ component of the list/tuple, E.g.</p>
 <div><p>&gt; sorted_by_key([(1, 2), (5, 1)], 1)
 &gt;&gt;&gt; [(5, 1), (1, 2)]</p>
 </div></blockquote>
-</dd></dl>
-
-<span class="target" id="module-floodsystem.warning"></span><dl class="class">
-<dt id="floodsystem.warning.FloodWarning">
-<em class="property">class </em><code class="sig-prename descclassname">floodsystem.warning.</code><code class="sig-name descname">FloodWarning</code><span class="sig-paren">(</span><em class="sig-param">identifier=None</em>, <em class="sig-param">county=None</em>, <em class="sig-param">label=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">severity_lev=None</em>, <em class="sig-param">tidal=None</em>, <em class="sig-param">message=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">geojson=None</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning" title="Permalink to this definition">¶</a></dt>
-<dd><p>A Class to store data regarding flood warnings, obtained from the Flood Monitoring API</p>
-<dl class="method">
-<dt id="floodsystem.warning.FloodWarning.check_warnings_at_location">
-<em class="property">static </em><code class="sig-name descname">check_warnings_at_location</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">loc</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning.check_warnings_at_location" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks for any flood warnings concerning a specified location</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>loc</strong> – tuple of the form (Lat, Long)</p></li>
-<li><p><strong>warnings</strong> – [Warning].
-List of warnings generated from warningdata.build_warning_list</p></li>
+<li><p><strong>x</strong> (<em>list</em><em>[</em><em>list/tuples</em><em>]</em>) – </p></li>
+<li><p><strong>i</strong> (<em>int</em>) – ith component of lists to sort from.</p></li>
+<li><p><strong>reverse</strong> (<em>bool</em><em>, </em><em>optional</em>) – reverse sorted list. The default is False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>list of Warnings.</dt><dd><p>A list of warnings pertaining to the location provided.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>sorted list of lists/tuples.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>warnings_at_loc</p>
+<dd class="field-odd"><p>list[list/tuples]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-floodsystem.warning"></span><p>Store and process flood warning data from Flood Monitoring API.</p>
+<dl class="class">
+<dt id="floodsystem.warning.FloodWarning">
+<em class="property">class </em><code class="sig-prename descclassname">floodsystem.warning.</code><code class="sig-name descname">FloodWarning</code><span class="sig-paren">(</span><em class="sig-param">identifier=None</em>, <em class="sig-param">county=None</em>, <em class="sig-param">label=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">severity_lev=None</em>, <em class="sig-param">tidal=None</em>, <em class="sig-param">message=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">geojson=None</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning" title="Permalink to this definition">¶</a></dt>
+<dd><p>A flood warning data class, obtained from the Flood Monitoring API.</p>
+<dl class="method">
+<dt id="floodsystem.warning.FloodWarning.check_warnings_at_location">
+<em class="property">static </em><code class="sig-name descname">check_warnings_at_location</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">loc</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning.check_warnings_at_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check for any flood warnings concerning a specified location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>warnings</strong> (<em>list</em><em>[</em><em>Warning</em><em>]</em>) – List of warnings generated from warningdata.build_warning_list.</p></li>
+<li><p><strong>loc</strong> (<em>(</em><em>lat</em><em>, </em><em>long</em><em>)</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>warnings_at_loc</strong> – A list of warnings pertaining to the location provided.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[Warning]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -670,22 +530,17 @@ List of warnings generated from warningdata.build_warning_list</p></li>
 <dl class="method">
 <dt id="floodsystem.warning.FloodWarning.coord_in_region">
 <code class="sig-name descname">coord_in_region</code><span class="sig-paren">(</span><em class="sig-param">coord</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning.coord_in_region" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determines if a given coordinate is within the region of the flood warning</p>
+<dd><p>Determine if a coordinate is within the region of the flood warning.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>coord</strong> – (lat, long).
-The coordinates of the point in question, as a tuple</p>
+<dd class="field-odd"><p><strong>coord</strong> (<em>(</em><em>lat</em><em>, </em><em>long</em><em>)</em>) – The coordinates of the point in question, as a tuple.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>bool.</dt><dd><p>True if the point is in the region, false if the point is outside
-the region or the region is None</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>True if the point is in the region, false if the point is outside
+the region or the region is None.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>is_in_region</p>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -693,17 +548,16 @@ the region or the region is None</p>
 <dl class="method">
 <dt id="floodsystem.warning.FloodWarning.find_towns_affected">
 <code class="sig-name descname">find_towns_affected</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning.find_towns_affected" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Finds the towns within the flood warning region
-with a monitoring station in their vicinity</p>
+<dd><p>Find towns in the flood warning region with a monitoring station.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stations</strong> – (list of MonitoringStations) produced using stationdata.build_station_list</p>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><em>MonitoringStations</em><em>]</em>) – produced using stationdata.build_station_list.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(list of Strings) A list of names of the towns affected</p>
+<dd class="field-even"><p>list of names of the towns affected.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>towns</p>
+<dd class="field-odd"><p>list[String]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -711,23 +565,18 @@ with a monitoring station in their vicinity</p>
 <dl class="method">
 <dt id="floodsystem.warning.FloodWarning.geo_json_to_shape">
 <em class="property">static </em><code class="sig-name descname">geo_json_to_shape</code><span class="sig-paren">(</span><em class="sig-param">geo_json_obj</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning.geo_json_to_shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Converts a geoJSON to a shapely object</p>
+<dd><p>Convert a geoJSON to a shapely object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geo_json_obj</strong> – json_object.
-The geoJSON object to be converted</p>
+<dd class="field-odd"><p><strong>geo_json_obj</strong> (<em>dict</em>) – geoJSON object to be converted.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>shapely_object.</dt><dd><p>The shapely object (of type corresponding to the type of the input)
-The shape is corrected to form a simple polygon, e.g. by adding points
-at self intersections</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>The shapely object (of type corresponding to the type of the input)
+The shape is corrected to form a simple polygon, e.g. by adding
+points at self intersections.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>shape</p>
+<dd class="field-odd"><p>shapely_object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -735,21 +584,16 @@ at self intersections</p>
 <dl class="method">
 <dt id="floodsystem.warning.FloodWarning.order_warning_list_with_severity">
 <em class="property">static </em><code class="sig-name descname">order_warning_list_with_severity</code><span class="sig-paren">(</span><em class="sig-param">warnings</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning.order_warning_list_with_severity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Puts warnings in order of decreasing severity (most severe first)
-:param warnings: [FloodWarning].</p>
-<blockquote>
-<div><p>List of flood warnings</p>
-</div></blockquote>
+<dd><p>Put warnings in order of decreasing severity (most severe first).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>[FloodWarning].</dt><dd><p>Ordered list of flood warnings</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>warnings</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/warning.html#warning.FloodWarning" title="warning.FloodWarning"><em>FloodWarning</em></a><em>]</em>) – list of flood warnings.</p>
 </dd>
-</dl>
-</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>warnings_sorted</strong> – Ordered list of flood warnings.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>warnings_sorted</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="source/warning.html#warning.FloodWarning" title="warning.FloodWarning">FloodWarning</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -757,16 +601,21 @@ at self intersections</p>
 <dl class="method">
 <dt id="floodsystem.warning.FloodWarning.simplify_geojson">
 <code class="sig-name descname">simplify_geojson</code><span class="sig-paren">(</span><em class="sig-param">tol=0.001</em>, <em class="sig-param">buf=0.002</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning.simplify_geojson" title="Permalink to this definition">¶</a></dt>
-<dd><p>Simplifies the geometry of the polygon for better plotting, updating
-self.simplified_geojson</p>
+<dd><p>Simplify polygon geometry for better plotting, update self.simplified_geojson.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tol</strong> – (float).
-Determines the maximum allowed deviation from the original shape</p></li>
-<li><p><strong>buf</strong> – (float).
-The amount to dilate the shapes in order to smooth them</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em>, </em><em>optional</em>) – Determines the maximum allowed deviation from the original shape.
+The default is 0.001.</p></li>
+<li><p><strong>buf</strong> (<em>float</em><em>, </em><em>optional</em>) – The amount to dilate the shapes in order to smooth them.
+The default is 0.002.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -774,24 +623,20 @@ The amount to dilate the shapes in order to smooth them</p></li>
 <dl class="method">
 <dt id="floodsystem.warning.FloodWarning.stations_in_warning">
 <code class="sig-name descname">stations_in_warning</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warning.FloodWarning.stations_in_warning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Produces a list of stations which are within the warning.
-Note it is often the case that a warning region may have no stations in it.
-This is because the Met Office define the warning regions based on
+<dd><p>Produce a list of stations which are within the warning.</p>
+<p>Note it is often the case that a warning region may have no stations in
+it. This is because the Met Office defines the warning regions based on
 floodplanes or elevations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stations</strong> – [MonitoringStations]
-Created using stationdata.build_station_list()</p>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – Created using stationdata.build_station_list().</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>[MonitoringStation]</dt><dd><p>List of monitoring stations whose coordinates are within the warning region</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>warning_stations</strong> – List of monitoring stations whose coordinates are within the
+warning region.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>stations_in_warning</p>
+<dd class="field-odd"><p>list[<a class="reference internal" href="source/station.html#station.MonitoringStation" title="station.MonitoringStation">MonitoringStation</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -801,32 +646,28 @@ Created using stationdata.build_station_list()</p>
 <dl class="class">
 <dt id="floodsystem.warning.SeverityLevel">
 <em class="property">class </em><code class="sig-prename descclassname">floodsystem.warning.</code><code class="sig-name descname">SeverityLevel</code><a class="headerlink" href="#floodsystem.warning.SeverityLevel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enum to map severity levels to descriptive severities</p>
+<dd><p>Enum to map severity levels to descriptive severities.</p>
 </dd></dl>
 
-<span class="target" id="module-floodsystem.warningdata"></span><dl class="function">
+<span class="target" id="module-floodsystem.warningdata"></span><p>Framework to import, cache, and use flood warning and corresponding data.</p>
+<dl class="function">
 <dt id="floodsystem.warningdata.build_regions_geojson">
 <code class="sig-prename descclassname">floodsystem.warningdata.</code><code class="sig-name descname">build_regions_geojson</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warningdata.build_regions_geojson" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a geoJSON FeatureCollection object for plotting flood warnings on a map
-:param warnings: [FLoodWarnings].</p>
-<blockquote>
-<div><p>List of flood warnings</p>
-</div></blockquote>
+<dd><p>Create geoJSON FeatureCollection object to plot flood warnings on a map.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> – string.
-For debug purposes, saves parameters data to a file, without any coordinates
-if file is a non-None string</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>warnings</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/warning.html#warning.FloodWarning" title="warning.FloodWarning"><em>FloodWarning</em></a><em>]</em>) – List of flood warnings.</p></li>
+<li><p><strong>file</strong> (<em>string</em><em>, </em><em>optional</em>) – For debug purposes, saves parameters data to a file, without any
+coordinates if file is a non-None string. The default is None.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>dictionary.</dt><dd><p>The geoJSON object containing the regions of all the warnings in warnings</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>data</strong> – The geoJSON object containing the regions of all the warnings in
+warnings.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>json_object</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -834,26 +675,19 @@ if file is a non-None string</p>
 <dl class="function">
 <dt id="floodsystem.warningdata.build_severity_dataframe">
 <code class="sig-prename descclassname">floodsystem.warningdata.</code><code class="sig-name descname">build_severity_dataframe</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">min_severity</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warningdata.build_severity_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Builds a pandas dataframe with data from the warnings, which is used to
-colour the map regions on a plot</p>
+<dd><p>Build dataframe with warnings data, used to colour the map regions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>warnings</strong> – [FLoodWarnings].
-List of flood warnings</p></li>
-<li><p><strong>min_severity</strong> – int.
-The minimum severity value for which to add warnings to the dataframe</p></li>
+<li><p><strong>warnings</strong> (<em>list</em><em>[</em><a class="reference internal" href="source/warning.html#warning.FloodWarning" title="warning.FloodWarning"><em>FloodWarning</em></a><em>]</em>) – list of flood warnings.</p></li>
+<li><p><strong>min_severity</strong> (<em>int</em>) – The minimum severity value for which to add warnings to the dataframe.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>DataFrame.</dt><dd><p>Pandas DataFrame with the relevant data</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>df</strong> – Pandas DataFrame with the relevant data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>data_frame</p>
+<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -861,27 +695,24 @@ The minimum severity value for which to add warnings to the dataframe</p></li>
 <dl class="function">
 <dt id="floodsystem.warningdata.build_warning_list">
 <code class="sig-prename descclassname">floodsystem.warningdata.</code><code class="sig-name descname">build_warning_list</code><span class="sig-paren">(</span><em class="sig-param">severity</em>, <em class="sig-param">use_pickle_caches=True</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warningdata.build_warning_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch warnings from the API and create a list of warnings. Also updates caches
-for flood regions for any new warnings
-:param severity: int.</p>
-<blockquote>
-<div><p>warnings above this minimum severity value (ie of lower numerical value) will be returned</p>
-</div></blockquote>
+<dd><p>Fetch warnings from the API and create a list of warnings.</p>
+<p>Also updates caches for flood regions for any new warnings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>use_pickle_caches</strong> – bool.
-If true, then cached data regarding flood regions is used -
-the flood warnings are still the most recent pulled from the API</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>severity</strong> (<em>int</em>) – warnings above this minimum severity value (ie of lower numerical
+value) will be returned.</p></li>
+<li><p><strong>use_pickle_caches</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, then cached data regarding flood regions is used - the flood
+warnings are still the most recent pulled from the API. The default is
+True.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>[FloodWarnings].</dt><dd><p>The list of FloodWarning objects of severity greater than or equal to severity</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>warnings</strong> – The list of FloodWarning objects of severity greater than or equal to
+severity.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>warnings</p>
+<dd class="field-odd"><p>list[<a class="reference internal" href="source/warning.html#warning.FloodWarning" title="warning.FloodWarning">FloodWarning</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -889,17 +720,17 @@ the flood warnings are still the most recent pulled from the API</p>
 <dl class="function">
 <dt id="floodsystem.warningdata.retrieve_pickle_cache">
 <code class="sig-prename descclassname">floodsystem.warningdata.</code><code class="sig-name descname">retrieve_pickle_cache</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warningdata.retrieve_pickle_cache" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Reads a cached pickle file and returns the result.
-:param filename: string.</p>
-<blockquote>
-<div><p>The name of the pickle file to be read. This file must be in the cache directory</p>
-</div></blockquote>
+<dd><p>Read a cached pickle file and returns the result.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The python variables read from the pickle file.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – The name of the pickle file to be read.
+This file must be in the cache directory.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>pickle_variables</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The python variables read from the pickle file..</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pickle_variables</p>
 </dd>
 </dl>
 </dd></dl>
@@ -907,16 +738,21 @@ the flood warnings are still the most recent pulled from the API</p>
 <dl class="function">
 <dt id="floodsystem.warningdata.save_to_pickle_cache">
 <code class="sig-prename descclassname">floodsystem.warningdata.</code><code class="sig-name descname">save_to_pickle_cache</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warningdata.save_to_pickle_cache" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Saves data to a pickle cache file.
-:param filename: string.</p>
-<blockquote>
-<div><p>The name of the pickle file to be saved. The file is placed
-in the cache directory.</p>
-</div></blockquote>
+<dd><p>Save data to a pickle cache file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> – The data to be saved to a pickle file. Any Python variable
-type may be used</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – The name of the pickle file to be saved. The file is placed in the
+cache directory.</p></li>
+<li><p><strong>data</strong> – The data to be saved to a pickle file. Any Python variable type may
+be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -924,22 +760,27 @@ type may be used</p>
 <dl class="function">
 <dt id="floodsystem.warningdata.update_poly_area_caches">
 <code class="sig-prename descclassname">floodsystem.warningdata.</code><code class="sig-name descname">update_poly_area_caches</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">poly_cache='warning_polys.pk'</em>, <em class="sig-param">area_cache='warning_areas.pk'</em><span class="sig-paren">)</span><a class="headerlink" href="#floodsystem.warningdata.update_poly_area_caches" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates updated lists of polygons and areas pertaining to any new warnings.
-If previous cached data is available, the new data is appended to this.</p>
-<p>polygon data is stored as a list of lists containing four attributes for each warning, as shown below
-[[geojson, region, is_poly_simplified, simplified_geojson], …]</p>
-<p>area data is stored as a list of json objects obtained from the API for each warning, as shown below
-[[area_json], …]</p>
+<dd><p>Create updated lists of polygons/areas pertaining to any new warnings.</p>
+<p>If previous cached data is available, the new data is appended to this.
+polygon data is stored as a list of lists containing four attributes for
+each warning: [[geojson, region, is_poly_simplified, simplified_geojson],
+…]</p>
+<p>area data is stored as a list of json objects obtained from the API for
+each warning: [[area_json], …]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>warnings</strong> – [FloodWarnings].
-The list of FloodWarning objects of severity greater than or equal to severity</p></li>
-<li><p><strong>poly_cache</strong> – string.
-The name of the polygon cache file. If no value is passed, defaults to ‘warning_polys.pk’</p></li>
-<li><p><strong>area_cache</strong> – string.
-The name of the area cache file. If no value is passed, defaults to ‘warning_areas.pk’</p></li>
+<li><p><strong>warnings</strong> (<em>list</em><em>[</em><em>FLoodWarnings</em><em>]</em>) – The list of FloodWarning objects of severity greater than or equal to
+severity.</p></li>
+<li><p><strong>poly_cache</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the polygon cache file. The default is ‘warning_polys.pk’.</p></li>
+<li><p><strong>area_cache</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the area cache file. The default is ‘warning_areas.pk’.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -990,7 +831,7 @@ The name of the area cache file. If no value is passed, defaults to ‘warning_a
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -1007,7 +848,7 @@ The name of the area cache file. If no value is passed, defaults to ‘warning_a
       &copy;2020, Alice Barbe, Daniel Siromani.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

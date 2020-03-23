@@ -8,9 +8,6 @@ Welcome to Flood Warning System's documentation!
 
 .. automodule:: floodsystem.analysis
    :members:
-   
-.. automodule:: floodsystem.datafetcher
-   :members:
 
 .. automodule:: floodsystem.flood
    :members:

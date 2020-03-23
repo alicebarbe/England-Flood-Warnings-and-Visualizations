@@ -5,7 +5,6 @@
 Internet."""
 
 import pandas as pd
-
 from floodsystem import datafetcher
 from floodsystem.station import MonitoringStation
 
@@ -28,7 +27,7 @@ def build_station_list(use_cache=True, test=False):
 
     Returns
     -------
-    stations : list of MonitoringStations
+    stations : list[MonitoringStations]
 
     """
     # Fetch station data - if testing use the fixed test data
@@ -107,7 +106,7 @@ def build_station_dataframe(stations):
 
     Parameters
     ----------
-    stations : list of MonitoringStation
+    stations : list[MonitoringStation]
         generated using build_station_list.
 
     Returns
@@ -128,5 +127,10 @@ def build_station_dataframe(stations):
     df['rel_level'] = [station.relative_water_level() if
                        station.relative_water_level() is not None else 0
                        for station in stations]
+    df['typical_range'] = [station.typical_range if station.typical_range is
+                            not None else (0, 0) for station in stations]
+    df['town'] = [station.town if station.town is not None else "Not available"
+                  for station in stations]
+
 
     return df

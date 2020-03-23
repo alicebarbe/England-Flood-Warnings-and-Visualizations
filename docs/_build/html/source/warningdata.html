@@ -7,11 +7,11 @@
     <title>warningdata module &#8212; Flood Warning System 1.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -32,29 +32,25 @@
             
   <div class="section" id="module-warningdata">
 <span id="warningdata-module"></span><h1>warningdata module<a class="headerlink" href="#module-warningdata" title="Permalink to this headline">¶</a></h1>
+<p>Framework to import, cache, and use flood warning and corresponding data.</p>
 <dl class="function">
 <dt id="warningdata.build_regions_geojson">
 <code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">build_regions_geojson</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.build_regions_geojson" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a geoJSON FeatureCollection object for plotting flood warnings on a map
-:param warnings: [FLoodWarnings].</p>
-<blockquote>
-<div><p>List of flood warnings</p>
-</div></blockquote>
+<dd><p>Create geoJSON FeatureCollection object to plot flood warnings on a map.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> – string.
-For debug purposes, saves parameters data to a file, without any coordinates
-if file is a non-None string</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>warnings</strong> (<em>list</em><em>[</em><a class="reference internal" href="../index.html#floodsystem.warning.FloodWarning" title="floodsystem.warning.FloodWarning"><em>FloodWarning</em></a><em>]</em>) – List of flood warnings.</p></li>
+<li><p><strong>file</strong> (<em>string</em><em>, </em><em>optional</em>) – For debug purposes, saves parameters data to a file, without any
+coordinates if file is a non-None string. The default is None.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>dictionary.</dt><dd><p>The geoJSON object containing the regions of all the warnings in warnings</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>data</strong> – The geoJSON object containing the regions of all the warnings in
+warnings.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>json_object</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -62,26 +58,19 @@ if file is a non-None string</p>
 <dl class="function">
 <dt id="warningdata.build_severity_dataframe">
 <code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">build_severity_dataframe</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">min_severity</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.build_severity_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Builds a pandas dataframe with data from the warnings, which is used to
-colour the map regions on a plot</p>
+<dd><p>Build dataframe with warnings data, used to colour the map regions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>warnings</strong> – [FLoodWarnings].
-List of flood warnings</p></li>
-<li><p><strong>min_severity</strong> – int.
-The minimum severity value for which to add warnings to the dataframe</p></li>
+<li><p><strong>warnings</strong> (<em>list</em><em>[</em><a class="reference internal" href="../index.html#floodsystem.warning.FloodWarning" title="floodsystem.warning.FloodWarning"><em>FloodWarning</em></a><em>]</em>) – list of flood warnings.</p></li>
+<li><p><strong>min_severity</strong> (<em>int</em>) – The minimum severity value for which to add warnings to the dataframe.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>DataFrame.</dt><dd><p>Pandas DataFrame with the relevant data</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>df</strong> – Pandas DataFrame with the relevant data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>data_frame</p>
+<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -89,27 +78,24 @@ The minimum severity value for which to add warnings to the dataframe</p></li>
 <dl class="function">
 <dt id="warningdata.build_warning_list">
 <code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">build_warning_list</code><span class="sig-paren">(</span><em class="sig-param">severity</em>, <em class="sig-param">use_pickle_caches=True</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.build_warning_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch warnings from the API and create a list of warnings. Also updates caches
-for flood regions for any new warnings
-:param severity: int.</p>
-<blockquote>
-<div><p>warnings above this minimum severity value (ie of lower numerical value) will be returned</p>
-</div></blockquote>
+<dd><p>Fetch warnings from the API and create a list of warnings.</p>
+<p>Also updates caches for flood regions for any new warnings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>use_pickle_caches</strong> – bool.
-If true, then cached data regarding flood regions is used -
-the flood warnings are still the most recent pulled from the API</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>severity</strong> (<em>int</em>) – warnings above this minimum severity value (ie of lower numerical
+value) will be returned.</p></li>
+<li><p><strong>use_pickle_caches</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, then cached data regarding flood regions is used - the flood
+warnings are still the most recent pulled from the API. The default is
+True.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>[FloodWarnings].</dt><dd><p>The list of FloodWarning objects of severity greater than or equal to severity</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>warnings</strong> – The list of FloodWarning objects of severity greater than or equal to
+severity.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>warnings</p>
+<dd class="field-odd"><p>list[<a class="reference internal" href="../index.html#floodsystem.warning.FloodWarning" title="floodsystem.warning.FloodWarning">FloodWarning</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -117,17 +103,17 @@ the flood warnings are still the most recent pulled from the API</p>
 <dl class="function">
 <dt id="warningdata.retrieve_pickle_cache">
 <code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">retrieve_pickle_cache</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.retrieve_pickle_cache" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Reads a cached pickle file and returns the result.
-:param filename: string.</p>
-<blockquote>
-<div><p>The name of the pickle file to be read. This file must be in the cache directory</p>
-</div></blockquote>
+<dd><p>Read a cached pickle file and returns the result.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The python variables read from the pickle file.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – The name of the pickle file to be read.
+This file must be in the cache directory.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>pickle_variables</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The python variables read from the pickle file..</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pickle_variables</p>
 </dd>
 </dl>
 </dd></dl>
@@ -135,16 +121,21 @@ the flood warnings are still the most recent pulled from the API</p>
 <dl class="function">
 <dt id="warningdata.save_to_pickle_cache">
 <code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">save_to_pickle_cache</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.save_to_pickle_cache" title="Permalink to this definition">¶</a></dt>
-<dd><p>“Saves data to a pickle cache file.
-:param filename: string.</p>
-<blockquote>
-<div><p>The name of the pickle file to be saved. The file is placed
-in the cache directory.</p>
-</div></blockquote>
+<dd><p>Save data to a pickle cache file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> – The data to be saved to a pickle file. Any Python variable
-type may be used</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – The name of the pickle file to be saved. The file is placed in the
+cache directory.</p></li>
+<li><p><strong>data</strong> – The data to be saved to a pickle file. Any Python variable type may
+be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -152,22 +143,27 @@ type may be used</p>
 <dl class="function">
 <dt id="warningdata.update_poly_area_caches">
 <code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">update_poly_area_caches</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">poly_cache='warning_polys.pk'</em>, <em class="sig-param">area_cache='warning_areas.pk'</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.update_poly_area_caches" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates updated lists of polygons and areas pertaining to any new warnings.
-If previous cached data is available, the new data is appended to this.</p>
-<p>polygon data is stored as a list of lists containing four attributes for each warning, as shown below
-[[geojson, region, is_poly_simplified, simplified_geojson], …]</p>
-<p>area data is stored as a list of json objects obtained from the API for each warning, as shown below
-[[area_json], …]</p>
+<dd><p>Create updated lists of polygons/areas pertaining to any new warnings.</p>
+<p>If previous cached data is available, the new data is appended to this.
+polygon data is stored as a list of lists containing four attributes for
+each warning: [[geojson, region, is_poly_simplified, simplified_geojson],
+…]</p>
+<p>area data is stored as a list of json objects obtained from the API for
+each warning: [[area_json], …]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>warnings</strong> – [FloodWarnings].
-The list of FloodWarning objects of severity greater than or equal to severity</p></li>
-<li><p><strong>poly_cache</strong> – string.
-The name of the polygon cache file. If no value is passed, defaults to ‘warning_polys.pk’</p></li>
-<li><p><strong>area_cache</strong> – string.
-The name of the area cache file. If no value is passed, defaults to ‘warning_areas.pk’</p></li>
+<li><p><strong>warnings</strong> (<em>list</em><em>[</em><em>FLoodWarnings</em><em>]</em>) – The list of FloodWarning objects of severity greater than or equal to
+severity.</p></li>
+<li><p><strong>poly_cache</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the polygon cache file. The default is ‘warning_polys.pk’.</p></li>
+<li><p><strong>area_cache</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the area cache file. The default is ‘warning_areas.pk’.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -208,7 +204,7 @@ The name of the area cache file. If no value is passed, defaults to ‘warning_a
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -225,7 +221,7 @@ The name of the area cache file. If no value is passed, defaults to ‘warning_a
       &copy;2020, Alice Barbe, Daniel Siromani.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

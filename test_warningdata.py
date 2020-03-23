@@ -27,13 +27,14 @@ def test_build_severity_dataframe():
     # empty array - should return an empty datafram
     warnings = []
     severity = SeverityLevel.low
-    df = build_severity_dataframe(warnings, severity.value)
+    df = build_severity_dataframe(warnings)
     assert (df.empty)
 
-    # warnings without any information or with partial information - should return defaults and severity low
+    # warnings without any information or with partial information
+    # should return defaults and severity low
     warnings = [FloodWarning(), FloodWarning()]
     print(warnings)
-    df = build_severity_dataframe(warnings, severity.value)
+    df = build_severity_dataframe(warnings)
     print(df.count().values)
     assert (all([col_len == 2 for col_len in df.count().values]))
 
