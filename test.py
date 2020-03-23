@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 from plotly.offline import plot, iplot
 import plotly.express as px
 import numpy as np
-
+"""
 colors = px.colors.named_colorscales()
 for color in colors:
     y = np.random.randn(500)
@@ -25,3 +25,4 @@ for color in colors:
     ))
     fig.update_layout(title=color)
     iplot(fig)
+"""
