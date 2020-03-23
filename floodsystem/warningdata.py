@@ -271,48 +271,58 @@ def build_regions_geojson(warnings, file=None):
     return data
 
 
-def build_severity_dataframe(warnings, min_severity):
+def build_severity_dataframe(warnings):
     """Build dataframe with warnings data, used to colour the map regions.
 
     Parameters
     ----------
     warnings : list[FloodWarning]
         list of flood warnings.
-    min_severity : int
-        The minimum severity value for which to add warnings to the dataframe.
 
     Returns
     -------
     df : pandas.DataFrame
-        Pandas DataFrame with the relevant data.
+        Pandas DataFrame with the relevant data for each warning
 
     """
-    data_arr = []
+    df = pd.DataFrame()
 
-    for w in warnings:
-        if w.severity is not None:
-            if w.severity.value <= min_severity:
-                l = "Not available"
-                last_update = "Not available"
-                message = "Not available"
-                warning_id = "Not available"
-                warning_severity = 4
+    df['severity'] = [w.severity.name if w.severity.name is not None else
+                      "Not available" for w in warnings]
+    df['id'] = [w.id if w.id is not None else "Not available"
+                for w in warnings]
+    df['label'] = [w.label if w.label is not None else "Not available"
+                   for w in warnings]
+    df['last_updated'] = [w.last_update if w.last_update is not None else
+                          "Not available" for w in warnings]
+    df['warning_message'] = [w.message if w.message is not None else
+                             "Not available" for w in warnings]
+    df['int_severity'] = [w.severity_lev if w.severity_lev is not None else 5
+                          for w in warnings]
 
-                if w.label is not None:
-                    l = w.label
-                if w.last_update is not None:
-                    last_update = w.last_update
-                if w.description is not None:
-                    message = w.message
-                if w.id is not None:
-                    warning_id = w.id
-                if w.severity_lev is not None:
-                    warning_severity = w.severity_lev
+    # in some cases the county names are very long so we limit to 50 characters
+    county_list = []
+    county_str_size_lim = 47
+    for warning in warnings:
+        if warning.county is None:
+            county_list.append("Not available")
 
-                data_arr.append([w.severity.name, warning_id, l, last_update,
-                                 message, warning_severity])
+        elif len(warning.county) > 50:
+            counties = warning.county.split(',')
+            county_str = counties[0]
 
-    df = pd.DataFrame(data_arr, columns=['severity', 'id', 'label',
-                                         'last_updated', 'warning_message',
-                                         'warning_severity'])
+            for county in counties[1:]:
+                if len(county_str) + len(county) + 1 < county_str_size_lim:
+                    county_str += ',' + county
+                else:
+                    county_str += '...'
+                    break
+
+            county_list.append(county_str)
+
+        else:
+            county_list.append(warning.county)
+
+    df['county'] = county_list
+
     return df

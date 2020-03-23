@@ -73,9 +73,7 @@ class FloodWarning:
                 if r.contains(point):
                     return True
             return False
-        # TODO: return after else - convention fix?
-        else:
-            return False
+        return False
 
     def stations_in_warning(self, stations):
         """Produce a list of stations which are within the warning.

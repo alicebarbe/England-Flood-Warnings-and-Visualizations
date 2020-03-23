@@ -3,12 +3,10 @@
 from floodsystem.stationdata import build_station_list, \
     build_station_dataframe, update_water_levels
 from floodsystem.warningdata import build_warning_list, build_regions_geojson,\
-    build_severity_dataframe, save_to_pickle_cache, retrieve_pickle_cache,\
-    update_poly_area_caches
+    build_severity_dataframe, update_poly_area_caches
 from floodsystem.warning import FloodWarning, SeverityLevel
 from floodsystem.plot import map_flood_warnings,\
     get_recommended_simplification_params
-# TODO: get rid of unnecessary imports
 
 
 def run():
@@ -19,7 +17,7 @@ def run():
     stations = build_station_list()
     update_water_levels(stations)
 
-    severity = SeverityLevel.high
+    severity = SeverityLevel.low
 
     print("Building warning list of severity {}...".format(severity.value))
     warnings = build_warning_list(severity.value)
@@ -28,9 +26,7 @@ def run():
         return
 
     print("Simplifying geometry...")
-    simplification_params = {'tol': 0.0001, 'buf': 0.0002}
-    # TODO: use of simplification_params
-    # simplification_params = get_recommended_simplification_params(len(warnings))
+    simplification_params = get_recommended_simplification_params(len(warnings))
 
     for warning in warnings:
         # if the simplification parameters used for the cached file were
@@ -43,7 +39,7 @@ def run():
 
     print("Making datasets...")
     geojson = build_regions_geojson(warnings)
-    df = build_severity_dataframe(warnings, severity.value)
+    df = build_severity_dataframe(warnings)
     df2 = build_station_dataframe(stations)
 
     # we want the most severe warnings first - given that the list will be long
@@ -54,7 +50,8 @@ def run():
 
     print("\n")
     print("Mapping warnings...")
-    map_flood_warnings(geojson, warning_df=df, station_df=df2)
+    map_flood_warnings(geojson, warning_df=df, min_severity=severity.value,
+                       station_df=df2)
 
     print("Checking for warnings in Jesus College, Cambridge ...")
     jc_coords = (52.20527, 0.120705)

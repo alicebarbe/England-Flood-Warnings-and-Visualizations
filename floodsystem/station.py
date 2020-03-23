@@ -52,8 +52,7 @@ class MonitoringStation:
         # return false only if inconsistent
         if self.typical_range is not None:
             return self.typical_range[0] <= self.typical_range[1]
-        else:
-            return True
+        return True
 
     def relative_water_level(self):
         """Return the water level as a proportion of the typical range.
@@ -74,8 +73,7 @@ class MonitoringStation:
             # only run map if the range is consistent and not None
             # the latest level is set
             return map(self.latest_level, self.typical_range, (0.0, 1.0))
-        else:
-            return None
+        return None
 
     @staticmethod
     def inconsistent_typical_range_stations(stations):
@@ -116,7 +114,6 @@ class MonitoringStation:
         level = station.relative_water_level()
         if level is not None:
             return level
-        else:
-            # if the value is not available, put the station at
-            # the bottom of the list
-            return -256
+        # if the value is not available, put the station at
+        # the bottom of the list
+        return -256
