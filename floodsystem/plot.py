@@ -1,11 +1,11 @@
 """Visualizations of historical data, flooding zones, and stations."""
 
+import matplotlib
+import numpy as np
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from plotly.offline import plot
 from floodsystem.analysis import polyfit
-from floodsystem.warning import SeverityLevel
-import numpy as np
 
 
 def create_water_levels_plot(listinput):
@@ -166,11 +166,6 @@ def map_flood_warnings(geojson, warning_df=None,
     None.
 
     """
-    colours = {'severe': 'rgb(41, 24, 107)',
-               'high': 'rgb(18, 95, 142)',
-               'moderate': 'rgb(65, 157, 133)',
-               'low': 'rgb(160, 214, 91)'}
-
     hover_temp_choro = "<b>%{customdata[2]}</b><br>" \
                        "severity : %{customdata[0]}<br>" \
                        "last update : %{customdata[3]}<br><br>" \
@@ -191,20 +186,22 @@ def map_flood_warnings(geojson, warning_df=None,
         # create discrete color scale, depending on severities plotted
         color_floats = np.linspace(0, min_severity, min_severity+1)/min_severity
         # TODO: color configs somewhere more global
-        color_list = ["red", "orange", "yellow", "green"]
+        color_list = ["green", "yellow", "orange", "red"]
+        #cmap = matplotlib.cm.get_cmap('portland')
+        #color_list = [f'rgb{cmap(0.65)[0:3]}', f'rgb{cmap(0.75)[0:3]}',
+        #              f'rgb{cmap(0.85)[0:3]}', f'rgb{cmap(0.99)[0:3]}']
         colorscale = []
         # I thought I liked discrete bars
         for i in range(len(color_floats) - 1):
             colorscale.append((color_floats[i], color_list[i]))
             colorscale.append((color_floats[i+1], color_list[i]))
         # NVM I liked the continuous bar - comment this to go back to discrete
-        colorscale = color_list[:min_severity]
+        colorscale = color_list[4-min_severity:]
         # TODO: replace with something more efficient, from the enum?
-        #ticktext = ["severe", "high", "medium", "low"][:min_severity]
-        ticktext = ["low", "medium", "high", "severe"][4-min_severity:]
+        ticktext = ["low", "moderate", "high", "severe"][4-min_severity:]
 
         fig.add_choroplethmapbox(geojson=geojson,
-                                 z=warning_df['int_severity'],
+                                 z=5-warning_df['int_severity'],
                                  zmax=min_severity+0.1,
                                  zmin=1-0.1,
                                  colorscale=colorscale,
@@ -212,9 +209,8 @@ def map_flood_warnings(geojson, warning_df=None,
 
                                  colorbar_thickness=15,
                                  colorbar_outlinewidth=0,
-                                 colorbar_tickvals=list(range(min_severity, 0, -1)),
+                                 colorbar_tickvals=list(range(1, min_severity+1)),
                                  colorbar_ticktext=ticktext,
-                                 #colorbar_tickangle=90,
                                  colorbar_tickmode="array",
                                  colorbar_x=0.01,
                                  colorbar_yanchor="bottom",
@@ -245,16 +241,10 @@ def map_flood_warnings(geojson, warning_df=None,
                               marker_color=station_df.rel_level,
                               marker_cmin=min_lev,
                               marker_cmax=max_lev,
-                              #marker_colorscale='haline_r',
-                              marker_colorscale='rdbu',
-                              #marker_reversescale=True,
-                              #marker_colorscale = [(0, "red"),   (0.33, "red"),
-                              #                     (0.33, "green"), (0.66, "green"),
-                              #                     (0.66, "blue"),  (1, "blue")],
+                              marker_colorscale='rdbu_r',
                               marker_colorbar_thickness=15,
                               marker_colorbar_x=0.1,
                               marker_colorbar_title='Relative Water Level',
-                              #marker_color=(round((station_df.rel_level),
 
                               customdata=[row for _, row in
                                           station_df.iterrows()],
@@ -296,8 +286,7 @@ def get_recommended_simplification_params(warning_len):
     """
     if warning_len < 10:
         return {'tol': 0.000, 'buf': 0.000}
-    else:
-        tol = (round(warning_len, -1) - 10) * 0.00005
-        buf = (round(warning_len, -1) - 10) * 0.0001
+    tol = (round(warning_len, -1) - 10) * 0.00005
+    buf = (round(warning_len, -1) - 10) * 0.0001
 
-        return {'tol': tol, 'buf': buf}
+    return {'tol': tol, 'buf': buf}
