@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>plot module &mdash; Flood Warning System 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="station module" href="station.html" />
+    <link rel="prev" title="geo module" href="geo.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Flood Warning System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">analysis module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datafetcher.html">datafetcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flood.html">flood module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geo.html">geo module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">plot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="station.html">station module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stationdata.html">stationdata module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="warning.html">warning module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="warningdata.html">warningdata module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Flood Warning System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>plot module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/plot.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-plot">
+<span id="plot-module"></span><h1>plot module<a class="headerlink" href="#module-plot" title="Permalink to this headline">¶</a></h1>
+<p>Visualizations of historical data, flooding zones, and stations.</p>
+<dl class="function">
+<dt id="plot.create_water_levels_plot">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">create_water_levels_plot</code><span class="sig-paren">(</span><em class="sig-param">listinput</em><span class="sig-paren">)</span><a class="headerlink" href="#plot.create_water_levels_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the water levels of stations given corresponding date.</p>
+<p>Subplots are created for each station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>listinput</strong> (<em>list</em>) – <dl class="simple">
+<dt>list of station (MonitoringStation), dates (list), and</dt><dd><p>levels (list), in this order. List must be of length multiple of 3.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – when listinput is not of length multiple of three.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>fig</strong> – plotly figure with water levels, high, and low plotted.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>plotly.graph_objects.figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plot.get_recommended_simplification_params">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">get_recommended_simplification_params</code><span class="sig-paren">(</span><em class="sig-param">warning_len</em><span class="sig-paren">)</span><a class="headerlink" href="#plot.get_recommended_simplification_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the recommended geometry simplification tolerance and buffer.</p>
+<p>These settings are based on the number of warnings present, and designed
+to prevent the map interface from lagging if many warnings are present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>warning_len</strong> (<em>int</em>) – number of warnings in the warning list.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>{‘tol’: float, ‘buf’: float}.
+Parameters which determine the degree of shape approximation
+recommended for mapping.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plot.map_flood_warnings">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">map_flood_warnings</code><span class="sig-paren">(</span><em class="sig-param">geojson</em>, <em class="sig-param">warning_df=None</em>, <em class="sig-param">min_severity=4</em>, <em class="sig-param">station_df=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plot.map_flood_warnings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot flood warnings and station levels as a chloropleth map figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geojson</strong> (<em>geo_json</em>) – <dl class="simple">
+<dt>Contains the perimeter definitions for all warnings. Created from</dt><dd><p>warningdata.build_regions_geojson.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>warning_df</strong> (<em>pandas.dataframe</em><em>, </em><em>optional</em>) – Contains information regarding the severity of the floods and the
+location name. Created using warningdata.build_severity_dataframe.
+Defaults to None, where warnings are not mapped.</p></li>
+<li><p><strong>station_df</strong> (<em>pandas.dataframe</em><em>, </em><em>optional</em>) – Contains information of position and relative water level of each
+station, to be plotted as a scatter map. Defaults to None, where
+stations are not mapped.</p></li>
+<li><p><strong>min_severity</strong> (<em>int</em><em>, </em><em>optional</em>) – If provided, plots only warnings equal to or above this severity
+level Use SeverityLevel.value to obtain the integer value
+corresponding to a named severity level. default is 4 (all warnings
+plotted)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plot.plot_water_levels">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_water_levels</code><span class="sig-paren">(</span><em class="sig-param">listinput</em><span class="sig-paren">)</span><a class="headerlink" href="#plot.plot_water_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display plot generated in create_water_levels_plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>listinput</strong> (<em>list</em>) – list of station (MonitoringStation), dates (list), and levels (list),
+in this order. List must be of length multiple of 3.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plot.plot_water_levels_with_fit">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_water_levels_with_fit</code><span class="sig-paren">(</span><em class="sig-param">listinput</em>, <em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#plot.plot_water_levels_with_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add best-fit line to water level graphs, and display them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>listinput</strong> (<em>list</em>) – list of station (MonitoringStation), dates (list), and levels (list),
+in this order. List must be of length multiple of 3.</p></li>
+<li><p><strong>p</strong> (<em>int</em>) – order of polynomial fit</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="station.html" class="btn btn-neutral float-right" title="station module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="geo.html" class="btn btn-neutral float-left" title="geo module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Alice Barbe, Daniel Siromani
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
