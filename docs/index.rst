@@ -6,39 +6,57 @@
 Welcome to Flood Warning System's documentation!
 ================================================
 
-.. automodule:: floodsystem.analysis
-   :members:
+Introduction
+============
+Probably identical to the beginning of readme
 
-.. automodule:: floodsystem.flood
-   :members:
-   
-.. automodule:: floodsystem.geo
-   :members:
-   
-.. automodule:: floodsystem.plot
-   :members:
-   
-.. automodule:: floodsystem.station
-   :members:
-   
-.. automodule:: floodsystem.stationdata
-   :members:
-   
-.. automodule:: floodsystem.utils
-   :members:
-   
-.. automodule:: floodsystem.warning
-   :members:
+Dependencies
+============
 
-.. automodule:: floodsystem.warningdata
-   :members:
-   
-   
+The flood warning system has been developed for Python versions 3.7 and later.
+Additionally, the following packages are needed:
+
+* numpy
+* shapely
+* plotly
+* pandas
+* requests
+* dateutils
+* haversine
+
+If you would like to run unit tests provided locally, pytest is also required.
+Navigate to the libraries root directory and run ::
+   python -m pytest
+
+
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 4
+   :caption: Modules
 
+   source/analysis
+   source/datafetcher
+   source/flood
+   source/geo
+   source/plot
+   source/station
+   source/stationdata
+   source/utils
+   source/warning
+   source/warningdata
 
+Demonstration programs
+======================
+
+A number of programs which demonstrate functions
+of the library are included.
+These may be run directly from a command-line, e.g. ::
+   python Task1A.py
+
+Note that functions which generate plots produce
+an html file which is auto opened in the default browser
+
+Known issues
+============
 
 Indices and tables
 ==================

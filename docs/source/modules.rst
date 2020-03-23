@@ -3,10 +3,11 @@ floodsystem
 
 .. toctree::
    :maxdepth: 4
+   :caption: Files
 
-   analysis
-   datafetcher
-   flood
+   source/analysis
+   source/datafetcher
+   source/flood
    geo
    plot
    station
