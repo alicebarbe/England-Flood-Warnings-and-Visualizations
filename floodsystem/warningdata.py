@@ -112,13 +112,13 @@ def build_warning_list(severity, use_pickle_caches=True):
 
 
 def update_poly_area_caches(warnings, poly_cache='warning_polys.pk',
-                            area_cache='warning_areas.pk'):
+                            area_cache='warning_areas.pk', overwrite=False):
     """Create updated lists of polygons/areas pertaining to any new warnings.
 
-    If previous cached data is available, the new data is appended to this.
-    polygon data is stored as a list of lists containing four attributes for
-    each warning: [[geojson, region, is_poly_simplified, simplified_geojson],
-    ...]
+    If previous cached data is available, and overwrite is false the new data
+    is appended to this. polygon data is stored as a list of lists containing
+    four attributes for each warning:
+    [[geojson, region, is_poly_simplified, simplified_geojson], ...]
 
     area data is stored as a list of json objects obtained from the API for
     each warning: [[area_json], ...]
@@ -132,15 +132,22 @@ def update_poly_area_caches(warnings, poly_cache='warning_polys.pk',
         The name of the polygon cache file. The default is 'warning_polys.pk'.
     area_cache : string, optional
         The name of the area cache file. The default is 'warning_areas.pk'.
+    overwrite : bool, optional
+        If True, previously cached data is overwritten and only current data is
+         added to the cache files. The default is False.
 
     Returns
     -------
     None.
 
     """
-    # tries to retrieve all previously cached data, and adds on any
-    polys = retrieve_pickle_cache(poly_cache)
-    areas = retrieve_pickle_cache(area_cache)
+    # if not overwriting, tries to read previous data and appends on new data
+    if not overwrite:
+        polys = retrieve_pickle_cache(poly_cache)
+        areas = retrieve_pickle_cache(area_cache)
+    else:
+        polys = []
+        areas = []
 
     for warning in warnings:
         # if the warning id does not already have a corresponding polygon

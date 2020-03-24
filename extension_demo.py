@@ -74,7 +74,7 @@ def run(severity, coords, plot_warnings, plot_stations, overwrite_cache,
             print("\n")
 
     print("Saving caches...")
-    update_poly_area_caches(warnings)
+    update_poly_area_caches(warnings, overwrite_cache=overwrite_cache)
 
 
 if __name__ == "__main__":
