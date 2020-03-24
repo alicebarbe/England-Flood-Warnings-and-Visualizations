@@ -6,7 +6,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from plotly.offline import plot
 from floodsystem.analysis import polyfit
-
+from floodsystem.warning import SeverityLevel
 
 def create_water_levels_plot(listinput):
     """Plot the water levels of stations given corresponding date.
@@ -183,22 +183,7 @@ def map_flood_warnings(geojson, warning_df=None,
     fig = go.Figure()
 
     if not (warning_df is None or warning_df.empty):
-        # create discrete color scale, depending on severities plotted
-        color_floats = np.linspace(0, min_severity, min_severity+1)/min_severity
-        # TODO: color configs somewhere more global
-        color_list = ["green", "yellow", "orange", "red"]
-        #cmap = matplotlib.cm.get_cmap('portland')
-        #color_list = [f'rgb{cmap(0.65)[0:3]}', f'rgb{cmap(0.75)[0:3]}',
-        #              f'rgb{cmap(0.85)[0:3]}', f'rgb{cmap(0.99)[0:3]}']
-        colorscale = []
-        # I thought I liked discrete bars
-        for i in range(len(color_floats) - 1):
-            colorscale.append((color_floats[i], color_list[i]))
-            colorscale.append((color_floats[i+1], color_list[i]))
-        # NVM I liked the continuous bar - comment this to go back to discrete
-        colorscale = color_list[4-min_severity:]
-        # TODO: replace with something more efficient, from the enum?
-        ticktext = ["low", "moderate", "high", "severe"][4-min_severity:]
+        colorscale, ticktext = create_choropleth_colour_scale(min_severity)
 
         fig.add_choroplethmapbox(geojson=geojson,
                                  z=5-warning_df['int_severity'],
@@ -226,6 +211,7 @@ def map_flood_warnings(geojson, warning_df=None,
                                  # TODO: if I set linewidth to 0 it's pretty
                                  # but also impossible to click link because
                                  # the lines are super thin.
+                                 # marker_line_width=0,
                                  marker_line_color='white',
                                  name="Flood Warning")
 
@@ -290,3 +276,44 @@ def get_recommended_simplification_params(warning_len):
     buf = (round(warning_len, -1) - 10) * 0.0001
 
     return {'tol': tol, 'buf': buf}
+
+def create_choropleth_colour_scale(min_severity=4, discrete_colourscale=False):
+    """Creates lists defining the colours and tick labels
+     for the choropleth map legend
+
+     Parameters
+     ----------
+     min_severity: int, optional
+        the minimum severity of warnings which are to be accomodated in the
+        colour scale. Defaults to 4, allowing all possible severities
+     discrete_colourscale: bool, optional
+        If True, creates a discrete colour bar. Default is false
+
+     Returns
+     -------
+     colorscale, ticktext: list, list of strings
+        These are intended to be directly passed to the plotly colorscale
+        and colorbar_ticktext parameters"""
+
+    # TODO: color configs somewhere more global - Is it better in a function?
+    color_list = ["green", "yellow", "orange", "red"]
+    # cmap = matplotlib.cm.get_cmap('portland')
+    # color_list = [f'rgb{cmap(0.65)[0:3]}', f'rgb{cmap(0.75)[0:3]}',
+    #              f'rgb{cmap(0.85)[0:3]}', f'rgb{cmap(0.99)[0:3]}']
+
+    color_floats = np.linspace(0, min_severity,
+                               min_severity + 1) / min_severity
+
+    colorscale = []
+    if discrete_colourscale:
+        for i in range(len(color_floats) - 1):
+            colorscale.append((color_floats[i], color_list[i]))
+            colorscale.append((color_floats[i + 1], color_list[i]))
+    else:
+        colorscale = color_list[4 - min_severity:]
+
+    # creates an array of severity names from enum from
+    # severe to the minimum severity
+    ticktext = [s.name for s in reversed(SeverityLevel)][4-min_severity:]
+
+    return colorscale, ticktext
