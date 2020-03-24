@@ -58,14 +58,12 @@ def build_warning_list(severity, use_pickle_caches=True):
                          (a['items']['currentWarning']['floodAreaID']
                           == warning.id)), None)
             if area is not None:
-                print('cache area found')
                 warning.label = area['items']['label']
                 warning.description = area['items']['description']
                 warning.coord = (area['items']['lat'], area['items']['long'])
 
         if not warning.label or not warning.description:
             if '@id' in w['floodArea']:
-                print("making area api call")
                 flood_area = datafetcher.fetch_warning_area(w['floodArea']['@id'])
 
                 warning.label = flood_area['items']['label']
@@ -88,7 +86,6 @@ def build_warning_list(severity, use_pickle_caches=True):
 
         if not warning.region or not warning.geojson:
             if 'polygon' in w['floodArea']:
-                print("making api call")
                 poly = datafetcher.fetch_warning_region(w['floodArea']['polygon'])
                 if poly is not None:
                     warning.region = [FloodWarning.geo_json_to_shape(p['geometry'])

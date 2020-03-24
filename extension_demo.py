@@ -3,7 +3,7 @@ from floodsystem.stationdata import build_station_list, \
 from floodsystem.warningdata import build_warning_list, build_regions_geojson,\
     build_severity_dataframe, update_poly_area_caches
 from floodsystem.warning import FloodWarning, SeverityLevel
-from floodsystem.plot import map_flood_warnings,\
+from floodsystem.plot import map_flood_warnings, \
     get_recommended_simplification_params
 
 import argparse
@@ -11,6 +11,7 @@ import argparse
 
 def run(severity, coords, plot_warnings, plot_stations, overwrite_cache,
         simplification_params):
+    """Flood warning system extension demo code"""
 
     warning_df = None
     station_df = None
@@ -25,7 +26,7 @@ def run(severity, coords, plot_warnings, plot_stations, overwrite_cache,
             print("No warnings of this severity available")
 
         print("Simplifying geometry...")
-        if simplification_params['tol'] is None or simplification_params['buf'] is None:
+        if simplification_params is None:
             simplification_params = get_recommended_simplification_params(len(warnings))
 
         for warning in warnings:
@@ -46,10 +47,11 @@ def run(severity, coords, plot_warnings, plot_stations, overwrite_cache,
 
     # print warnings
     # we want the most severe warnings first - given that the list will be long
+    print("\n")
     sorted_warnings = FloodWarning.order_warning_list_with_severity(warnings)
     for warning in sorted_warnings:
         print(warning)
-        print("\n")
+        print("")
 
     print("Mapping ...")
     map_flood_warnings(geojson, warning_df=warning_df,
@@ -81,8 +83,7 @@ if __name__ == "__main__":
     print("*** Extension Demonstration Script ***")
     severity_levels = [s.name for s in SeverityLevel]
 
-    # collect and parse command line parameters, then pass the
-    # relevant parameters to run()
+    # collect and parse command line parameters
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--warning-min-severity", type=str, default="low",
                         choices=severity_levels, dest='warning_min_severity',
@@ -137,13 +138,20 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # process the command line inputs
     coords = None
     if args.latitude is not None and args.longitude is not None:
         coords = (args.latitude, args.longitude)
 
+    simplification_params = None
+    if not (args.geometry_tolerance is None or args.geometry_buffer is None):
+        simplification_params = {'tol': args.geometry_tolerance,
+                                 'buf': args.geometry_buffer}
+
+    # run the demo
     run(SeverityLevel[args.warning_min_severity],
         coords,
         not args.disable_plot_warnings,
         not args.disable_plot_stations,
         args.overwrite_warning_cache,
-        {'tol': args.geometry_tolerance, 'buf': args.geometry_buffer})
+        simplification_params)
