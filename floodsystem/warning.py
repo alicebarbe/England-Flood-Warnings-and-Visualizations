@@ -1,9 +1,8 @@
 """Store and process flood warning data from Flood Monitoring API."""
+from floodsystem.utils import sorted_by_key
 
 from enum import Enum
 from shapely.geometry import Point, shape, mapping
-from floodsystem.utils import sorted_by_key
-
 
 class FloodWarning:
     """A flood warning data class, obtained from the Flood Monitoring API."""
