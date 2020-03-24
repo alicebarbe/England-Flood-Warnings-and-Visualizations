@@ -272,8 +272,8 @@ def get_recommended_simplification_params(warning_len):
     """
     if warning_len < 10:
         return {'tol': 0.000, 'buf': 0.000}
-    tol = (round(warning_len, -1) - 10) * 0.00005
-    buf = (round(warning_len, -1) - 10) * 0.0001
+    tol = (round(warning_len, -1) - 10) * 0.000025
+    buf = (round(warning_len, -1) - 10) * 0.00005
 
     return {'tol': tol, 'buf': buf}
 
