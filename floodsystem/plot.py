@@ -1,11 +1,11 @@
 """Visualizations of historical data, flooding zones, and stations."""
 
-import matplotlib
 import numpy as np
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from plotly.offline import plot
 from floodsystem.analysis import polyfit
+from floodsystem.warning import SeverityLevel
 
 
 def create_water_levels_plot(listinput):
@@ -35,8 +35,8 @@ def create_water_levels_plot(listinput):
                          station, dates, and levels.")
 
     fig = make_subplots(rows=len(listinput) // 3, cols=1, shared_xaxes=True,
-                        subplot_titles=[station.name
-                                        for station in listinput[::3]])
+                        subplot_titles=[station.name for station in
+                                        listinput[::3]])
 
     for i in range(len(listinput) // 3):
         # initialize values to plot
@@ -45,32 +45,27 @@ def create_water_levels_plot(listinput):
         levels = listinput[3 * i + 2]
 
         # add traces: high, low, level
-        fig.add_trace(go.Scatter(x=dates, y=levels,
-                                 mode='lines', name='Water level',
-                                 showlegend=(i == 0), legendgroup="level",
-                                 line_color='blue'),
-                      row=i + 1, col=1)
+        fig.add_trace(
+            go.Scatter(x=dates, y=levels, mode='lines', name='Water level',
+                       showlegend=(i == 0), legendgroup="level",
+                       line_color='blue'), row=i + 1, col=1)
         fig.add_trace(go.Scatter(x=[min(dates), max(dates)],
                                  y=[station.typical_range[0],
-                                    station.typical_range[0]],
-                                 mode='lines', name='Typical low level',
-                                 showlegend=(i == 0), legendgroup="low",
-                                 line_color='green'),
+                                    station.typical_range[0]], mode='lines',
+                                 name='Typical low level', showlegend=(i == 0),
+                                 legendgroup="low", line_color='green'),
                       row=i + 1, col=1)
         fig.add_trace(go.Scatter(x=[min(dates), max(dates)],
                                  y=[station.typical_range[1],
-                                    station.typical_range[1]],
-                                 mode='lines', name='Typical high level',
+                                    station.typical_range[1]], mode='lines',
+                                 name='Typical high level',
                                  showlegend=(i == 0), legendgroup="high",
-                                 line_color='red'),
-                      row=i + 1, col=1)
-        fig.update_yaxes(range=[min(0, min(levels),
-                                    station.typical_range[0]) - 0.1,
-                                max(1, max(levels),
-                                    station.typical_range[1]) + 0.1],
-                         title_text="Water Level",
-                         row=i + 1, col=1)
-        # fig.update_xaxes(title_text="Dates", row=i+1, col=1)
+                                 line_color='red'), row=i + 1, col=1)
+        fig.update_yaxes(
+            range=[min(0, min(levels), station.typical_range[0]) - 0.1,
+                   max(1, max(levels), station.typical_range[1]) + 0.1],
+            title_text="Water Level", row=i + 1,
+            col=1)  # fig.update_xaxes(title_text="Dates", row=i+1, col=1)
 
     fig.update_layout(height=1000)
     return fig
@@ -128,18 +123,17 @@ def plot_water_levels_with_fit(listinput, p):
         x_levels = poly(x)
 
         # plot curve
-        fig.add_trace(go.Scatter(x=dates, y=x_levels,
-                                 mode='lines', name='Fitted water level',
+        fig.add_trace(go.Scatter(x=dates, y=x_levels, mode='lines',
+                                 name='Fitted water level',
                                  showlegend=(i == 0),
-                                 legendgroup="fittedlevel",
-                                 line_color='gray'),
+                                 legendgroup="fittedlevel", line_color='gray'),
                       row=i + 1, col=1)
 
     plot(fig, auto_open=True)
 
 
-def map_flood_warnings(geojson, warning_df=None,
-                       min_severity=4, station_df=None):
+def map_flood_warnings(geojson, warning_df=None, min_severity=4,
+                       station_df=None):
     """Plot flood warnings and station levels as a chloropleth map figure.
 
     Parameters
@@ -183,38 +177,20 @@ def map_flood_warnings(geojson, warning_df=None,
     fig = go.Figure()
 
     if not (warning_df is None or warning_df.empty):
-        # create discrete color scale, depending on severities plotted
-        color_floats = np.linspace(0, min_severity, min_severity+1)/min_severity
-        # TODO: color configs somewhere more global
-        color_list = ["green", "yellow", "orange", "red"]
-        #cmap = matplotlib.cm.get_cmap('portland')
-        #color_list = [f'rgb{cmap(0.65)[0:3]}', f'rgb{cmap(0.75)[0:3]}',
-        #              f'rgb{cmap(0.85)[0:3]}', f'rgb{cmap(0.99)[0:3]}']
-        colorscale = []
-        # I thought I liked discrete bars
-        for i in range(len(color_floats) - 1):
-            colorscale.append((color_floats[i], color_list[i]))
-            colorscale.append((color_floats[i+1], color_list[i]))
-        # NVM I liked the continuous bar - comment this to go back to discrete
-        colorscale = color_list[4-min_severity:]
-        # TODO: replace with something more efficient, from the enum?
-        ticktext = ["low", "moderate", "high", "severe"][4-min_severity:]
+        colorscale, ticktext = create_choropleth_colour_scale(min_severity)
 
         fig.add_choroplethmapbox(geojson=geojson,
-                                 z=5-warning_df['int_severity'],
-                                 zmax=min_severity+0.1,
-                                 zmin=1-0.1,
-                                 colorscale=colorscale,
-                                 autocolorscale=False,
+                                 z=5 - warning_df['int_severity'],
+                                 zmax=min_severity + 0.1, zmin=1 - 0.1,
+                                 colorscale=colorscale, autocolorscale=False,
 
                                  colorbar_thickness=15,
                                  colorbar_outlinewidth=0,
-                                 colorbar_tickvals=list(range(1, min_severity+1)),
+                                 colorbar_tickvals=list(
+                                     range(1, min_severity + 1)),
                                  colorbar_ticktext=ticktext,
-                                 colorbar_tickmode="array",
-                                 colorbar_x=0.01,
-                                 colorbar_yanchor="bottom",
-                                 colorbar_y=0,
+                                 colorbar_tickmode="array", colorbar_x=0.01,
+                                 colorbar_yanchor="bottom", colorbar_y=0,
                                  colorbar_title_text="Flood Warnings",
 
                                  locations=warning_df['id'],
@@ -223,10 +199,7 @@ def map_flood_warnings(geojson, warning_df=None,
                                  customdata=[row for _, row in
                                              warning_df.iterrows()],
                                  marker_opacity=0.6,
-                                 # TODO: if I set linewidth to 0 it's pretty
-                                 # but also impossible to click link because
-                                 # the lines are super thin.
-                                 marker_line_color='white',
+                                 marker_line_width=0,
                                  name="Flood Warning")
 
     if not (station_df is None or station_df.empty):
@@ -236,11 +209,10 @@ def map_flood_warnings(geojson, warning_df=None,
 
         # create map of stations
         fig.add_scattermapbox(lon=station_df.lon, lat=station_df.lat,
-                              text=station_df.name,
-                              mode='markers',  # hover information column
+                              text=station_df.name, mode='markers',
+                              # hover information column
                               marker_color=station_df.rel_level,
-                              marker_cmin=min_lev,
-                              marker_cmax=max_lev,
+                              marker_cmin=min_lev, marker_cmax=max_lev,
                               marker_colorscale='rdbu_r',
                               marker_colorbar_thickness=15,
                               marker_colorbar_x=0.1,
@@ -249,16 +221,12 @@ def map_flood_warnings(geojson, warning_df=None,
                               customdata=[row for _, row in
                                           station_df.iterrows()],
                               hovertemplate=hover_temp_scatter,
-                              name="Station",
-                              )
+                              name="Station", )
 
     fig.update_layout(mapbox_style="carto-positron",
-                      margin={"r": 0, "t": 0, "l": 0, "b": 0},
-                      mapbox_zoom=5.5,
-                      mapbox_center={"lat": 53, "lon": -1.5},
-                      showlegend=True,
-                      legend_y=0.98,
-                      legend_x=0.9,
+                      margin={"r": 0, "t": 0, "l": 0, "b": 0}, mapbox_zoom=5.5,
+                      mapbox_center={"lat": 53, "lon": -1.5}, showlegend=True,
+                      legend_y=0.98, legend_x=0.9,
                       legend_title="Click to display:")
 
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
@@ -286,7 +254,44 @@ def get_recommended_simplification_params(warning_len):
     """
     if warning_len < 10:
         return {'tol': 0.000, 'buf': 0.000}
-    tol = (round(warning_len, -1) - 10) * 0.00005
-    buf = (round(warning_len, -1) - 10) * 0.0001
+    tol = (round(warning_len, -1) - 10) * 0.000025
+    buf = (round(warning_len, -1) - 10) * 0.00005
 
     return {'tol': tol, 'buf': buf}
+
+
+def create_choropleth_colour_scale(min_severity=4, discrete_colourscale=False):
+    """Define the colours and tick labels for the choropleth map legend.
+
+    Parameters
+    ----------
+    min_severity: int, optional
+       the minimum severity of warnings which are to be accomodated in the
+       colour scale. Defaults to 4, allowing all possible severities
+    discrete_colourscale: bool, optional.
+       If True, creates a discrete colour bar. Default is false.
+
+    Returns
+    -------
+    colorscale, ticktext: list, list of strings
+       These are intended to be directly passed to the plotly colorscale
+       and colorbar_ticktext parameters.
+    """
+    color_list = ["green", "yellow", "orange", "red"]
+
+    color_floats = np.linspace(0, min_severity,
+                               min_severity + 1) / min_severity
+
+    colorscale = []
+    if discrete_colourscale:
+        for i in range(len(color_floats) - 1):
+            colorscale.append((color_floats[i], color_list[i]))
+            colorscale.append((color_floats[i + 1], color_list[i]))
+    else:
+        colorscale = color_list[4 - min_severity:]
+
+    # creates an array of severity names from enum from
+    # severe to the minimum severity
+    ticktext = [s.name for s in reversed(SeverityLevel)][4 - min_severity:]
+
+    return colorscale, ticktext

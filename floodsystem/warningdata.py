@@ -4,11 +4,12 @@ import json
 import pickle
 import os
 import pandas as pd
+from progressbar import ProgressBar
 from floodsystem import datafetcher
 from floodsystem.warning import FloodWarning, SeverityLevel
 
 
-def build_warning_list(severity, use_pickle_caches=True):
+def build_warning_list(severity, use_pickle_caches=True, progress_bar=False):
     """Fetch warnings from the API and create a list of warnings.
 
     Also updates caches for flood regions for any new warnings.
@@ -22,6 +23,9 @@ def build_warning_list(severity, use_pickle_caches=True):
         If true, then cached data regarding flood regions is used - the flood
         warnings are still the most recent pulled from the API. The default is
         True.
+    progress_bar : bool, optional
+        If supplied, creates a bar in the terminal and updates as the warning
+        list is built. The defualt is False
 
     Returns
     -------
@@ -38,7 +42,10 @@ def build_warning_list(severity, use_pickle_caches=True):
 
     warnings = []
 
-    for w in data['items']:
+    if progress_bar:
+        bar = ProgressBar(max_value=len(data['items'])).start()
+
+    for progress_count, w in enumerate(data['items']):
         warning = FloodWarning()
 
         if 'floodAreaID' in w:
@@ -58,14 +65,12 @@ def build_warning_list(severity, use_pickle_caches=True):
                          (a['items']['currentWarning']['floodAreaID']
                           == warning.id)), None)
             if area is not None:
-                print('cache area found')
                 warning.label = area['items']['label']
                 warning.description = area['items']['description']
                 warning.coord = (area['items']['lat'], area['items']['long'])
 
         if not warning.label or not warning.description:
             if '@id' in w['floodArea']:
-                print("making area api call")
                 flood_area = datafetcher.fetch_warning_area(w['floodArea']['@id'])
 
                 warning.label = flood_area['items']['label']
@@ -88,7 +93,6 @@ def build_warning_list(severity, use_pickle_caches=True):
 
         if not warning.region or not warning.geojson:
             if 'polygon' in w['floodArea']:
-                print("making api call")
                 poly = datafetcher.fetch_warning_region(w['floodArea']['polygon'])
                 if poly is not None:
                     warning.region = [FloodWarning.geo_json_to_shape(p['geometry'])
@@ -108,17 +112,23 @@ def build_warning_list(severity, use_pickle_caches=True):
 
         warnings.append(warning)
 
+        if progress_bar:
+            bar.update(progress_count)
+
+    if progress_bar:
+        bar.finish()
+
     return warnings
 
 
 def update_poly_area_caches(warnings, poly_cache='warning_polys.pk',
-                            area_cache='warning_areas.pk'):
+                            area_cache='warning_areas.pk', overwrite=False):
     """Create updated lists of polygons/areas pertaining to any new warnings.
 
-    If previous cached data is available, the new data is appended to this.
-    polygon data is stored as a list of lists containing four attributes for
-    each warning: [[geojson, region, is_poly_simplified, simplified_geojson],
-    ...]
+    If previous cached data is available, and overwrite is false the new data
+    is appended to this. polygon data is stored as a list of lists containing
+    four attributes for each warning:
+    [[geojson, region, is_poly_simplified, simplified_geojson], ...]
 
     area data is stored as a list of json objects obtained from the API for
     each warning: [[area_json], ...]
@@ -132,15 +142,22 @@ def update_poly_area_caches(warnings, poly_cache='warning_polys.pk',
         The name of the polygon cache file. The default is 'warning_polys.pk'.
     area_cache : string, optional
         The name of the area cache file. The default is 'warning_areas.pk'.
+    overwrite : bool, optional
+        If True, previously cached data is overwritten and only current data is
+         added to the cache files. The default is False.
 
     Returns
     -------
     None.
 
     """
-    # tries to retrieve all previously cached data, and adds on any
-    polys = retrieve_pickle_cache(poly_cache)
-    areas = retrieve_pickle_cache(area_cache)
+    # if not overwriting, tries to read previous data and appends on new data
+    if not overwrite:
+        polys = retrieve_pickle_cache(poly_cache)
+        areas = retrieve_pickle_cache(area_cache)
+    else:
+        polys = []
+        areas = []
 
     for warning in warnings:
         # if the warning id does not already have a corresponding polygon
