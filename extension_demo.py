@@ -33,6 +33,8 @@ def run(severity, coords, plot_warnings, plot_stations, print_messages,
             # geometry should be simplified
             print("Simplifying geometry...")
             bar = ProgressBar(marker='=', max_value=len(warnings)).start()
+            # if the simplification parameters were not explicitly specified,
+            # uses the recommended ones
             if simpl_params is None:
                 simpl_params = get_recommended_simplification_params(len(warnings))
 
