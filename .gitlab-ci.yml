@@ -1,5 +1,11 @@
 image: python:3.7
 
+pages:
+  stage: deploy
+  artifacts:
+    paths:
+    - docs/_build/html
+
 test:
   script:
   # Install Python packages required to run code. Add any additional
