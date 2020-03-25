@@ -43,7 +43,7 @@ def build_warning_list(severity, use_pickle_caches=True, progress_bar=False):
     warnings = []
 
     if progress_bar:
-        bar = ProgressBar(marker='=', max_value=len(data['items'])).start()
+        bar = ProgressBar(max_value=len(data['items'])).start()
 
     for progress_count, w in enumerate(data['items']):
         warning = FloodWarning()

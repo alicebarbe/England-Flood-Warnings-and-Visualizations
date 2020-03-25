@@ -32,7 +32,7 @@ def run(severity, coords, plot_warnings, plot_stations, print_messages,
             # if we are plotting the warnings or updating the cache the warning
             # geometry should be simplified
             print("Simplifying geometry...")
-            bar = ProgressBar(marker='=', max_value=len(warnings)).start()
+            bar = ProgressBar(max_value=len(warnings)).start()
             # if the simplification parameters were not explicitly specified,
             # uses the recommended ones
             if simpl_params is None:
