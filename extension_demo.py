@@ -1,3 +1,6 @@
+"""Flood warning system extension demo code."""
+
+import argparse
 from floodsystem.stationdata import build_station_list, \
     build_station_dataframe, update_water_levels
 from floodsystem.warningdata import build_warning_list, build_regions_geojson,\
@@ -6,25 +9,24 @@ from floodsystem.warning import FloodWarning, SeverityLevel
 from floodsystem.plot import map_flood_warnings, \
     get_recommended_simplification_params
 
-import argparse
 
-
-def run(severity, coords, plot_warnings, plot_stations, overwrite_cache,
-        simplification_params):
-    """Flood warning system extension demo code"""
+def run(severity, coords, plot_warnings, plot_stations, print_messages,
+        overwrite_cache, simplification_params):
 
     warning_df = None
     station_df = None
     geojson = []
-
     warnings = []
 
-    if plot_warnings:
-        print("Building warning list of severity {}...".format(severity.value))
-        warnings = build_warning_list(severity.value)
-        if len(warnings) == 0:
-            print("No warnings of this severity available")
+    # create warning list and updates caches
+    print("Building warning list of severity {}...".format(severity.value))
+    warnings = build_warning_list(severity.value)
+    if len(warnings) == 0:
+        print("No warnings of this severity available")
+    print("Saving caches...")
+    update_poly_area_caches(warnings, overwrite=overwrite_cache)
 
+    if plot_warnings:
         print("Simplifying geometry...")
         if simplification_params is None:
             simplification_params = get_recommended_simplification_params(len(warnings))
@@ -45,38 +47,35 @@ def run(severity, coords, plot_warnings, plot_stations, overwrite_cache,
 
         station_df = build_station_dataframe(stations)
 
-    # print warnings
-    # we want the most severe warnings first - given that the list will be long
-    print("\n")
-    sorted_warnings = FloodWarning.order_warning_list_with_severity(warnings)
-    for warning in sorted_warnings:
-        print(warning)
-        print("")
+    # mapping if there is anything to map
+    if plot_warnings or plot_stations:
+        print("Mapping ...")
+        map_flood_warnings(geojson, warning_df=warning_df,
+                           min_severity=severity.value, station_df=station_df)
 
-    print("Mapping ...")
-    map_flood_warnings(geojson, warning_df=warning_df,
-                       min_severity=severity.value, station_df=station_df)
+    if print_messages:
+        # we want the most severe warnings first - the list will be long
+        print("\n")
+        sorted_warnings = FloodWarning.order_warning_list_with_severity(warnings)
+        for warning in sorted_warnings:
+            print(warning)
+            print("")
 
     # checks for flood warnings in the specified location
-    if coords is None:
-        print("Checking for warnings in Jesus College, Cambridge ...")
-        coords = (52.20527, 0.120705)
-
-    else:
+    if coords is not None:
         print("Checking for warnings at (lat: {}, long: {})".format(coords[0],
                                                                     coords[1]))
 
-    warnings_here = FloodWarning.check_warnings_at_location(warnings, coords)
-    if len(warnings_here) == 0:
-        print("No flood warnings in this location")
-    else:
-        print("The following warnings apply to this location")
-        for warning in warnings_here:
-            print(warning)
-            print("\n")
+        warnings_here = FloodWarning.check_warnings_at_location(warnings, coords)
+        if len(warnings_here) == 0:
+            print("No flood warnings in this location")
+        else:
+            print("The following warnings apply to this location")
+            for warning in warnings_here:
+                print(warning)
+                print("\n")
 
-    print("Saving caches...")
-    update_poly_area_caches(warnings, overwrite_cache=overwrite_cache)
+    print("Done")
 
 
 if __name__ == "__main__":
@@ -99,15 +98,20 @@ if __name__ == "__main__":
                              "checked for any flood warnigns.")
     parser.add_argument("-long", "--longitude", type=float, default=None,
                         help="The longitude, in degrees of a location to be "
-                            "checked for any flood warnigns.")
+                             "checked for any flood warnigns.")
 
     parser.add_argument("-c", "--overwrite-warning-cache", action='store_true',
                         dest='overwrite_warning_cache',
-                        help="If true, pulls all data on flood " 
-                              "warning regions and rewrites cache " 
-                              "files. Note warnings which have" 
-                              "changed are always updated, this"  
-                              "option fully rebuilds the cache")
+                        help="If true, pulls all data on flood "
+                             "warning regions and rewrites cache "
+                             "files. Note warnings which have"
+                             "changed are always updated, this"
+                             "option fully rebuilds the cache")
+
+    parser.add_argument("-dm" "--disable-warning-messages", action='store_true',
+                        dest='disable_warning_messages',
+                        help="disables printing detailed flood warning "
+                             "messages")
 
     parser.add_argument("-dw", "--disable-plot-warnings", action='store_true',
                         dest='disable_plot_warnings',
@@ -153,5 +157,6 @@ if __name__ == "__main__":
         coords,
         not args.disable_plot_warnings,
         not args.disable_plot_stations,
+        not args.disable_warning_messages,
         args.overwrite_warning_cache,
         simplification_params)

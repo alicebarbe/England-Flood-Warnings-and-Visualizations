@@ -143,6 +143,7 @@ def update_poly_area_caches(warnings, poly_cache='warning_polys.pk',
         polys = retrieve_pickle_cache(poly_cache)
         areas = retrieve_pickle_cache(area_cache)
     else:
+        print("Overwriting caches...")
         polys = []
         areas = []
 

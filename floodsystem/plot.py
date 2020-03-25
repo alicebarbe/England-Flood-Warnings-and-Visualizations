@@ -1,6 +1,5 @@
 """Visualizations of historical data, flooding zones, and stations."""
 
-import matplotlib
 import numpy as np
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
@@ -200,11 +199,7 @@ def map_flood_warnings(geojson, warning_df=None, min_severity=4,
                                  customdata=[row for _, row in
                                              warning_df.iterrows()],
                                  marker_opacity=0.6,
-                                 # TODO: if I set linewidth to 0 it's pretty
-                                 # but also impossible to click link because
-                                 # the lines are super thin.
-                                 # marker_line_width=0,
-                                 marker_line_color='white',
+                                 marker_line_width=0,
                                  name="Flood Warning")
 
     if not (station_df is None or station_df.empty):
@@ -266,28 +261,23 @@ def get_recommended_simplification_params(warning_len):
 
 
 def create_choropleth_colour_scale(min_severity=4, discrete_colourscale=False):
-    """Creates lists defining the colours and tick labels
-     for the choropleth map legend
+    """Define the colours and tick labels for the choropleth map legend.
 
-     Parameters
-     ----------
-     min_severity: int, optional
-        the minimum severity of warnings which are to be accomodated in the
-        colour scale. Defaults to 4, allowing all possible severities
-     discrete_colourscale: bool, optional
-        If True, creates a discrete colour bar. Default is false
+    Parameters
+    ----------
+    min_severity: int, optional
+       the minimum severity of warnings which are to be accomodated in the
+       colour scale. Defaults to 4, allowing all possible severities
+    discrete_colourscale: bool, optional.
+       If True, creates a discrete colour bar. Default is false.
 
-     Returns
-     -------
-     colorscale, ticktext: list, list of strings
-        These are intended to be directly passed to the plotly colorscale
-        and colorbar_ticktext parameters"""
-
-    # TODO: color configs somewhere more global - Is it better in a function?
+    Returns
+    -------
+    colorscale, ticktext: list, list of strings
+       These are intended to be directly passed to the plotly colorscale
+       and colorbar_ticktext parameters.
+    """
     color_list = ["green", "yellow", "orange", "red"]
-    # cmap = matplotlib.cm.get_cmap('portland')
-    # color_list = [f'rgb{cmap(0.65)[0:3]}', f'rgb{cmap(0.75)[0:3]}',
-    #              f'rgb{cmap(0.85)[0:3]}', f'rgb{cmap(0.99)[0:3]}']
 
     color_floats = np.linspace(0, min_severity,
                                min_severity + 1) / min_severity
