@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>warning module &mdash; Flood Warning System 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="warningdata module" href="warningdata.html" />
+    <link rel="prev" title="utils module" href="utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Flood Warning System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">analysis module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datafetcher.html">datafetcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flood.html">flood module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geo.html">geo module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot.html">plot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="station.html">station module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stationdata.html">stationdata module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">warning module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="warningdata.html">warningdata module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Flood Warning System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>warning module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/warning.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-warning">
+<span id="warning-module"></span><h1>warning module<a class="headerlink" href="#module-warning" title="Permalink to this headline">¶</a></h1>
+<p>Store and process flood warning data from Flood Monitoring API.</p>
+<dl class="class">
+<dt id="warning.SeverityLevel">
+<em class="property">class </em><code class="sig-prename descclassname">warning.</code><code class="sig-name descname">SeverityLevel</code><a class="headerlink" href="#warning.SeverityLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enum to map severity levels to descriptive severities.</p>
+<dl class="attribute">
+<dt id="warning.SeverityLevel.severe">
+<code class="sig-name descname">severe</code><em class="property"> = 1</em><a class="headerlink" href="#warning.SeverityLevel.severe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="warning.SeverityLevel.high">
+<code class="sig-name descname">high</code><em class="property"> = 2</em><a class="headerlink" href="#warning.SeverityLevel.high" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="warning.SeverityLevel.moderate">
+<code class="sig-name descname">moderate</code><em class="property"> = 3</em><a class="headerlink" href="#warning.SeverityLevel.moderate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="warning.SeverityLevel.low">
+<code class="sig-name descname">low</code><em class="property"> = 4</em><a class="headerlink" href="#warning.SeverityLevel.low" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="warning.FloodWarning">
+<em class="property">class </em><code class="sig-prename descclassname">warning.</code><code class="sig-name descname">FloodWarning</code><span class="sig-paren">(</span><em class="sig-param">identifier=None</em>, <em class="sig-param">county=None</em>, <em class="sig-param">label=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">severity_lev=None</em>, <em class="sig-param">tidal=None</em>, <em class="sig-param">message=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">geojson=None</em><span class="sig-paren">)</span><a class="headerlink" href="#warning.FloodWarning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A flood warning data class, obtained from the Flood Monitoring API.</p>
+<dl class="method">
+<dt id="warning.FloodWarning.check_warnings_at_location">
+<em class="property">static </em><code class="sig-name descname">check_warnings_at_location</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">loc</em><span class="sig-paren">)</span><a class="headerlink" href="#warning.FloodWarning.check_warnings_at_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check for any flood warnings concerning a specified location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>warnings</strong> (<em>list</em><em>[</em><em>Warning</em><em>]</em>) – List of warnings generated from warningdata.build_warning_list.</p></li>
+<li><p><strong>loc</strong> (<em>(</em><em>lat</em><em>, </em><em>long</em><em>)</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>warnings_at_loc</strong> – A list of warnings pertaining to the location provided.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[Warning]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="warning.FloodWarning.coord_in_region">
+<code class="sig-name descname">coord_in_region</code><span class="sig-paren">(</span><em class="sig-param">coord</em><span class="sig-paren">)</span><a class="headerlink" href="#warning.FloodWarning.coord_in_region" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if a coordinate is within the region of the flood warning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coord</strong> (<em>(</em><em>lat</em><em>, </em><em>long</em><em>)</em>) – The coordinates of the point in question, as a tuple.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the point is in the region, false if the point is outside
+the region or the region is None.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="warning.FloodWarning.find_towns_affected">
+<code class="sig-name descname">find_towns_affected</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#warning.FloodWarning.find_towns_affected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find towns in the flood warning region with a monitoring station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><em>MonitoringStations</em><em>]</em>) – produced using stationdata.build_station_list.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of names of the towns affected.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[String]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="warning.FloodWarning.geo_json_to_shape">
+<em class="property">static </em><code class="sig-name descname">geo_json_to_shape</code><span class="sig-paren">(</span><em class="sig-param">geo_json_obj</em><span class="sig-paren">)</span><a class="headerlink" href="#warning.FloodWarning.geo_json_to_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a geoJSON to a shapely object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>geo_json_obj</strong> (<em>dict</em>) – geoJSON object to be converted.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The shapely object (of type corresponding to the type of the input)
+The shape is corrected to form a simple polygon, e.g. by adding
+points at self intersections.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>shapely_object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="warning.FloodWarning.order_warning_list_with_severity">
+<em class="property">static </em><code class="sig-name descname">order_warning_list_with_severity</code><span class="sig-paren">(</span><em class="sig-param">warnings</em><span class="sig-paren">)</span><a class="headerlink" href="#warning.FloodWarning.order_warning_list_with_severity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put warnings in order of decreasing severity (most severe first).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>warnings</strong> (<em>list</em><em>[</em><a class="reference internal" href="#warning.FloodWarning" title="warning.FloodWarning"><em>FloodWarning</em></a><em>]</em>) – list of flood warnings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>warnings_sorted</strong> – Ordered list of flood warnings.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="#warning.FloodWarning" title="warning.FloodWarning">FloodWarning</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="warning.FloodWarning.simplify_geojson">
+<code class="sig-name descname">simplify_geojson</code><span class="sig-paren">(</span><em class="sig-param">tol=0.001</em>, <em class="sig-param">buf=0.002</em><span class="sig-paren">)</span><a class="headerlink" href="#warning.FloodWarning.simplify_geojson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simplify polygon geometry for better plotting, update self.simplified_geojson.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tol</strong> (<em>float</em><em>, </em><em>optional</em>) – Determines the maximum allowed deviation from the original shape.
+The default is 0.001.</p></li>
+<li><p><strong>buf</strong> (<em>float</em><em>, </em><em>optional</em>) – The amount to dilate the shapes in order to smooth them.
+The default is 0.002.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="warning.FloodWarning.stations_in_warning">
+<code class="sig-name descname">stations_in_warning</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#warning.FloodWarning.stations_in_warning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a list of stations which are within the warning.</p>
+<p>Note it is often the case that a warning region may have no stations in
+it. This is because the Met Office defines the warning regions based on
+floodplanes or elevations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – Created using stationdata.build_station_list().</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>warning_stations</strong> – List of monitoring stations whose coordinates are within the
+warning region.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="station.html#station.MonitoringStation" title="station.MonitoringStation">MonitoringStation</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="warningdata.html" class="btn btn-neutral float-right" title="warningdata module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="utils.html" class="btn btn-neutral float-left" title="utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Alice Barbe, Daniel Siromani
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
