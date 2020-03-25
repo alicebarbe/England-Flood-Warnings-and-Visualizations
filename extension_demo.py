@@ -1,6 +1,7 @@
 """Flood warning system extension demo code."""
 
 import argparse
+from progressbar import ProgressBar
 from floodsystem.stationdata import build_station_list, \
     build_station_dataframe, update_water_levels
 from floodsystem.warningdata import build_warning_list, build_regions_geojson,\
@@ -11,37 +12,51 @@ from floodsystem.plot import map_flood_warnings, \
 
 
 def run(severity, coords, plot_warnings, plot_stations, print_messages,
-        overwrite_cache, simplification_params):
+        overwrite_cache, simpl_params):
 
     warning_df = None
     station_df = None
     geojson = []
     warnings = []
 
-    # create warning list and updates caches
-    print("Building warning list of severity {}...".format(severity.value))
-    warnings = build_warning_list(severity.value)
-    if len(warnings) == 0:
-        print("No warnings of this severity available")
-    print("Saving caches...")
-    update_poly_area_caches(warnings, overwrite=overwrite_cache)
+    if plot_warnings or print_messages or overwrite_cache:
+        # create warning list of the required severity level
+        print("building warning list for {} severity warnings..."
+              .format(severity.name))
+        warnings = build_warning_list(severity.value, progress_bar=True)
+        if len(warnings) == 0:
+            print("No warnings of this severity available")
+        print("")
 
-    if plot_warnings:
-        print("Simplifying geometry...")
-        if simplification_params is None:
-            simplification_params = get_recommended_simplification_params(len(warnings))
+        if plot_warnings or overwrite_cache:
+            # if we are plotting the warnings or updating the cache the warning
+            # geometry should be simplified
+            print("Simplifying geometry...")
+            bar = ProgressBar(marker='=', max_value=len(warnings)).start()
+            if simpl_params is None:
+                simpl_params = get_recommended_simplification_params(len(warnings))
 
-        for warning in warnings:
-            # if the cached geometry was simplified differently, resimplify it
-            if warning.is_poly_simplified != simplification_params:
-                warning.simplify_geojson(tol=simplification_params['tol'],
-                                         buf=simplification_params['buf'])
-                warning.is_poly_simplified = simplification_params
+            for progress_count, warning in enumerate(warnings):
+                # if the cached geometry was simplified differently, resimplify
+                if warning.is_poly_simplified != simpl_params:
+                    warning.simplify_geojson(tol=simpl_params['tol'],
+                                             buf=simpl_params['buf'])
+                    warning.is_poly_simplified = simpl_params
+                bar.update(progress_count)
+            bar.finish()
+            print("")
 
-        warning_df = build_severity_dataframe(warnings)
-        geojson = build_regions_geojson(warnings)
+            if plot_warnings:
+                # if we are plotting, build a dataframe and geojson object
+                # containing information about each warnings and its geometry
+                warning_df = build_severity_dataframe(warnings)
+                geojson = build_regions_geojson(warnings)
+
+            print("Saving caches...")
+            update_poly_area_caches(warnings, overwrite=overwrite_cache)
 
     if plot_stations:
+        print("Building station list and updating water levels...")
         stations = build_station_list()
         update_water_levels(stations)
 
@@ -49,12 +64,12 @@ def run(severity, coords, plot_warnings, plot_stations, print_messages,
 
     # mapping if there is anything to map
     if plot_warnings or plot_stations:
-        print("Mapping ...")
+        print("Mapping...")
         map_flood_warnings(geojson, warning_df=warning_df,
                            min_severity=severity.value, station_df=station_df)
 
     if print_messages:
-        # we want the most severe warnings first - the list will be long
+        # we want the most severe warnings last - the list will be long
         print("\n")
         sorted_warnings = FloodWarning.order_warning_list_with_severity(warnings)
         for warning in sorted_warnings:
@@ -66,7 +81,8 @@ def run(severity, coords, plot_warnings, plot_stations, print_messages,
         print("Checking for warnings at (lat: {}, long: {})".format(coords[0],
                                                                     coords[1]))
 
-        warnings_here = FloodWarning.check_warnings_at_location(warnings, coords)
+        warnings_here = FloodWarning.check_warnings_at_location(warnings,
+                                                                coords)
         if len(warnings_here) == 0:
             print("No flood warnings in this location")
         else:
@@ -80,6 +96,8 @@ def run(severity, coords, plot_warnings, plot_stations, print_messages,
 
 if __name__ == "__main__":
     print("*** Extension Demonstration Script ***")
+    print("")
+
     severity_levels = [s.name for s in SeverityLevel]
 
     # collect and parse command line parameters
@@ -106,10 +124,10 @@ if __name__ == "__main__":
                              "warning regions and rewrites cache "
                              "files. Note warnings which have"
                              "changed are always updated, this"
-                             "option fully rebuilds the cache")
+                             "option fully rebuilds the cache. ")
 
-    parser.add_argument("-dm" "--disable-warning-messages", action='store_true',
-                        dest='disable_warning_messages',
+    parser.add_argument("-dm" "--disable-warning-messages",
+                        action='store_true', dest='disable_warning_messages',
                         help="disables printing detailed flood warning "
                              "messages")
 

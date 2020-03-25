@@ -4,11 +4,12 @@ import json
 import pickle
 import os
 import pandas as pd
+from progressbar import ProgressBar
 from floodsystem import datafetcher
 from floodsystem.warning import FloodWarning, SeverityLevel
 
 
-def build_warning_list(severity, use_pickle_caches=True):
+def build_warning_list(severity, use_pickle_caches=True, progress_bar=False):
     """Fetch warnings from the API and create a list of warnings.
 
     Also updates caches for flood regions for any new warnings.
@@ -22,6 +23,9 @@ def build_warning_list(severity, use_pickle_caches=True):
         If true, then cached data regarding flood regions is used - the flood
         warnings are still the most recent pulled from the API. The default is
         True.
+    progress_bar : bool, optional
+        If supplied, creates a bar in the terminal and updates as the warning
+        list is built. The defualt is False
 
     Returns
     -------
@@ -38,7 +42,10 @@ def build_warning_list(severity, use_pickle_caches=True):
 
     warnings = []
 
-    for w in data['items']:
+    if progress_bar:
+        bar = ProgressBar(marker='=', max_value=len(data['items'])).start()
+
+    for progress_count, w in enumerate(data['items']):
         warning = FloodWarning()
 
         if 'floodAreaID' in w:
@@ -104,6 +111,12 @@ def build_warning_list(severity, use_pickle_caches=True):
             warning.message = w['message']
 
         warnings.append(warning)
+
+        if progress_bar:
+            bar.update(progress_count)
+
+    if progress_bar:
+        bar.finish()
 
     return warnings
 
