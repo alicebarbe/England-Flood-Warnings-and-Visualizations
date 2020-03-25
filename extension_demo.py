@@ -19,7 +19,7 @@ def run(severity, coords, plot_warnings, plot_stations, print_messages,
     geojson = []
     warnings = []
 
-    if plot_warnings or print_messages or overwrite_cache:
+    if plot_warnings or print_messages or overwrite_cache or coords is not None:
         # create warning list of the required severity level
         print("building warning list for {} severity warnings..."
               .format(severity.name))
@@ -28,34 +28,36 @@ def run(severity, coords, plot_warnings, plot_stations, print_messages,
             print("No warnings of this severity available")
         print("")
 
-        if plot_warnings or overwrite_cache:
-            # if we are plotting the warnings or updating the cache the warning
-            # geometry should be simplified
-            print("Simplifying geometry...")
-            bar = ProgressBar(max_value=len(warnings)).start()
-            # if the simplification parameters were not explicitly specified,
-            # uses the recommended ones
-            if simpl_params is None:
-                simpl_params = get_recommended_simplification_params(len(warnings))
+    if plot_warnings or overwrite_cache:
+        # if we are plotting the warnings or updating the cache the warning
+        # geometry should be simplified
+        print("Simplifying geometry...")
+        bar = ProgressBar(max_value=len(warnings)).start()
+        # if the simplification parameters were not explicitly specified,
+        # uses the recommended ones
+        if simpl_params is None:
+            simpl_params = get_recommended_simplification_params(len(warnings))
 
-            for progress_count, warning in enumerate(warnings):
-                # if the cached geometry was simplified differently, resimplify
-                if warning.is_poly_simplified != simpl_params:
-                    warning.simplify_geojson(tol=simpl_params['tol'],
-                                             buf=simpl_params['buf'])
-                    warning.is_poly_simplified = simpl_params
-                bar.update(progress_count)
-            bar.finish()
-            print("")
+        for progress_count, warning in enumerate(warnings):
+            # if the cached geometry was simplified differently, resimplify
+            if warning.is_poly_simplified != simpl_params:
+                warning.simplify_geojson(tol=simpl_params['tol'],
+                                         buf=simpl_params['buf'])
+                warning.is_poly_simplified = simpl_params
+            bar.update(progress_count)
+        bar.finish()
+        print("")
 
-            if plot_warnings:
-                # if we are plotting, build a dataframe and geojson object
-                # containing information about each warnings and its geometry
-                warning_df = build_severity_dataframe(warnings)
-                geojson = build_regions_geojson(warnings)
+    if len(warnings) != 0:
+        # caches are updated as long as some warnings are present
+        print("Saving caches...")
+        update_poly_area_caches(warnings, overwrite=overwrite_cache)
 
-            print("Saving caches...")
-            update_poly_area_caches(warnings, overwrite=overwrite_cache)
+    if plot_warnings:
+        # if we are plotting, build a dataframe and geojson object
+        # containing information about each warnings and its geometry
+        warning_df = build_severity_dataframe(warnings)
+        geojson = build_regions_geojson(warnings)
 
     if plot_stations:
         print("Building station list and updating water levels...")
@@ -80,8 +82,8 @@ def run(severity, coords, plot_warnings, plot_stations, print_messages,
 
     # checks for flood warnings in the specified location
     if coords is not None:
-        print("Checking for warnings at (lat: {}, long: {})".format(coords[0],
-                                                                    coords[1]))
+        print("Checking for warnings "
+              "at (lat: {}, long: {})".format(coords[0], coords[1]))
 
         warnings_here = FloodWarning.check_warnings_at_location(warnings,
                                                                 coords)
@@ -107,11 +109,10 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--warning-min-severity", type=str, default="low",
                         choices=severity_levels, dest='warning_min_severity',
                         help="Fetches warnings only of the given severity "
-                             "level or greater. Must be one of {}. Warnings of"
+                             "level or greater. Warnings of"
                              " severity moderate and above are active "
                              "currently, while low severity warnings were "
-                             "active in the past 24 "
-                             "hours".format(severity_levels))
+                             "active in the past 24 hours")
 
     parser.add_argument("-lat", "--latitude", type=float, default=None,
                         help="The latitude, in degrees of a location to be "
@@ -128,7 +129,7 @@ if __name__ == "__main__":
                              "changed are always updated, this"
                              "option fully rebuilds the cache. ")
 
-    parser.add_argument("-dm" "--disable-warning-messages",
+    parser.add_argument("-dm", "--disable-warning-messages",
                         action='store_true', dest='disable_warning_messages',
                         help="disables printing detailed flood warning "
                              "messages")
