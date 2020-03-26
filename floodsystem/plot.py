@@ -227,7 +227,8 @@ def map_flood_warnings(geojson, warning_df=None, min_severity=4,
                       margin={"r": 0, "t": 0, "l": 0, "b": 0}, mapbox_zoom=5.5,
                       mapbox_center={"lat": 53, "lon": -1.5}, showlegend=True,
                       legend_y=0.98, legend_x=0.9,
-                      legend_title="Click to display:")
+                      legend_title="Click to display:",
+                      hovermode='closest')
 
     fig.update_geos(lataxis_showgrid=True, lonaxis_showgrid=True, visible=True)
     plot(fig, auto_open=True)

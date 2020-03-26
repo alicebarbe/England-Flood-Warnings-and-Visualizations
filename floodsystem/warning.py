@@ -79,8 +79,8 @@ class FloodWarning:
         """Produce a list of stations which are within the warning.
 
         Note it is often the case that a warning region may have no stations in
-        it. This is because the Met Office defines the warning regions based on
-        floodplanes or elevations
+        it. This is because the Environmental Agency defines the warning regions based on
+        flood planes or topology regions.
 
         Parameters
         ----------
@@ -108,7 +108,7 @@ class FloodWarning:
         Parameters
         ----------
         stations : list[MonitoringStations]
-            produced using stationdata.build_station_list.
+            produced using stationdata.build_station_list().
 
         Returns
         -------
@@ -190,7 +190,7 @@ class FloodWarning:
         Parameters
         ----------
         warnings : list[Warning]
-             List of warnings generated from warningdata.build_warning_list.
+             List of warnings generated from warningdata.build_warning_list().
         loc : (lat, long)
 
         Returns

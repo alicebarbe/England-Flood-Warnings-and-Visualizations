@@ -125,8 +125,8 @@ if __name__ == "__main__":
                         dest='overwrite_warning_cache',
                         help="If true, pulls all data on flood "
                              "warning regions and rewrites cache "
-                             "files. Note warnings which have"
-                             "changed are always updated, this"
+                             "files. Note warnings which have "
+                             "changed are always updated, this "
                              "option fully rebuilds the cache. ")
 
     parser.add_argument("-dm", "--disable-warning-messages",

@@ -180,8 +180,8 @@ Additionally, the following packages are needed:</p>
 <li><p>argparse</p></li>
 <li><p>progressbar2</p></li>
 </ul>
-<p>To run the unit tests provided locally, pytest is also required.
-Navigate to the library’s root directory and run:</p>
+<p>If you would like to run the unit tests provided locally, pytest is also required.
+Navigate to the library’s root directory and run</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python -m pytest
 </pre></div>
 </div>
@@ -222,24 +222,54 @@ they are enforced.</p>
 <p>Our extension collects this data and can display warning descriptions,
 plot the regions affected by warnings on a map, and determine if any warnings
 are active at a given location. Additionally, data from individual river monitoring
-stations is obtained and can be plotted on the map.</p>
+stations can be plotted on the map.</p>
 </div>
 <div class="section" id="map-plotting-functionality">
 <h2>Map Plotting Functionality<a class="headerlink" href="#map-plotting-functionality" title="Permalink to this headline">¶</a></h2>
-<p>Both current flood warnings and the relative water levels of monitoring stations can be
-plotted on a map.</p>
-<p>Warnings in force are displayed as shaded regions, usually
-defined by flood planes. The colour of the regions indicates the severity of the warning.
-Hovering over the warning displays the warning area name, severity,
-and when the warning was last updated.</p>
-<p>A link is also provided to the Government Flood Information Service page regarding the flood warning. The link contains
-information on what action needs to be taken and a 5 day flood forecast.</p>
-<p>The locations of monitoring stations are plotted as points and are colour-coded according to their
+<p>Warnings are displayed shaded regions within which they are in force, usually
+defined by flood planes. The colour of the regions indicates severity of the warning,
+as one of 4 severity levels:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>severe</dt><dd><p>Areas where severe flooding, posing a strong danger to life, is expected</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>high</dt><dd><p>Areas where flooding is expected, and the appropriate actions must be taken to ensure safety of
+people and belongings</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>moderate</dt><dd><p>Areas where flooding may occur. People in the area should be prepared to take action</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>low</dt><dd><p>Severe, high and moderate warnings which were in force in the past 24 hours, risk of flooding is
+now low, but river levels may still be higher than usual.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Hovering over the warning displays the name of the area which the warning is in, the severity,
+and when the warning was last updated. A link is also provided to the Government Flood Information Service
+page regarding the flood warning. The link contains information on what action needs to be taken
+and a 5 day flood forecast.</p>
+<p>A link is also provided to the Government Flood Information Service page regarding the flood warning.
+The link contains information on what action needs to be taken and a 5 day flood forecast.</p>
+<p>The locations of monitoring stations are plotted as points and are colour coded according to their
 relative water level (which is relative to the typical low and high levels of the station).
 Hovering over a station displays the station’s absolute water level, typical low and high levels,
 and town.</p>
 <p>Maps produced are saved as an html file temp plot and are opened in the default browser
 after creation.</p>
+<p>The boundary polygon and other data associated with the warning regions are cached as pickle files
+in order to reduce the time taken to map the warnings, especially if many warnings are present.
+The first time warnings are fetched the program may take some time to create a warning list and
+produce a plot, but for subsequent runs all warning severity levels are fetched but only new warnings’
+region information needs to be fetched and processed.</p>
 </div>
 <div class="section" id="extension-demo-program">
 <h2>Extension demo program<a class="headerlink" href="#extension-demo-program" title="Permalink to this headline">¶</a></h2>
@@ -315,6 +345,8 @@ They are then copied into the public folder and deployed using Gitlab Pages.</p>
 level at a monitoring station is measured. They can be relative to the Ordnance Survey datum,
 to a local stage datum, or below datum. As a result, a handful of stations have negative
 water levels.</p>
+<p>When different flood warnings overlap on the map, it is sometimes not possible to
+hover over one of the warnings.</p>
 </div>
 <div class="section" id="acknowledgements">
 <h1>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h1>

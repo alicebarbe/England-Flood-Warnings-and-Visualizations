@@ -62,25 +62,46 @@ stations is obtained and can be plotted on the map.
 
 ## Map Plotting Functionality
 
-Both current flood warnings and the relative water levels of monitoring stations can be
-plotted on a map.
-
 Warnings are displayed shaded regions within which they are in force, usually
-defined by flood planes. The colour of the regions indicates severity of the warning.
+defined by flood planes. The colour of the regions indicates severity of the warning,
+as one of 4 severity levels:
+
+* Severe
+   Areas where severe flooding, posing a strong danger to life, is expected
+* High
+   Areas where flooding is expected, and the appropriate actions must be taken to ensure safety of
+   people and belongings
+* Moderate
+   Areas where flooding may occur. People in the area should be prepared to take action
+* Low
+   severe, high and moderate warnings which were in force in the past 24hours, risk of flooding is
+   now low, but river levels may still be higher than usual.
+
 Hovering over the warning displays the name of the area which the warning is in, the severity,
-and when the warning was last updated.
+and when the warning was last updated. A link is also provided to the Government Flood Information Service
+page regarding the flood warning. The link contains information on what action needs to be taken
+and a 5 day flood forecast.
 
 A link is also provided to the Government Flood Information Service page regarding the flood warning. The link contains
 information on what action needs to be taken and a 5 day flood forecast.
 
 The locations of monitoring stations are plotted as points and are colour coded according to their
 relative water level (which is relative to the typical low and high levels of the station).
-Hovering over a station displays the absolute water level, the typical low and high levels
-and the town the station is in.
+Hovering over a station displays the station's absolute water level, typical low and high levels,
+and town.
 
-Maps produced are saved as a html file temp plot and are also opened in the default browser
+Maps produced are saved as an html file temp plot and are opened in the default browser
 after creation.
 
+The first time warnings are fetched the program may take some time to produce a plot, since
+the warning regions, represented as GeoJSON polygons, are fairly large and must be fetched
+over HTTP. Also, to keep the map responsive in the event of having many warnings
+this geometry must be approximated to a simpler shape before plotting.
+
+For subsequent runs the geometry of existing warnings, which have been approximated
+are cached in a pickle file, since they do not change. All warnings and their severity levels are
+fetched from the API but only the GeoJSON regions of new warnings need to be fetched and simplified, 
+which significantly reduces the time taken to update the map.
 
 ## Extension demo program
 

@@ -31,9 +31,8 @@ Additionally, the following packages are needed:
 * argparse
 * progressbar2
 
-To run the unit tests provided locally, pytest is also required.
-Navigate to the library's root directory and run: ::
-
+If you would like to run the unit tests provided locally, pytest is also required.
+Navigate to the library's root directory and run ::
    python -m pytest
 
 
@@ -59,7 +58,6 @@ Demonstration programs
 A number of programs which demonstrate functions
 of the library are included.
 These may be run directly from a command-line, e.g. ::
-
    python Task1A.py
 
 Extension
@@ -76,29 +74,47 @@ they are enforced.
 Our extension collects this data and can display warning descriptions,
 plot the regions affected by warnings on a map, and determine if any warnings
 are active at a given location. Additionally, data from individual river monitoring
-stations is obtained and can be plotted on the map.
+stations can be plotted on the map.
 
 Map Plotting Functionality
 --------------------------
 
-Both current flood warnings and the relative water levels of monitoring stations can be
-plotted on a map.
+Warnings are displayed shaded regions within which they are in force, usually
+defined by flood planes. The colour of the regions indicates severity of the warning,
+as one of 4 severity levels:
 
-Warnings in force are displayed as shaded regions, usually
-defined by flood planes. The colour of the regions indicates the severity of the warning.
-Hovering over the warning displays the warning area name, severity,
-and when the warning was last updated.
+* severe
+   Areas where severe flooding, posing a strong danger to life, is expected
+* high
+   Areas where flooding is expected, and the appropriate actions must be taken to ensure safety of
+   people and belongings
+* moderate
+   Areas where flooding may occur. People in the area should be prepared to take action
+* low
+   Severe, high and moderate warnings which were in force in the past 24 hours, risk of flooding is
+   now low, but river levels may still be higher than usual.
 
-A link is also provided to the Government Flood Information Service page regarding the flood warning. The link contains
-information on what action needs to be taken and a 5 day flood forecast.
+Hovering over the warning displays the name of the area which the warning is in, the severity,
+and when the warning was last updated. A link is also provided to the Government Flood Information Service
+page regarding the flood warning. The link contains information on what action needs to be taken
+and a 5 day flood forecast.
 
-The locations of monitoring stations are plotted as points and are colour-coded according to their
+A link is also provided to the Government Flood Information Service page regarding the flood warning.
+The link contains information on what action needs to be taken and a 5 day flood forecast.
+
+The locations of monitoring stations are plotted as points and are colour coded according to their
 relative water level (which is relative to the typical low and high levels of the station).
 Hovering over a station displays the station's absolute water level, typical low and high levels,
 and town.
 
 Maps produced are saved as an html file temp plot and are opened in the default browser
 after creation.
+
+The boundary polygon and other data associated with the warning regions are cached as pickle files
+in order to reduce the time taken to map the warnings, especially if many warnings are present.
+The first time warnings are fetched the program may take some time to create a warning list and
+produce a plot, but for subsequent runs all warning severity levels are fetched but only new warnings'
+region information needs to be fetched and processed.
 
 
 Extension demo program
@@ -151,7 +167,7 @@ with the following options: ::
                         offset by a fixed value, in degrees. By default,
                         settings which provide detailed warning regions and
                         keep the map responsive are used
-							
+
 Full descriptions for each of the arguments can be printed using ::
 
   python extension_demo.py --help
@@ -177,6 +193,9 @@ The Flood Monitoring API uses different types of reference points from which the
 level at a monitoring station is measured. They can be relative to the Ordnance Survey datum,
 to a local stage datum, or below datum. As a result, a handful of stations have negative
 water levels.
+
+When different flood warnings overlap on the map, it is sometimes not possible to
+hover over one of the warnings.
 
 Acknowledgements
 ================
