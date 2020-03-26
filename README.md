@@ -93,15 +93,12 @@ and town.
 Maps produced are saved as an html file temp plot and are opened in the default browser
 after creation.
 
-The first time warnings are fetched the program may take some time to produce a plot, since
-the warning regions, represented as GeoJSON polygons, are fairly large and must be fetched
-over HTTP. Also, to keep the map responsive in the event of having many warnings
-this geometry must be approximated to a simpler shape before plotting.
+The boundary polygon and other data associated with the warning regions are cached as pickle files
+in order to reduce the time taken to map the warnings, especially if many warnings are present.
+The first time warnings are fetched the program may take some time to create a warning list and
+produce a plot, but for subsequent runs all warning severity levels are fetched but only new warnings'
+region information needs to be fetched and processed.
 
-For subsequent runs the geometry of existing warnings, which have been approximated
-are cached in a pickle file, since they do not change. All warnings and their severity levels are
-fetched from the API but only the GeoJSON regions of new warnings need to be fetched and simplified, 
-which significantly reduces the time taken to update the map.
 
 ## Extension demo program
 
