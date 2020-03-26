@@ -9,8 +9,9 @@ https://daniel345.gitlab.io/partia-flood-warning-system/
 # Introduction
 
 The aim of this library is to provide accurate and near real-time flood warnings and
-river water level data, fetched from the
-`Flood Monitoring API <https://environment.data.gov.uk/flood-monitoring/doc/reference>`_.
+river water level data, fetched from the Flood Monitoring API: 
+https://environment.data.gov.uk/flood-monitoring/doc/reference
+
 Data analysis, filtering and plotting capability is built-in.
 
 # Dependencies
@@ -31,7 +32,9 @@ Additionally, the following packages are needed:
 If you would like to run the unit tests provided locally, pytest is also required.
 Navigate to the library's root directory and run:
 
-```python -m pytest```
+```
+python -m pytest
+```
 
 # Demonstration programs
 
@@ -39,7 +42,9 @@ A number of programs which demonstrate functions
 of the library are included.
 These may be run directly from a command-line, e.g.
 
-```python Task1A.py```
+```
+python Task1A.py
+```
 
 # Extension
 
@@ -82,13 +87,17 @@ after creation.
 The extension_demo.py script runs elements of the extension.
 The parts run can be configured using a command line interface,
 with the following options:
-```usage: extension_demo.py [-h] [-s {severe,high,moderate,low}] [-lat LATITUDE]
-                            [-long LONGITUDE] [-c] [-dm] [-dw] [-ds]
-                            [-tol GEOMETRY_TOLERANCE] [-buf GEOMETRY_BUFFER]```
+```
+usage: extension_demo.py [-h] [-s {severe,high,moderate,low}] [-lat LATITUDE]
+                         [-long LONGITUDE] [-c] [-dm] [-dw] [-ds]
+                         [-tol GEOMETRY_TOLERANCE] [-buf GEOMETRY_BUFFER]
+```
 
 Full descriptions for each of the arguments can be printed using:
 
-```python extension_demo.py --help```
+```
+python extension_demo.py --help
+```
 
 # Known issues
 
