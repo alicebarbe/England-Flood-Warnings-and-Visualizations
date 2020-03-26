@@ -51,6 +51,7 @@ Navigate to the library's root directory and run ::
    source/warning
    source/warningdata
 
+   
 Demonstration programs
 ======================
 
@@ -111,6 +112,19 @@ with the following options ::
 							
 Full descriptions for each of the arguments can be printed using ::
    python extension_demo.py --help
+   
+Documentation
+=============
+
+This documentation is generated using Sphinx and the Napoleon extension for parsing
+Numpy docstrings. The source/config files for this documentation are stored in
+`docs <https://gitlab.com/daniel345/partia-flood-warning-system/-/tree/master/docs>`_.
+They are then copied into the public folder and deployed using Gitlab Pages.
+
+To re-run documentation, modify the source files in the docs folder and execute ::
+  make html
+  
+and copy the contents of docs/_build/html to public.
 
 Known issues
 ============
