@@ -24,7 +24,6 @@ Additionally, the following packages are needed:
 * numpy
 * shapely
 * plotly
-* matplotlib
 * pandas
 * requests
 * dateutils
@@ -109,6 +108,7 @@ with the following options ::
                             [-long LONGITUDE] [-c] [-dm] [-dw] [-ds]
                             [-tol GEOMETRY_TOLERANCE] [-buf GEOMETRY_BUFFER]
 
+							
 Full descriptions for each of the arguments can be printed using ::
    python extension_demo.py --help
 
