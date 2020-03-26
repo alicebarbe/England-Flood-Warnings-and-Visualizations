@@ -91,6 +91,46 @@ with the following options:
 usage: extension_demo.py [-h] [-s {severe,high,moderate,low}] [-lat LATITUDE]
                          [-long LONGITUDE] [-c] [-dm] [-dw] [-ds]
                          [-tol GEOMETRY_TOLERANCE] [-buf GEOMETRY_BUFFER]
+                         
+optional arguments:
+-h, --help            show this help message and exit
+-s {severe,high,moderate,low}, --warning-min-severity {severe,high,moderate,low}
+                      Fetches warnings only of the given severity level or
+                      greater. Warnings of severity moderate and above are
+                      active currently, while low severity warnings were
+                      active in the past 24 hours
+-lat LATITUDE, --latitude LATITUDE
+                      The latitude, in degrees of a location to be checked
+                      for any flood warnigns.
+-long LONGITUDE, --longitude LONGITUDE
+                      The longitude, in degrees of a location to be checked
+                      for any flood warnigns.
+-c, --overwrite-warning-cache
+                      If true, pulls all data on flood warning regions and
+                      rewrites cache files. Note warnings which havechanged
+                      are always updated, thisoption fully rebuilds the
+                      cache.
+-dm, --disable-warning-messages
+                      disables printing detailed flood warning messages
+-dw, --disable-plot-warnings
+                      disables plotting of warnings on a choropleth map.
+-ds, --disable-plot-stations
+                      disables plotting of station locations and their
+                      relative water levels on a map
+-tol GEOMETRY_TOLERANCE, --geometry-tolerance GEOMETRY_TOLERANCE
+                      Simplifies warning region geometry before plotting to
+                      keep the map responsive. The tolerance is given in
+                      degrees and sets the maximum allowed deviation of the
+                      approximated geometry from the true shape. By default,
+                      settings which provide detailed warning regions and
+                      keep the map responsive are used
+-buf GEOMETRY_BUFFER, --geometry_buffer GEOMETRY_BUFFER
+                      Simplifies warning region geometry before plotting to
+                      keep the map responsive. The buffer smoothes geometry
+                      and removes any voids by taking the locus of the shape
+                      offset by a fixed value, in degrees. By default,
+                      settings which provide detailed warning regions and
+                      keep the map responsive are used
 ```
 
 Full descriptions for each of the arguments can be printed using:
