@@ -6,7 +6,7 @@ pages:
   - echo 'Nothing to do...'
   artifacts:
     paths:
-    - docs/_build/html
+    - public
 
 test:
   script:
