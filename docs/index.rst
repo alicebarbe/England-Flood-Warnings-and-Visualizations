@@ -110,8 +110,8 @@ with the following options ::
                             [-tol GEOMETRY_TOLERANCE] [-buf GEOMETRY_BUFFER]
 
 							
-Full descriptions for each of the arguments can be printed using ::
-   python extension_demo.py --help
+Full descriptions for each of the arguments can be printed using
+``python extension_demo.py --help``
    
 Documentation
 =============
@@ -121,8 +121,7 @@ Numpy docstrings. The source/config files for this documentation are stored in
 `docs <https://gitlab.com/daniel345/partia-flood-warning-system/-/tree/master/docs>`_.
 They are then copied into the public folder and deployed using Gitlab Pages.
 
-To re-run documentation, modify the source files in the docs folder and execute ::
-  make html
+To re-run documentation, modify the source files in the docs folder and execute: ``make html``
   
 and copy the contents of docs/_build/html to public.
 
