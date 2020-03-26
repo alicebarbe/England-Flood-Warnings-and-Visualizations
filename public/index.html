@@ -180,7 +180,7 @@ Additionally, the following packages are needed:</p>
 <li><p>argparse</p></li>
 <li><p>progressbar2</p></li>
 </ul>
-<p>If you would like to run the unit tests provided locally, pytest is also required.
+<p>To run the unit tests provided locally, pytest is also required.
 Navigate to the library’s root directory and run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pytest</span>
 </pre></div>
@@ -214,8 +214,8 @@ These may be run directly from a command-line, e.g.</p>
 <h1>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="environmental-agency-flood-warnings">
 <h2>Environmental Agency Flood Warnings<a class="headerlink" href="#environmental-agency-flood-warnings" title="Permalink to this headline">¶</a></h2>
-<p>The flood warnings produced by the are made available via the Flood Warning API.
-They are produced by taking into account tidal, meteorological, groundwater and river level
+<p>The flood warnings produced are made available via the Flood Warning API.
+They take into account tidal, meteorological, groundwater and river level
 data, as well as the locations of flood planes surrounding rivers. The warnings provide
 information on the type and severity of flooding and also define the region in which
 they are enforced.</p>
@@ -228,17 +228,17 @@ stations is obtained and can be plotted on the map.</p>
 <h2>Map Plotting Functionality<a class="headerlink" href="#map-plotting-functionality" title="Permalink to this headline">¶</a></h2>
 <p>Both current flood warnings and the relative water levels of monitoring stations can be
 plotted on a map.</p>
-<p>Warnings are displayed shaded regions within which they are in force, usually
-defined by flood planes. The colour of the regions indicates severity of the warning.
-Hovering over the warning displays the name of the area which the warning is in, the severity,
+<p>Warnings in force are displayed as shaded regions, usually
+defined by flood planes. The colour of the regions indicates the severity of the warning.
+Hovering over the warning displays the warning area name, severity,
 and when the warning was last updated.</p>
 <p>A link is also provided to the Government Flood Information Service page regarding the flood warning. The link contains
 information on what action needs to be taken and a 5 day flood forecast.</p>
-<p>The locations of monitoring stations are plotted as points and are colour coded according to their
+<p>The locations of monitoring stations are plotted as points and are colour-coded according to their
 relative water level (which is relative to the typical low and high levels of the station).
-Hovering over a station displays the absolute water level, the typical low and high levels
-and the town the station is in.</p>
-<p>Maps produced are saved as a html file temp plot and are also opened in the default browser
+Hovering over a station displays the station’s absolute water level, typical low and high levels,
+and town.</p>
+<p>Maps produced are saved as an html file temp plot and are opened in the default browser
 after creation.</p>
 </div>
 <div class="section" id="extension-demo-program">
@@ -249,10 +249,52 @@ with the following options</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">extension_demo</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="p">{</span><span class="n">severe</span><span class="p">,</span><span class="n">high</span><span class="p">,</span><span class="n">moderate</span><span class="p">,</span><span class="n">low</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">lat</span> <span class="n">LATITUDE</span><span class="p">]</span>
                           <span class="p">[</span><span class="o">-</span><span class="n">long</span> <span class="n">LONGITUDE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">dm</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">dw</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ds</span><span class="p">]</span>
                           <span class="p">[</span><span class="o">-</span><span class="n">tol</span> <span class="n">GEOMETRY_TOLERANCE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">buf</span> <span class="n">GEOMETRY_BUFFER</span><span class="p">]</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+<span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+<span class="o">-</span><span class="n">s</span> <span class="p">{</span><span class="n">severe</span><span class="p">,</span><span class="n">high</span><span class="p">,</span><span class="n">moderate</span><span class="p">,</span><span class="n">low</span><span class="p">},</span> <span class="o">--</span><span class="n">warning</span><span class="o">-</span><span class="nb">min</span><span class="o">-</span><span class="n">severity</span> <span class="p">{</span><span class="n">severe</span><span class="p">,</span><span class="n">high</span><span class="p">,</span><span class="n">moderate</span><span class="p">,</span><span class="n">low</span><span class="p">}</span>
+                      <span class="n">Fetches</span> <span class="n">warnings</span> <span class="n">only</span> <span class="n">of</span> <span class="n">the</span> <span class="n">given</span> <span class="n">severity</span> <span class="n">level</span> <span class="ow">or</span>
+                      <span class="n">greater</span><span class="o">.</span> <span class="n">Warnings</span> <span class="n">of</span> <span class="n">severity</span> <span class="n">moderate</span> <span class="ow">and</span> <span class="n">above</span> <span class="n">are</span>
+                      <span class="n">active</span> <span class="n">currently</span><span class="p">,</span> <span class="k">while</span> <span class="n">low</span> <span class="n">severity</span> <span class="n">warnings</span> <span class="n">were</span>
+                      <span class="n">active</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">past</span> <span class="mi">24</span> <span class="n">hours</span>
+<span class="o">-</span><span class="n">lat</span> <span class="n">LATITUDE</span><span class="p">,</span> <span class="o">--</span><span class="n">latitude</span> <span class="n">LATITUDE</span>
+                      <span class="n">The</span> <span class="n">latitude</span><span class="p">,</span> <span class="ow">in</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">a</span> <span class="n">location</span> <span class="n">to</span> <span class="n">be</span> <span class="n">checked</span>
+                      <span class="k">for</span> <span class="nb">any</span> <span class="n">flood</span> <span class="n">warnigns</span><span class="o">.</span>
+<span class="o">-</span><span class="n">long</span> <span class="n">LONGITUDE</span><span class="p">,</span> <span class="o">--</span><span class="n">longitude</span> <span class="n">LONGITUDE</span>
+                      <span class="n">The</span> <span class="n">longitude</span><span class="p">,</span> <span class="ow">in</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">a</span> <span class="n">location</span> <span class="n">to</span> <span class="n">be</span> <span class="n">checked</span>
+                      <span class="k">for</span> <span class="nb">any</span> <span class="n">flood</span> <span class="n">warnigns</span><span class="o">.</span>
+<span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">--</span><span class="n">overwrite</span><span class="o">-</span><span class="n">warning</span><span class="o">-</span><span class="n">cache</span>
+                      <span class="n">If</span> <span class="n">true</span><span class="p">,</span> <span class="n">pulls</span> <span class="nb">all</span> <span class="n">data</span> <span class="n">on</span> <span class="n">flood</span> <span class="n">warning</span> <span class="n">regions</span> <span class="ow">and</span>
+                      <span class="n">rewrites</span> <span class="n">cache</span> <span class="n">files</span><span class="o">.</span> <span class="n">Note</span> <span class="n">warnings</span> <span class="n">which</span> <span class="n">havechanged</span>
+                      <span class="n">are</span> <span class="n">always</span> <span class="n">updated</span><span class="p">,</span> <span class="n">thisoption</span> <span class="n">fully</span> <span class="n">rebuilds</span> <span class="n">the</span>
+                      <span class="n">cache</span><span class="o">.</span>
+<span class="o">-</span><span class="n">dm</span><span class="p">,</span> <span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">warning</span><span class="o">-</span><span class="n">messages</span>
+                      <span class="n">disables</span> <span class="n">printing</span> <span class="n">detailed</span> <span class="n">flood</span> <span class="n">warning</span> <span class="n">messages</span>
+<span class="o">-</span><span class="n">dw</span><span class="p">,</span> <span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">plot</span><span class="o">-</span><span class="n">warnings</span>
+                      <span class="n">disables</span> <span class="n">plotting</span> <span class="n">of</span> <span class="n">warnings</span> <span class="n">on</span> <span class="n">a</span> <span class="n">choropleth</span> <span class="nb">map</span><span class="o">.</span>
+<span class="o">-</span><span class="n">ds</span><span class="p">,</span> <span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">plot</span><span class="o">-</span><span class="n">stations</span>
+                      <span class="n">disables</span> <span class="n">plotting</span> <span class="n">of</span> <span class="n">station</span> <span class="n">locations</span> <span class="ow">and</span> <span class="n">their</span>
+                      <span class="n">relative</span> <span class="n">water</span> <span class="n">levels</span> <span class="n">on</span> <span class="n">a</span> <span class="nb">map</span>
+<span class="o">-</span><span class="n">tol</span> <span class="n">GEOMETRY_TOLERANCE</span><span class="p">,</span> <span class="o">--</span><span class="n">geometry</span><span class="o">-</span><span class="n">tolerance</span> <span class="n">GEOMETRY_TOLERANCE</span>
+                      <span class="n">Simplifies</span> <span class="n">warning</span> <span class="n">region</span> <span class="n">geometry</span> <span class="n">before</span> <span class="n">plotting</span> <span class="n">to</span>
+                      <span class="n">keep</span> <span class="n">the</span> <span class="nb">map</span> <span class="n">responsive</span><span class="o">.</span> <span class="n">The</span> <span class="n">tolerance</span> <span class="ow">is</span> <span class="n">given</span> <span class="ow">in</span>
+                      <span class="n">degrees</span> <span class="ow">and</span> <span class="n">sets</span> <span class="n">the</span> <span class="n">maximum</span> <span class="n">allowed</span> <span class="n">deviation</span> <span class="n">of</span> <span class="n">the</span>
+                      <span class="n">approximated</span> <span class="n">geometry</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">true</span> <span class="n">shape</span><span class="o">.</span> <span class="n">By</span> <span class="n">default</span><span class="p">,</span>
+                      <span class="n">settings</span> <span class="n">which</span> <span class="n">provide</span> <span class="n">detailed</span> <span class="n">warning</span> <span class="n">regions</span> <span class="ow">and</span>
+                      <span class="n">keep</span> <span class="n">the</span> <span class="nb">map</span> <span class="n">responsive</span> <span class="n">are</span> <span class="n">used</span>
+<span class="o">-</span><span class="n">buf</span> <span class="n">GEOMETRY_BUFFER</span><span class="p">,</span> <span class="o">--</span><span class="n">geometry_buffer</span> <span class="n">GEOMETRY_BUFFER</span>
+                      <span class="n">Simplifies</span> <span class="n">warning</span> <span class="n">region</span> <span class="n">geometry</span> <span class="n">before</span> <span class="n">plotting</span> <span class="n">to</span>
+                      <span class="n">keep</span> <span class="n">the</span> <span class="nb">map</span> <span class="n">responsive</span><span class="o">.</span> <span class="n">The</span> <span class="n">buffer</span> <span class="n">smoothes</span> <span class="n">geometry</span>
+                      <span class="ow">and</span> <span class="n">removes</span> <span class="nb">any</span> <span class="n">voids</span> <span class="n">by</span> <span class="n">taking</span> <span class="n">the</span> <span class="n">locus</span> <span class="n">of</span> <span class="n">the</span> <span class="n">shape</span>
+                      <span class="n">offset</span> <span class="n">by</span> <span class="n">a</span> <span class="n">fixed</span> <span class="n">value</span><span class="p">,</span> <span class="ow">in</span> <span class="n">degrees</span><span class="o">.</span> <span class="n">By</span> <span class="n">default</span><span class="p">,</span>
+                      <span class="n">settings</span> <span class="n">which</span> <span class="n">provide</span> <span class="n">detailed</span> <span class="n">warning</span> <span class="n">regions</span> <span class="ow">and</span>
+                      <span class="n">keep</span> <span class="n">the</span> <span class="nb">map</span> <span class="n">responsive</span> <span class="n">are</span> <span class="n">used</span>
 </pre></div>
 </div>
-<p>Full descriptions for each of the arguments can be printed using
-<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">extension_demo.py</span> <span class="pre">--help</span></code></p>
+<dl class="simple">
+<dt>Full descriptions for each of the arguments can be printed using ::</dt><dd><p>python extension_demo.py –help</p>
+</dd>
+</dl>
 </div>
 </div>
 <div class="section" id="documentation">
@@ -261,11 +303,18 @@ with the following options</p>
 Numpy docstrings. The source/config files for this documentation are stored in
 <a class="reference external" href="https://gitlab.com/daniel345/partia-flood-warning-system/-/tree/master/docs">docs</a>.
 They are then copied into the public folder and deployed using Gitlab Pages.</p>
-<p>To re-run documentation, modify the source files in the docs folder and execute: <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code></p>
+<dl class="simple">
+<dt>To re-run documentation, modify the source files in the docs folder and execute: ::</dt><dd><p>make html</p>
+</dd>
+</dl>
 <p>and copy the contents of docs/_build/html to public.</p>
 </div>
 <div class="section" id="known-issues">
 <h1>Known issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h1>
+<p>The Flood Monitoring API uses different types of reference points from which the water
+level at a monitoring station is measured. They can be relative to the Ordnance Survey datum,
+to a local stage datum, or below datum. As a result, a handful of stations have negative
+water levels.</p>
 </div>
 <div class="section" id="acknowledgements">
 <h1>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h1>

@@ -31,7 +31,7 @@ Additionally, the following packages are needed:
 * argparse
 * progressbar2
 
-If you would like to run the unit tests provided locally, pytest is also required.
+To run the unit tests provided locally, pytest is also required.
 Navigate to the library's root directory and run ::
    python -m pytest
 
@@ -65,8 +65,8 @@ Extension
 
 Environmental Agency Flood Warnings
 ----------------------------------
-The flood warnings produced by the are made available via the Flood Warning API.
-They are produced by taking into account tidal, meteorological, groundwater and river level
+The flood warnings produced are made available via the Flood Warning API.
+They take into account tidal, meteorological, groundwater and river level
 data, as well as the locations of flood planes surrounding rivers. The warnings provide
 information on the type and severity of flooding and also define the region in which
 they are enforced.
@@ -82,20 +82,20 @@ Map Plotting Functionality
 Both current flood warnings and the relative water levels of monitoring stations can be
 plotted on a map.
 
-Warnings are displayed shaded regions within which they are in force, usually
-defined by flood planes. The colour of the regions indicates severity of the warning.
-Hovering over the warning displays the name of the area which the warning is in, the severity,
+Warnings in force are displayed as shaded regions, usually
+defined by flood planes. The colour of the regions indicates the severity of the warning.
+Hovering over the warning displays the warning area name, severity,
 and when the warning was last updated.
 
 A link is also provided to the Government Flood Information Service page regarding the flood warning. The link contains
 information on what action needs to be taken and a 5 day flood forecast.
 
-The locations of monitoring stations are plotted as points and are colour coded according to their
+The locations of monitoring stations are plotted as points and are colour-coded according to their
 relative water level (which is relative to the typical low and high levels of the station).
-Hovering over a station displays the absolute water level, the typical low and high levels
-and the town the station is in.
+Hovering over a station displays the station's absolute water level, typical low and high levels,
+and town.
 
-Maps produced are saved as a html file temp plot and are also opened in the default browser
+Maps produced are saved as an html file temp plot and are opened in the default browser
 after creation.
 
 
@@ -109,9 +109,48 @@ with the following options ::
                             [-long LONGITUDE] [-c] [-dm] [-dw] [-ds]
                             [-tol GEOMETRY_TOLERANCE] [-buf GEOMETRY_BUFFER]
 
+  optional arguments:
+  -h, --help            show this help message and exit
+  -s {severe,high,moderate,low}, --warning-min-severity {severe,high,moderate,low}
+                        Fetches warnings only of the given severity level or
+                        greater. Warnings of severity moderate and above are
+                        active currently, while low severity warnings were
+                        active in the past 24 hours
+  -lat LATITUDE, --latitude LATITUDE
+                        The latitude, in degrees of a location to be checked
+                        for any flood warnigns.
+  -long LONGITUDE, --longitude LONGITUDE
+                        The longitude, in degrees of a location to be checked
+                        for any flood warnigns.
+  -c, --overwrite-warning-cache
+                        If true, pulls all data on flood warning regions and
+                        rewrites cache files. Note warnings which havechanged
+                        are always updated, thisoption fully rebuilds the
+                        cache.
+  -dm, --disable-warning-messages
+                        disables printing detailed flood warning messages
+  -dw, --disable-plot-warnings
+                        disables plotting of warnings on a choropleth map.
+  -ds, --disable-plot-stations
+                        disables plotting of station locations and their
+                        relative water levels on a map
+  -tol GEOMETRY_TOLERANCE, --geometry-tolerance GEOMETRY_TOLERANCE
+                        Simplifies warning region geometry before plotting to
+                        keep the map responsive. The tolerance is given in
+                        degrees and sets the maximum allowed deviation of the
+                        approximated geometry from the true shape. By default,
+                        settings which provide detailed warning regions and
+                        keep the map responsive are used
+  -buf GEOMETRY_BUFFER, --geometry_buffer GEOMETRY_BUFFER
+                        Simplifies warning region geometry before plotting to
+                        keep the map responsive. The buffer smoothes geometry
+                        and removes any voids by taking the locus of the shape
+                        offset by a fixed value, in degrees. By default,
+                        settings which provide detailed warning regions and
+                        keep the map responsive are used
 							
-Full descriptions for each of the arguments can be printed using
-``python extension_demo.py --help``
+Full descriptions for each of the arguments can be printed using ::
+   python extension_demo.py --help
    
 Documentation
 =============
@@ -121,12 +160,17 @@ Numpy docstrings. The source/config files for this documentation are stored in
 `docs <https://gitlab.com/daniel345/partia-flood-warning-system/-/tree/master/docs>`_.
 They are then copied into the public folder and deployed using Gitlab Pages.
 
-To re-run documentation, modify the source files in the docs folder and execute: ``make html``
-  
+To re-run documentation, modify the source files in the docs folder and execute: ::
+   make html
 and copy the contents of docs/_build/html to public.
 
 Known issues
 ============
+
+The Flood Monitoring API uses different types of reference points from which the water
+level at a monitoring station is measured. They can be relative to the Ordnance Survey datum,
+to a local stage datum, or below datum. As a result, a handful of stations have negative
+water levels.
 
 Acknowledgements
 ================
