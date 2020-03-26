@@ -199,7 +199,7 @@ warnings.</p>
 
 <dl class="function">
 <dt id="warningdata.build_warning_list">
-<code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">build_warning_list</code><span class="sig-paren">(</span><em class="sig-param">severity</em>, <em class="sig-param">use_pickle_caches=True</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.build_warning_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">build_warning_list</code><span class="sig-paren">(</span><em class="sig-param">severity</em>, <em class="sig-param">use_pickle_caches=True</em>, <em class="sig-param">progress_bar=False</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.build_warning_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch warnings from the API and create a list of warnings.</p>
 <p>Also updates caches for flood regions for any new warnings.</p>
 <dl class="field-list simple">
@@ -210,6 +210,8 @@ value) will be returned.</p></li>
 <li><p><strong>use_pickle_caches</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, then cached data regarding flood regions is used - the flood
 warnings are still the most recent pulled from the API. The default is
 True.</p></li>
+<li><p><strong>progress_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – If supplied, creates a bar in the terminal and updates as the warning
+list is built. The defualt is False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -264,12 +266,12 @@ be used.</p></li>
 
 <dl class="function">
 <dt id="warningdata.update_poly_area_caches">
-<code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">update_poly_area_caches</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">poly_cache='warning_polys.pk'</em>, <em class="sig-param">area_cache='warning_areas.pk'</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.update_poly_area_caches" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">warningdata.</code><code class="sig-name descname">update_poly_area_caches</code><span class="sig-paren">(</span><em class="sig-param">warnings</em>, <em class="sig-param">poly_cache='warning_polys.pk'</em>, <em class="sig-param">area_cache='warning_areas.pk'</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="headerlink" href="#warningdata.update_poly_area_caches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create updated lists of polygons/areas pertaining to any new warnings.</p>
-<p>If previous cached data is available, the new data is appended to this.
-polygon data is stored as a list of lists containing four attributes for
-each warning: [[geojson, region, is_poly_simplified, simplified_geojson],
-…]</p>
+<p>If previous cached data is available, and overwrite is false the new data
+is appended to this. polygon data is stored as a list of lists containing
+four attributes for each warning:
+[[geojson, region, is_poly_simplified, simplified_geojson], …]</p>
 <p>area data is stored as a list of json objects obtained from the API for
 each warning: [[area_json], …]</p>
 <dl class="field-list simple">
@@ -279,6 +281,11 @@ each warning: [[area_json], …]</p>
 severity.</p></li>
 <li><p><strong>poly_cache</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the polygon cache file. The default is ‘warning_polys.pk’.</p></li>
 <li><p><strong>area_cache</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the area cache file. The default is ‘warning_areas.pk’.</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>If True, previously cached data is overwritten and only current data is</dt><dd><p>added to the cache files. The default is False.</p>
+</dd>
+</dl>
+</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

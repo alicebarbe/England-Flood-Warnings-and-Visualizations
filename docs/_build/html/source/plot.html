@@ -160,6 +160,28 @@
 <span id="plot-module"></span><h1>plot module<a class="headerlink" href="#module-plot" title="Permalink to this headline">¶</a></h1>
 <p>Visualizations of historical data, flooding zones, and stations.</p>
 <dl class="function">
+<dt id="plot.create_choropleth_colour_scale">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">create_choropleth_colour_scale</code><span class="sig-paren">(</span><em class="sig-param">min_severity=4</em>, <em class="sig-param">discrete_colourscale=False</em><span class="sig-paren">)</span><a class="headerlink" href="#plot.create_choropleth_colour_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the colours and tick labels for the choropleth map legend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_severity</strong> (<em>int</em><em>, </em><em>optional</em>) – the minimum severity of warnings which are to be accomodated in the
+colour scale. Defaults to 4, allowing all possible severities</p></li>
+<li><p><strong>discrete_colourscale</strong> (<em>bool</em><em>, </em><em>optional.</em>) – If True, creates a discrete colour bar. Default is false.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>colorscale, ticktext</strong> – These are intended to be directly passed to the plotly colorscale
+and colorbar_ticktext parameters.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list, list of strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="plot.create_water_levels_plot">
 <code class="sig-prename descclassname">plot.</code><code class="sig-name descname">create_water_levels_plot</code><span class="sig-paren">(</span><em class="sig-param">listinput</em><span class="sig-paren">)</span><a class="headerlink" href="#plot.create_water_levels_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the water levels of stations given corresponding date.</p>
