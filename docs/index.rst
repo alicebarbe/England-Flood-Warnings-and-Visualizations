@@ -32,7 +32,8 @@ Additionally, the following packages are needed:
 * progressbar2
 
 To run the unit tests provided locally, pytest is also required.
-Navigate to the library's root directory and run ::
+Navigate to the library's root directory and run: ::
+
    python -m pytest
 
 
@@ -58,6 +59,7 @@ Demonstration programs
 A number of programs which demonstrate functions
 of the library are included.
 These may be run directly from a command-line, e.g. ::
+
    python Task1A.py
 
 Extension
@@ -104,10 +106,11 @@ Extension demo program
 
 The extension_demo.py script runs elements of the extension.
 The parts run can be configured using a command line interface,
-with the following options ::
+with the following options: ::
+
   usage: extension_demo.py [-h] [-s {severe,high,moderate,low}] [-lat LATITUDE]
-                            [-long LONGITUDE] [-c] [-dm] [-dw] [-ds]
-                            [-tol GEOMETRY_TOLERANCE] [-buf GEOMETRY_BUFFER]
+                           [-long LONGITUDE] [-c] [-dm] [-dw] [-ds]
+                           [-tol GEOMETRY_TOLERANCE] [-buf GEOMETRY_BUFFER]
 
   optional arguments:
   -h, --help            show this help message and exit
@@ -150,7 +153,8 @@ with the following options ::
                         keep the map responsive are used
 							
 Full descriptions for each of the arguments can be printed using ::
-   python extension_demo.py --help
+
+  python extension_demo.py --help
    
 Documentation
 =============
@@ -161,7 +165,9 @@ Numpy docstrings. The source/config files for this documentation are stored in
 They are then copied into the public folder and deployed using Gitlab Pages.
 
 To re-run documentation, modify the source files in the docs folder and execute: ::
-   make html
+
+  make html
+
 and copy the contents of docs/_build/html to public.
 
 Known issues
