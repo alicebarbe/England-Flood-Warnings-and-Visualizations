@@ -4,7 +4,7 @@ This is the Part IA Lent Term computing activity at the Department of
 Engineering, University of Cambridge.
 
 Documentation on the code in this repository can be found here:
-https://daniel345.gitlab.io/partia-flood-warning-system/
+https://alicebarbe.github.io/England-Flood-Warnings-and-Visualizations/
 
 # Introduction
 
@@ -161,15 +161,16 @@ python extension_demo.py --help
 
 This documentation is generated using Sphinx and the Napoleon extension for parsing
 Numpy docstrings. The source/config files for this documentation are stored in
-[docs](https://gitlab.com/daniel345/partia-flood-warning-system/-/tree/master/docs)
-They are then copied into the public folder and deployed using Gitlab Pages.
+/docs-source.
 
-To re-run documentation, modify the source files in the docs folder and execute
+They are then copied into the public folder and deployed using GitHub Pages.
+
+To re-run documentation, modify the source files in the /docs folder and execute
 ```
 make html
 ```
   
-and copy the contents of docs/_build/html to public.
+and copy the contents of /docs-source/_build/html to /docs.
 
 # Known issues
 
