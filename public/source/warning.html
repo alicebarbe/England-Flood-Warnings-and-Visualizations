@@ -234,7 +234,7 @@ the region or the region is None.</p>
 <dd><p>Find towns in the flood warning region with a monitoring station.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><em>MonitoringStations</em><em>]</em>) – produced using stationdata.build_station_list.</p>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><em>MonitoringStations</em><em>]</em>) – produced using <code class="docutils literal notranslate"><span class="pre">stationdata.build_station_list()</span></code>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of names of the towns affected.</p>
@@ -308,11 +308,15 @@ The default is 0.002.</p></li>
 <code class="sig-name descname">stations_in_warning</code><span class="sig-paren">(</span><em class="sig-param">stations</em><span class="sig-paren">)</span><a class="headerlink" href="#warning.FloodWarning.stations_in_warning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produce a list of stations which are within the warning.</p>
 <p>Note it is often the case that a warning region may have no stations in
-it. This is because the Met Office defines the warning regions based on
-floodplanes or elevations</p>
+it. This is because the Environmental Agency defines the warning regions based on
+flood planes or topology regions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – Created using stationdata.build_station_list().</p>
+<dd class="field-odd"><p><strong>stations</strong> (<em>list</em><em>[</em><a class="reference internal" href="station.html#station.MonitoringStation" title="station.MonitoringStation"><em>MonitoringStation</em></a><em>]</em>) – <dl class="simple">
+<dt>Created using ::</dt><dd><p>stationdata.build_station_list()``.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>warning_stations</strong> – List of monitoring stations whose coordinates are within the
