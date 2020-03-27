@@ -109,7 +109,7 @@ with the following options:
 usage: extension_demo.py [-h] [-s {severe,high,moderate,low}] [-lat LATITUDE]
                          [-long LONGITUDE] [-c] [-dm] [-dw] [-ds]
                          [-tol GEOMETRY_TOLERANCE] [-buf GEOMETRY_BUFFER]
-						 
+                         
 optional arguments:
 -h, --help            show this help message and exit
 -s {severe,high,moderate,low}, --warning-min-severity {severe,high,moderate,low}
