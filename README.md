@@ -173,6 +173,14 @@ and copy the contents of docs/_build/html to public.
 
 # Known issues
 
+The Flood Monitoring API uses different types of reference points from which the
+water level at a monitoring station is measured. They can be relative to the 
+Ordnance Survey datum, to a local stage datum, or below datum. As a result, a 
+handful of stations have negative water levels.
+
+When different flood warnings overlap on the map, it is sometimes not possible 
+to hover over one of the warnings.
+
 # Acknowledgements
 
 This uses Environment Agency flood and river level data from the real-time data API (Beta)
